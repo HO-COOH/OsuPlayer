@@ -1,0 +1,10 @@
+namespace OsuPlayer
+{
+    [default_interface]
+    runtimeclass Settings : Windows.UI.Xaml.Controls.Page
+    {
+        Settings();
+
+        Windows.Foundation.Collections.IObservableVector<String> osuPath{ get; };
+    }
+}

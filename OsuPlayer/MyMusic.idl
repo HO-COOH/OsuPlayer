@@ -1,0 +1,9 @@
+namespace OsuPlayer
+{
+    [default_interface]
+    runtimeclass MyMusic : Windows.UI.Xaml.Controls.Page
+    {
+        MyMusic();
+        Int32 MyProperty;
+    }
+}
