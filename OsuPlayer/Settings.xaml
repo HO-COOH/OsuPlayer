@@ -6,14 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+    >
 
     <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20, 40">
         <TextBlock Text="Settings" FontSize="50"/>
 
         <TextBlock Text="osu! Path" FontSize="30"/>
-        <ListBox Width="300" ItemsSource="{x:Bind osuPath}">
-            
+        <ListBox x:Name="OsuPathListBox" Width="300" ItemsSource="{x:Bind osuPath}" SelectionChanged="ListBox_SelectionChanged">
+            <!-- osu paths -->
         </ListBox>
 
         <muxc:RadioButtons Header="Mode" FontSize="30">
