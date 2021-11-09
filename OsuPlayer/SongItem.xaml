@@ -1,0 +1,25 @@
+﻿<UserControl
+    x:Class="OsuPlayer.SongItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OsuPlayer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d">
+
+    <StackPanel Orientation="Horizontal">
+        <!--<Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>-->
+        
+        <CheckBox x:Name="CheckBox" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+        <TextBlock x:Name="SongNameText" Text="{x:Bind SongName}"/>
+        <TextBlock x:Name="SingerText" Text="{x:Bind Singer}"/>
+        <TextBlock x:Name="MapperText" Text="{x:Bind Mapper}"/>
+        <TextBlock x:Name="Length" Text="{x:Bind Length}"/>
+        <ComboBox x:Name="VersionSelectionBox" Width="100"/>
+    </StackPanel>
+    
+</UserControl>

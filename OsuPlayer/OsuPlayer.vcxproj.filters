@@ -9,6 +9,10 @@
       <Filter>MyMusicView</Filter>
     </Page>
     <Page Include="Settings.xaml" />
+    <Page Include="Recent.xaml">
+      <Filter>RecentView</Filter>
+    </Page>
+    <Page Include="SongItem.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />

@@ -14,7 +14,26 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="My Music" FontSize="50" Margin="20, 40"  Grid.Row="0"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="My Music" FontSize="50" Margin="20, 40" Grid.Column="0"/>
+            <ComboBox HorizontalContentAlignment="Right" Grid.Column="1" Margin="526,0,0,0" VerticalAlignment="Center" Width="182" Height="40">
+                <ComboBox.Items>
+                    <ComboBoxItem Content="Artist"/>
+                    <ComboBoxItem Content="BPM"/>
+                    <ComboBoxItem Content="Creator"/>
+                    <ComboBoxItem Content="Data Added"/>
+                    <ComboBoxItem Content="Difficulty"/>
+                    <ComboBoxItem Content="Length"/>
+                    <ComboBoxItem Content="Rank Achieved"/>
+                    <ComboBoxItem Content="Title"/>
+                </ComboBox.Items>
+            </ComboBox>
+        </Grid>
 
         <muxc:NavigationView x:Name="Category" 
             PaneDisplayMode="Top"

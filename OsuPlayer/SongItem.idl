@@ -1,0 +1,8 @@
+namespace OsuPlayer
+{
+    [default_interface]
+    runtimeclass SongItem : Windows.UI.Xaml.Controls.UserControl
+    {
+        SongItem();
+    }
+}
