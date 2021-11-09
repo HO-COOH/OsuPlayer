@@ -28,3 +28,12 @@ namespace winrt::OsuPlayer::implementation
     {
     }
 }
+
+
+void winrt::OsuPlayer::implementation::MyMusic::Category_ItemInvoked(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender, winrt::Microsoft::UI::Xaml::Controls::NavigationViewItemInvokedEventArgs const& args)
+{
+
+    if (args.InvokedItemContainer().IsSelected())
+        return;
+
+}

@@ -60,6 +60,9 @@
     <Filter Include="MyMusicView">
       <UniqueIdentifier>{72bcb4cf-3c3e-46da-a52d-9344c09ddaae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RecentView">
+      <UniqueIdentifier>{6f652b7d-d9c4-4e96-b29c-71b083c64502}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
