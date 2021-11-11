@@ -1,0 +1,11 @@
+namespace OsuPlayer
+{
+	runtimeclass MyMusicItem
+	{
+		MyMusicItem(String songName, String singer, String mapper, String[] versions);
+		String songName{ get; };
+		String singer{ get; };
+		String mapper{ get; };
+		String[] versions{ get; };
+	}
+}

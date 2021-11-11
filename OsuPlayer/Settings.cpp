@@ -66,7 +66,10 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFold
 winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> winrt::OsuPlayer::implementation::Settings::m_osuPath 
     = [] { auto v = winrt::single_threaded_observable_vector<winrt::hstring>(); v.Append(L"+"); return v; }();
 
-winrt::Windows::Foundation::IAsyncAction winrt::OsuPlayer::implementation::Settings::ListBox_SelectionChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::Controls::SelectionChangedEventArgs const& e)
+winrt::Windows::Foundation::IAsyncAction winrt::OsuPlayer::implementation::Settings::ListBox_SelectionChanged(
+    winrt::Windows::Foundation::IInspectable const& sender,
+    winrt::Windows::UI::Xaml::Controls::SelectionChangedEventArgs const& e
+)
 {
     if (OsuPathListBox().SelectedIndex() == -1)
         return;
@@ -90,6 +93,7 @@ winrt::Windows::Foundation::IAsyncAction winrt::OsuPlayer::implementation::Setti
                     continue;
                 }
             } while (true);
+
         }
     }
     catch (winrt::hresult_error const& e)
@@ -97,4 +101,19 @@ winrt::Windows::Foundation::IAsyncAction winrt::OsuPlayer::implementation::Setti
         auto msg = e.message();
     }
     OsuPathListBox().SelectedIndex(-1); //reset the selectedIndex to -1 so this event can be fired again if the user clicked any items
+    s_handlers(m_osuPath);
+}
+
+winrt::event<winrt::OsuPlayer::OsuPathChangedHandler> winrt::OsuPlayer::implementation::Settings::s_handlers;
+
+winrt::event_token winrt::OsuPlayer::implementation::Settings::s_osuPathChangedHandler(winrt::OsuPlayer::OsuPathChangedHandler const& handler)
+{
+    auto f = make<winrt::OsuPlayer::factory_implementation::Settings>().as<winrt::OsuPlayer::ISettingsStatics>();
+    return f.s_osuPathChangedHandler(handler);
+}
+
+void winrt::OsuPlayer::implementation::Settings::s_osuPathChangedHandler(winrt::event_token const& token) noexcept
+{
+    auto f = make<winrt::OsuPlayer::factory_implementation::Settings>().as<winrt::OsuPlayer::ISettingsStatics>();
+    return f.s_osuPathChangedHandler(token);
 }

@@ -8,7 +8,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal">
+    <StackPanel Orientation="Horizontal" Height="30">
         <!--<Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
@@ -18,7 +18,7 @@
         <TextBlock x:Name="SongNameText" Text="{x:Bind SongName}"/>
         <TextBlock x:Name="SingerText" Text="{x:Bind Singer}"/>
         <TextBlock x:Name="MapperText" Text="{x:Bind Mapper}"/>
-        <TextBlock x:Name="Length" Text="{x:Bind Length}"/>
+        <TextBlock x:Name="LengthText" Text="{x:Bind Length}"/>
         <ComboBox x:Name="VersionSelectionBox" Width="100"/>
     </StackPanel>
     

@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "MyMusic.g.h"
 #include "Settings.g.h"
+#include <future>
+#include "MyMusicModel.h"
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -9,11 +11,15 @@ namespace winrt::OsuPlayer::implementation
         
         MyMusic();
 
-        int32_t MyProperty();
-        void MyProperty(int32_t value);
+        void Category_ItemInvoked(
+            winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender,
+            winrt::Microsoft::UI::Xaml::Controls::NavigationViewItemInvokedEventArgs const& args
+        );
 
-        void ClickHandler(Windows::Foundation::IInspectable const& sender, Windows::UI::Xaml::RoutedEventArgs const& args);
-        void Category_ItemInvoked(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender, winrt::Microsoft::UI::Xaml::Controls::NavigationViewItemInvokedEventArgs const& args);
+        void OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const& e);
+    private:
+        std::future<void> onAddOsuPath;
+        MyMusicModel model;
     };
 }
 

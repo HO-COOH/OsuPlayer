@@ -1,10 +1,14 @@
 namespace OsuPlayer
 {
+    delegate void OsuPathChangedHandler(Windows.Foundation.Collections.IObservableVector<String> arg);
+
     [default_interface]
     runtimeclass Settings : Windows.UI.Xaml.Controls.Page
     {
         Settings();
 
         Windows.Foundation.Collections.IObservableVector<String> osuPath{ get; };
+
+        static event OsuPathChangedHandler s_osuPathChangedHandler;
     }
 }

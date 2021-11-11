@@ -12,21 +12,10 @@ namespace winrt::OsuPlayer::implementation
     MyMusic::MyMusic()
     {
         InitializeComponent();
+        Settings::s_osuPathChangedHandler([this](winrt::Windows::Foundation::Collections::IVector<winrt::hstring> arg) {});
     }
 
-    int32_t MyMusic::MyProperty()
-    {
-        throw hresult_not_implemented();
-    }
 
-    void MyMusic::MyProperty(int32_t /* value */)
-    {
-        throw hresult_not_implemented();
-    }
-
-    void MyMusic::ClickHandler(IInspectable const&, RoutedEventArgs const&)
-    {
-    }
 }
 
 
@@ -35,5 +24,12 @@ void winrt::OsuPlayer::implementation::MyMusic::Category_ItemInvoked(winrt::Micr
 
     if (args.InvokedItemContainer().IsSelected())
         return;
+
+}
+
+
+
+void winrt::OsuPlayer::implementation::MyMusic::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const& e)
+{
 
 }

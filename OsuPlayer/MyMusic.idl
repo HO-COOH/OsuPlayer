@@ -4,6 +4,5 @@ namespace OsuPlayer
     runtimeclass MyMusic : Windows.UI.Xaml.Controls.Page
     {
         MyMusic();
-        Int32 MyProperty;
     }
 }

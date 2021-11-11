@@ -25,11 +25,18 @@
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="BackgroundAcrylic.cpp" />
     <ClCompile Include="ThemeHelper.cpp" />
+    <ClCompile Include="MyMusicModel.cpp">
+      <Filter>MyMusicView</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="BackgroundAcrylic.h" />
     <ClInclude Include="ThemeHelper.h" />
+    <ClInclude Include="MyMusicModel.h">
+      <Filter>MyMusicView</Filter>
+    </ClInclude>
+    <ClInclude Include="OsuParser.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

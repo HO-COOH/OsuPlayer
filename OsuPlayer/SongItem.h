@@ -12,6 +12,10 @@ namespace winrt::OsuPlayer::implementation
     {
         SongItem();
 
+        winrt::hstring SongName() { return {}; }
+        winrt::hstring Singer() { return {}; }
+        winrt::hstring Mapper() { return {}; }
+        winrt::hstring Length() { return L"0:0"; }
 
         void CheckBox_Checked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
         void CheckBox_Unchecked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);

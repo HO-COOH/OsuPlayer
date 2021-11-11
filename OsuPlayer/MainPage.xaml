@@ -43,7 +43,7 @@
             </Frame>
         </muxc:NavigationView>
 
-        <Frame x:Name="PlayerFrame" Grid.Row="1" Background="Blue"></Frame>
+        <Frame x:Name="PlayerFrame" Grid.Row="1" Background="{ThemeResource SystemControlAcrylicElementBrush}"></Frame>
     </Grid>
 
 </Page>

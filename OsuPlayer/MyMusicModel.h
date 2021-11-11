@@ -24,6 +24,7 @@ struct MyMusicItem
 class MyMusicModel
 {
 public:
+	MyMusicModel() = default;
 	MyMusicModel(winrt::Windows::Storage::StorageFolder folder);
 	MyMusicModel(winrt::hstring const& folderPath);
 
@@ -32,7 +33,8 @@ public:
 
 	std::future<std::vector<MyMusicItem>> readSomeAsync(size_t count);
 private:
-	winrt::Windows::Storage::StorageFolder m_folder;
+	winrt::Windows::Storage::StorageFolder m_folder{ nullptr };
+	size_t currentIndex{};
 };
 
 template<size_t Count>
