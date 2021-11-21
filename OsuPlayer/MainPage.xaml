@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}">
 
     <Grid>
 
@@ -17,8 +18,7 @@
         
         <muxc:NavigationView x:Name="NavigationViewControl" Grid.Row="0"
             ItemInvoked="NavigationViewControl_ItemInvoked"
-            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-        >
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <muxc:NavigationView.AutoSuggestBox>
                 <AutoSuggestBox
                     x:Name="SearchBox"
@@ -30,7 +30,12 @@
         
             <!-- Navigation Items-->
             <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem Icon="Play" Content="My Music" Tag="My Music" PointerPressed="NavigationViewItem_PointerPressed"/>
+                <muxc:NavigationViewItem Icon="Play" Content="My Music" Tag="My Music" 
+                                         PointerPressed="NavigationViewItem_PointerPressed">
+                    <muxc:NavigationViewItem.InfoBadge>
+                        <muxc:InfoBadge x:Name="MyMusicInfoBadge" Value="1"/>
+                    </muxc:NavigationViewItem.InfoBadge>
+                </muxc:NavigationViewItem>
                 <muxc:NavigationViewItem Icon="Clock" Content="Recent"/>
             
                 <muxc:NavigationViewItemSeparator/>
@@ -38,12 +43,12 @@
 
             </muxc:NavigationView.MenuItems>
 
-            <Frame x:Name="ContentFrame" Background="{ThemeResource AppBarBackgroundThemeBrush}">
-            
-            </Frame>
+            <Frame x:Name="ContentFrame" Background="{ThemeResource AppBarBackgroundThemeBrush}"/>
         </muxc:NavigationView>
 
-        <Frame x:Name="PlayerFrame" Grid.Row="1" Background="{ThemeResource SystemControlAcrylicElementBrush}"></Frame>
+        <Frame x:Name="PlayerFrame" Grid.Row="1" Background="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}">
+            <local:Player></local:Player>
+        </Frame>
     </Grid>
 
 </Page>

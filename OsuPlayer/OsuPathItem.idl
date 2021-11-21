@@ -1,0 +1,12 @@
+namespace OsuPlayer
+{
+    [default_interface]
+    runtimeclass OsuPathItem : Windows.UI.Xaml.Controls.UserControl
+    {
+        OsuPathItem();
+        
+        Boolean IsLoading{ get; };
+        String OsuPathText{ get; set; };
+        String BeatmapCountText{ get; };
+    }
+}

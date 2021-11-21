@@ -5,20 +5,38 @@
 #include "winrt/Windows.UI.Xaml.Interop.h"
 #include "winrt/Windows.UI.Xaml.Controls.Primitives.h"
 #include "SongItem.g.h"
+#include "MyMusicModel.h"
 
 namespace winrt::OsuPlayer::implementation
 {
-    struct SongItem : SongItemT<SongItem>
+    struct SongItem : SongItemT<SongItem>, MyMusicItem
     {
         SongItem();
+        SongItem(winrt::hstring songName);
+        SongItem(winrt::hstring SongName, winrt::hstring Singer);
+        SongItem(winrt::hstring SongName, winrt::hstring Singer, int Length);
+        SongItem(winrt::hstring SongName, winrt::hstring Singer, int Length, winrt::hstring Mapper);
 
-        winrt::hstring SongName() { return {}; }
-        winrt::hstring Singer() { return {}; }
-        winrt::hstring Mapper() { return {}; }
-        winrt::hstring Length() { return L"0:0"; }
+        winrt::hstring SongName() { return songName; }
+        winrt::hstring Singer() { return singer; }
+        winrt::hstring Mapper() { return mapper; }
+        winrt::hstring Length();
 
-        void CheckBox_Checked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
-        void CheckBox_Unchecked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void SongName(winrt::hstring songName) { this->songName = songName; }
+        void Singer(winrt::hstring singer) { this->singer = singer; }
+        void Mapper(winrt::hstring mapper) { this->mapper = mapper; }
+
+        int length{};
+
+        void CheckBox_Checked(
+            winrt::Windows::Foundation::IInspectable const& sender, 
+            winrt::Windows::UI::Xaml::RoutedEventArgs const& e
+        );
+
+        void CheckBox_Unchecked(
+            winrt::Windows::Foundation::IInspectable const& sender, 
+            winrt::Windows::UI::Xaml::RoutedEventArgs const& e
+        );
     };
 }
 

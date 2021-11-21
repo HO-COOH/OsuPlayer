@@ -9,9 +9,11 @@
 #pragma once
 #include <vector>
 #include <winrt/Windows.Storage.h>
+#include <winrt/Windows.Foundation.h>
 //#include <winrt/Windows.Foundation.Collections.h>
 #include <array>
 #include <future>
+#include <SongItem.g.h>
 
 struct MyMusicItem
 {
@@ -28,10 +30,12 @@ public:
 	MyMusicModel(winrt::Windows::Storage::StorageFolder folder);
 	MyMusicModel(winrt::hstring const& folderPath);
 
+	winrt::Windows::Foundation::IAsyncAction setPath(winrt::hstring const& folderPath);
+
 	template<size_t Count>
 	std::future<std::array<MyMusicItem, Count>> readSomeAsync();
 
-	std::future<std::vector<MyMusicItem>> readSomeAsync(size_t count);
+	winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collections::IVector<winrt::OsuPlayer::SongItem>> readSomeAsync(size_t count);
 private:
 	winrt::Windows::Storage::StorageFolder m_folder{ nullptr };
 	size_t currentIndex{};

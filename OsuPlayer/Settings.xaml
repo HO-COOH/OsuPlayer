@@ -10,18 +10,48 @@
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     >
 
-    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20, 40">
-        <TextBlock Text="Settings" FontSize="50"/>
+    <ScrollViewer>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20, 40">
+            <TextBlock Text="Settings" FontSize="50"/>
 
-        <TextBlock Text="osu! Path" FontSize="30"/>
-        <ListBox x:Name="OsuPathListBox" Width="300" ItemsSource="{x:Bind osuPath}" SelectionChanged="ListBox_SelectionChanged">
-            <!-- osu paths -->
-        </ListBox>
+            <RelativePanel>
+                <TextBlock x:Name="OsuPathTitle" Text="osu! Path" FontSize="30"/>
+                <Button x:Name="AddOsuPathButton" Content="+" Click="AddOsuPathButton_Click" RelativePanel.RightOf="OsuPathTitle" Margin="20,7,0,0"/>
+                <ListBox x:Name="OsuPathListBox" Width="300" ItemsSource="{x:Bind osuPath}" SelectionChanged="ListBox_SelectionChanged" RelativePanel.Below="OsuPathTitle" Margin="0,0,20,0">
+                    <!-- osu paths -->
+                </ListBox>
+            </RelativePanel>
 
-        <muxc:RadioButtons Header="Mode" FontSize="30">
-            <RadioButton Content="Light" x:Name="LightButton" Checked="LightButton_Checked"/>
-            <RadioButton Content="Dark" x:Name="DarkButton" Checked="DarkButton_Checked"/>
-            <RadioButton Content="Use system setting" x:Name="SystemThemeButton" Checked="SystemThemeButton_Checked"/>
-        </muxc:RadioButtons>
-    </StackPanel>
+            <muxc:RadioButtons Header="Mode" FontSize="30">
+                <RadioButton Content="Light" x:Name="LightButton" Checked="LightButton_Checked"/>
+                <RadioButton Content="Dark" x:Name="DarkButton" Checked="DarkButton_Checked"/>
+                <RadioButton Content="Use system setting" x:Name="SystemThemeButton" Checked="SystemThemeButton_Checked"/>
+            </muxc:RadioButtons>
+
+            <TextBlock Text="Default Mods" FontSize="30"/>
+            <CheckBox x:Name="HalfTimeCheckbox" Content="HT" Checked="HalftimeCheckbox_Checked"/>
+            <CheckBox x:Name="DoubleTimeCheckbox" Content="DT" Checked="DoubleTimeCheckbox_Checked"/>
+            <CheckBox x:Name="NightCoreCheckbox" Content="NC" Checked="NightCoreCheckbox_Checked"/>
+
+            <TextBlock Text="Default Hitsounds" FontSize="30"/>
+            <muxc:ToggleSplitButton x:Name="DefaultHitsoundButton" Click="DefaultHitsoundButton_Click">
+                Use skin hitsounds
+                <muxc:ToggleSplitButton.Flyout>
+                    <Flyout x:Name="SkinFlyout"/>
+                </muxc:ToggleSplitButton.Flyout>
+            </muxc:ToggleSplitButton>
+
+            <TextBlock Text="Store settings" FontSize="30"/>
+            <CheckBox x:Name="StoreAllCheckbox" Content="Select all" IsThreeState="True"
+                      Checked="StoreAllCheckbox_Checked"
+                      Unchecked="StoreAllCheckbox_Unchecked"
+                      Indeterminate="StoreAllCheckbox_Indeterminate"/>
+            <CheckBox x:Name="RememberOsuPathCheckbox" Content="Remember osu! paths" Margin="24,0,0,0"/>
+            <CheckBox x:Name="RememberLastPlayStatusCheckbox" Content="Remember last played status" Margin="24,0,0,0"/>
+            <CheckBox x:Name="RememberModSelectionCheckbox" Content="Remeber mods" Margin="24,0,0,0"/>
+
+            <TextBlock Text="Clear All" FontSize="30"/>
+            <ToggleButton x:Name="ClearAllButton" Content="Clear all" Click="ClearAllButton_Click"/>
+        </StackPanel>
+    </ScrollViewer>
 </Page>

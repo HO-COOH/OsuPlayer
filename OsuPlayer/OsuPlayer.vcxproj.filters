@@ -13,6 +13,10 @@
       <Filter>RecentView</Filter>
     </Page>
     <Page Include="SongItem.xaml" />
+    <Page Include="OsuPathItem.xaml" />
+    <Page Include="Player.xaml">
+      <Filter>Player</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -73,6 +77,9 @@
     </Filter>
     <Filter Include="RecentView">
       <UniqueIdentifier>{6f652b7d-d9c4-4e96-b29c-71b083c64502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{a952e0b4-74ee-461b-bd7d-76035fd35751}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

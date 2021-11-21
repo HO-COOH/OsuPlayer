@@ -14,49 +14,48 @@ MyMusicModel::MyMusicModel(winrt::hstring const& folderPath)
 {
 }
 
-std::future<std::vector<MyMusicItem>> MyMusicModel::readSomeAsync(size_t count)
+winrt::Windows::Foundation::IAsyncAction MyMusicModel::setPath(winrt::hstring const& folderPath)
 {
-	return std::async(
-		std::launch::async,
-		[this, count]()
-		{
-			std::wstring_view const pathWstr = m_folder.Path();
-			if (pathWstr.substr(pathWstr.rfind('\\')) == L"songs")
-			{
-				/*the path is inside song folder*/
-				std::vector<MyMusicItem> vec;
-				//for(auto item :std::filesystem::directory_iterator{ std::filesystem::path{ pathWstr } })
-				//{
+	m_folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(folderPath);
+}
 
-				//}
-				auto folders = m_folder.GetFoldersAsync(winrt::Windows::Storage::Search::CommonFolderQuery::DefaultQuery, currentIndex, count).get();
-				for(auto folder: folders)
-				{
-					
-					auto files = folder.GetFilesAsync().get();
-					MyMusicItem item;
-					for(auto file : files)
-					{
-						if (file.FileType() == L"osu")
-						{
-							if (item.songName.empty())
-								item.songName = winrt::to_hstring(OsuFile::ParseTitleFrom(std::string_view{ winrt::to_string(file.Name()) }));
-							if (item.mapper.empty())
-								item.mapper = winrt::to_hstring(OsuFile::ParseCreatorFrom(std::string_view{ winrt::to_string(file.Name()) }));
-							if (item.singer.empty())
-								item.singer = winrt::to_hstring(OsuFile::ParseArtistFrom(std::string_view{ winrt::to_string(file.Name()) }));
-							item.versions.emplace_back(winrt::to_hstring(OsuFile::ParseVersionFrom(std::string_view{ winrt::to_string(file.Name()) })));
-						}
-					}
-					vec.emplace_back(std::move(item));
-				}
-				return vec;
-			}
-			else
+winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collections::IVector<winrt::OsuPlayer::SongItem>> MyMusicModel::readSomeAsync(size_t count)
+{
+	std::wstring const path{ m_folder.Path() };
+	if (path.substr(path.rfind('\\')) == L"\\Songs")
+	{
+		/*the path is inside song folder*/
+		std::vector<winrt::OsuPlayer::SongItem> vec;
+		//for(auto item :std::filesystem::directory_iterator{ std::filesystem::path{ pathWstr } })
+		//{
+
+		//}
+		auto folders = co_await m_folder.GetFoldersAsync(winrt::Windows::Storage::Search::CommonFolderQuery::DefaultQuery, currentIndex, count);
+		for(auto folder: folders)
+		{
+			
+			auto files = co_await folder.GetFilesAsync();
+			winrt::OsuPlayer::SongItem item;
+			for(auto file : files)
 			{
-				return std::vector<MyMusicItem>{};
+				if (file.FileType() == L".osu")
+				{
+					if (item.SongName().empty())
+						item.SongName(winrt::to_hstring(OsuFile::ParseTitleFrom(std::string_view{ winrt::to_string(file.Name()) })));
+					if (item.Mapper().empty())
+						item.Mapper(winrt::to_hstring(OsuFile::ParseCreatorFrom(std::string_view{ winrt::to_string(file.Name()) })));
+					if (item.Singer().empty())
+						item.Singer(winrt::to_hstring(OsuFile::ParseArtistFrom(std::string_view{winrt::to_string(file.Name())})));
+					//item.Vers.emplace_back(winrt::to_hstring(OsuFile::ParseVersionFrom(std::string_view{ winrt::to_string(file.Name()) })));
+				}
 			}
+			vec.emplace_back(std::move(item));
 		}
-	);
+		co_return winrt::single_threaded_vector(std::move(vec));
+	}
+	else
+	{
+		co_return winrt::single_threaded_vector<winrt::OsuPlayer::SongItem>();
+	}
 }
 

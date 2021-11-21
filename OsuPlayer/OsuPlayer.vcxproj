@@ -15,7 +15,7 @@
     <ApplicationType>Windows Store</ApplicationType>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.19041.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.17134.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformMinVersion>10.0.19041.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <ItemGroup Label="ProjectConfigurations">
@@ -116,12 +116,20 @@
     </ClInclude>
     <ClInclude Include="MyMusicModel.h" />
     <ClInclude Include="OsuParser.hpp" />
+    <ClInclude Include="OsuPathItem.h">
+      <DependentUpon>OsuPathItem.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.h">
       <DependentUpon>App.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="MainPage.h">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <DependentUpon>Player.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="Recent.h">
       <DependentUpon>Recent.xaml</DependentUpon>
@@ -145,6 +153,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MyMusic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OsuPathItem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Player.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Recent.xaml">
@@ -178,6 +192,10 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="MyMusicModel.cpp" />
+    <ClCompile Include="OsuPathItem.cpp">
+      <DependentUpon>OsuPathItem.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -188,6 +206,10 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="Player.cpp">
+      <DependentUpon>Player.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="Recent.cpp">
       <DependentUpon>Recent.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -211,6 +233,14 @@
     </Midl>
     <Midl Include="MyMusic.idl">
       <DependentUpon>MyMusic.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="OsuPathItem.idl">
+      <DependentUpon>OsuPathItem.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="Player.idl">
+      <DependentUpon>Player.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="Recent.idl">

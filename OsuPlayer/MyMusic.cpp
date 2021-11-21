@@ -11,8 +11,8 @@ namespace winrt::OsuPlayer::implementation
 {
     MyMusic::MyMusic()
     {
-        InitializeComponent();
-        Settings::s_osuPathChangedHandler([this](winrt::Windows::Foundation::Collections::IVector<winrt::hstring> arg) {});
+        InitializeComponent();            
+        songItems = Settings::s_songItems();
     }
 
 

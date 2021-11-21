@@ -23,7 +23,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="My Music" FontSize="50" Margin="20,40,20,40" Grid.Column="0" Grid.ColumnSpan="2"/>
-            <ComboBox HorizontalContentAlignment="Right" Grid.Column="2" Margin="538,0,0,0" VerticalAlignment="Center" Width="182" Height="Auto" Header="Sorted by:">
+            <ComboBox HorizontalContentAlignment="Right" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,50,0" VerticalAlignment="Center" Width="Auto" Height="Auto" Header="Sorted by:">
                 <ComboBox.Items>
                     <ComboBoxItem Content="Artist"/>
                     <ComboBoxItem Content="BPM"/>
@@ -50,7 +50,15 @@
                 <muxc:NavigationViewItem Content="Artists"/>
             </muxc:NavigationView.MenuItems>
 
-            <Frame x:Name="MusicListFrame" Background="{ThemeResource SystemControlAcrylicWindowBrush}"/>
+            <Frame x:Name="MusicListFrame" Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+                <StackPanel>
+                    <muxc:ProgressBar HorizontalAlignment="Stretch" IsIndeterminate="True"/>
+                    <ListView x:Name="MusicList" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                              ItemsSource="{x:Bind SongItems}">
+                    
+                    </ListView>
+                </StackPanel>
+            </Frame>
 
         </muxc:NavigationView>
     </Grid>

@@ -1,0 +1,8 @@
+namespace OsuPlayer
+{
+    [default_interface]
+    runtimeclass Player : Windows.UI.Xaml.Controls.UserControl
+    {
+        Player();
+    }
+}

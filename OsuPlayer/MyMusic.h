@@ -17,9 +17,11 @@ namespace winrt::OsuPlayer::implementation
         );
 
         void OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const& e);
+
+        winrt::Windows::Foundation::Collections::IObservableVector<SongItem> SongItems() { return songItems; }
     private:
         std::future<void> onAddOsuPath;
-        MyMusicModel model;
+        winrt::Windows::Foundation::Collections::IObservableVector<SongItem> songItems;
     };
 }
 

@@ -1,0 +1,30 @@
+﻿#pragma once
+
+#include "winrt/Windows.UI.Xaml.h"
+#include "winrt/Windows.UI.Xaml.Markup.h"
+#include "winrt/Windows.UI.Xaml.Interop.h"
+#include "winrt/Windows.UI.Xaml.Controls.Primitives.h"
+#include "Player.g.h"
+
+namespace winrt::OsuPlayer::implementation
+{
+    struct Player : PlayerT<Player>
+    {
+        Player();
+        void PlayButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void NextSongButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void PreviousSongButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void HalftimeCheckbox_Checked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void DoubleTimeCheckbox_Checked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void NightCoreCheckbox_Checked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void UseSkinHitsoundCheckbox_Checked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void MuteButton_Click(winrt::Microsoft::UI::Xaml::Controls::SplitButton const& sender, winrt::Microsoft::UI::Xaml::Controls::SplitButtonClickEventArgs const& args);
+    };
+}
+
+namespace winrt::OsuPlayer::factory_implementation
+{
+    struct Player : PlayerT<Player, implementation::Player>
+    {
+    };
+}

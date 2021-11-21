@@ -15,11 +15,21 @@
         </Grid.ColumnDefinitions>-->
         
         <CheckBox x:Name="CheckBox" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-        <TextBlock x:Name="SongNameText" Text="{x:Bind SongName}"/>
-        <TextBlock x:Name="SingerText" Text="{x:Bind Singer}"/>
-        <TextBlock x:Name="MapperText" Text="{x:Bind Mapper}"/>
-        <TextBlock x:Name="LengthText" Text="{x:Bind Length}"/>
-        <ComboBox x:Name="VersionSelectionBox" Width="100"/>
+
+        <Grid HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="24*"/>
+                <ColumnDefinition Width="26*"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="SongNameText" Text="{x:Bind SongName}" Grid.Column="0"/>
+            <TextBlock x:Name="SingerText" Text="{x:Bind Singer}" Margin="5,0,0,0" Grid.Column="1"/>
+            <TextBlock x:Name="MapperText" Text="{x:Bind Mapper}" Margin="10,0,0,0" Grid.Column="2"/>
+            <TextBlock x:Name="LengthText" Text="{x:Bind Length}" Margin="20,0,0,0" Grid.Column="3"/>
+            <ComboBox x:Name="VersionSelectionBox" Width="100" Grid.Column="4" HorizontalAlignment="Right"/>
+        </Grid>
     </StackPanel>
     
 </UserControl>

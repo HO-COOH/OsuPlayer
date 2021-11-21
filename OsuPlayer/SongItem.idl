@@ -4,9 +4,14 @@ namespace OsuPlayer
     runtimeclass SongItem : Windows.UI.Xaml.Controls.UserControl
     {
         SongItem();
-        String SongName{ get;};
-        String Singer{ get;};
-        String Mapper{ get;};
-        String Length{ get;};
+        SongItem(String SongName);
+        SongItem(String SongName, String Singer);
+        SongItem(String SongName, String Singer, Int32 Length);
+        SongItem(String SongName, String Singer, Int32 Length, String Mapper);
+
+        String SongName{ get; set; };
+        String Singer{ get; set; };
+        String Mapper{ get; set; };
+        String Length{ get; };
     }
 }

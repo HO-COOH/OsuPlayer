@@ -1,8 +1,10 @@
+import "SongItem.idl";
 namespace OsuPlayer
 {
     [default_interface]
     runtimeclass MyMusic : Windows.UI.Xaml.Controls.Page
     {
         MyMusic();
+        Windows.Foundation.Collections.IObservableVector<SongItem> SongItems{ get; };
     }
 }

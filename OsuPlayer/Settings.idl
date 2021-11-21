@@ -1,13 +1,17 @@
+import "SongItem.idl";
+import "OsuPathItem.idl";
+
 namespace OsuPlayer
 {
-    delegate void OsuPathChangedHandler(Windows.Foundation.Collections.IObservableVector<String> arg);
+    delegate void OsuPathChangedHandler(Windows.Foundation.Collections.IObservableVector<OsuPathItem> arg);
 
     [default_interface]
     runtimeclass Settings : Windows.UI.Xaml.Controls.Page
     {
         Settings();
 
-        Windows.Foundation.Collections.IObservableVector<String> osuPath{ get; };
+        Windows.Foundation.Collections.IObservableVector<OsuPathItem> osuPath{ get; };
+        static Windows.Foundation.Collections.IObservableVector<SongItem> s_songItems{ get; };
 
         static event OsuPathChangedHandler s_osuPathChangedHandler;
     }
