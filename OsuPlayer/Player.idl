@@ -4,5 +4,7 @@ namespace OsuPlayer
     runtimeclass Player : Windows.UI.Xaml.Controls.UserControl
     {
         Player();
+
+        void Play(Windows.Storage.StorageFile song);
     }
 }

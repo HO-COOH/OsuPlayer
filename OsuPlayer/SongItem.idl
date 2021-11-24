@@ -13,5 +13,6 @@ namespace OsuPlayer
         String Singer{ get; set; };
         String Mapper{ get; set; };
         String Length{ get; };
+        Windows.Storage.StorageFile SongFile{ get; set; };
     }
 }

@@ -38,7 +38,8 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collecti
 			winrt::OsuPlayer::SongItem item;
 			for(auto file : files)
 			{
-				if (file.FileType() == L".osu")
+				auto const fileType = file.FileType();
+				if (fileType == L".osu")
 				{
 					if (item.SongName().empty())
 						item.SongName(winrt::to_hstring(OsuFile::ParseTitleFrom(std::string_view{ winrt::to_string(file.Name()) })));
@@ -47,6 +48,10 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collecti
 					if (item.Singer().empty())
 						item.Singer(winrt::to_hstring(OsuFile::ParseArtistFrom(std::string_view{winrt::to_string(file.Name())})));
 					//item.Vers.emplace_back(winrt::to_hstring(OsuFile::ParseVersionFrom(std::string_view{ winrt::to_string(file.Name()) })));
+				}
+				else if (fileType == L".mp3")
+				{
+					item.SongFile(file);
 				}
 			}
 			vec.emplace_back(std::move(item));

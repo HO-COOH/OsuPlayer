@@ -131,6 +131,7 @@
       <DependentUpon>Player.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="PlayMods.h" />
     <ClInclude Include="Recent.h">
       <DependentUpon>Recent.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -144,6 +145,7 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="ThemeHelper.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

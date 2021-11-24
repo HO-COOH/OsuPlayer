@@ -41,6 +41,10 @@
       <Filter>MyMusicView</Filter>
     </ClInclude>
     <ClInclude Include="OsuParser.hpp" />
+    <ClInclude Include="PlayMods.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

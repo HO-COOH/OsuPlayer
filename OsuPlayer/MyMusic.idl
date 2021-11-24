@@ -6,5 +6,6 @@ namespace OsuPlayer
     {
         MyMusic();
         Windows.Foundation.Collections.IObservableVector<SongItem> SongItems{ get; };
+
     }
 }

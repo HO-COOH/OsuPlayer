@@ -4,6 +4,8 @@
 #include "winrt/Windows.UI.Xaml.Markup.h"
 #include "winrt/Windows.UI.Xaml.Interop.h"
 #include "winrt/Windows.UI.Xaml.Controls.Primitives.h"
+#include "winrt/Windows.Storage.h"
+
 #include "SongItem.g.h"
 #include "MyMusicModel.h"
 
@@ -37,6 +39,12 @@ namespace winrt::OsuPlayer::implementation
             winrt::Windows::Foundation::IInspectable const& sender, 
             winrt::Windows::UI::Xaml::RoutedEventArgs const& e
         );
+        void StackPanel_DoubleTapped(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs const& e);
+
+        winrt::Windows::Storage::StorageFile SongFile() { return songFile; }
+        void SongFile(winrt::Windows::Storage::StorageFile songFile) { this->songFile = songFile; }
+    private:
+        winrt::Windows::Storage::StorageFile songFile{nullptr};
     };
 }
 

@@ -48,7 +48,7 @@
                 <SymbolIcon Symbol="Mute"/>
                 <muxc:SplitButton.Flyout>
                     <Flyout Placement="Top">
-                        <Slider x:Name="VolumeSlider" Orientation="Vertical" Height="100"/>
+                        <Slider x:Name="VolumeSlider" Orientation="Vertical" Height="100" Width="20"/>
                     </Flyout>
                 </muxc:SplitButton.Flyout>
             </muxc:SplitButton>
@@ -63,12 +63,12 @@
 
         <!-- Mods -->
         <StackPanel VerticalAlignment="Center" Margin="15, 0, 0, 0">
-            <CheckBox x:Name="HalfTimeCheckbox" Content="HT" Checked="HalftimeCheckbox_Checked"/>
-            <CheckBox x:Name="DoubleTimeCheckbox" Content="DT" Checked="DoubleTimeCheckbox_Checked"/>
-            <CheckBox x:Name="NightCoreCheckbox" Content="NC" Checked="NightCoreCheckbox_Checked"/>
+            <CheckBox x:Name="HalfTimeCheckbox" Content="HT" Checked="HalftimeCheckbox_Checked" Unchecked="HalfTimeCheckbox_Unchecked"/>
+            <CheckBox x:Name="DoubleTimeCheckbox" Content="DT" Checked="DoubleTimeCheckbox_Checked" Unchecked="DoubleTimeCheckbox_Unchecked"/>
+            <CheckBox x:Name="NightCoreCheckbox" Content="NC" Checked="NightCoreCheckbox_Checked" Unchecked="NightCoreCheckbox_Unchecked"/>
         </StackPanel>
 
-        <CheckBox x:Name="UseSkinHitsoundCheckbox" Content="Use skin hitsound" Checked="UseSkinHitsoundCheckbox_Checked"/>
+        <CheckBox x:Name="UseSkinHitsoundCheckbox" Content="Use skin hitsound" Checked="UseSkinHitsoundCheckbox_Checked" Unchecked="UseSkinHitsoundCheckbox_Unchecked"/>
     </StackPanel>
 
     <!--Volume-->

@@ -66,3 +66,13 @@ void winrt::OsuPlayer::implementation::SongItem::CheckBox_Unchecked(
 {
 
 }
+
+#include "Utils.h"
+void winrt::OsuPlayer::implementation::SongItem::StackPanel_DoubleTapped(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs const& e)
+{
+    if (auto myMusicView = Utils::FindParent<MyMusic>(*this); myMusicView)
+    {
+        
+    }
+
+}
