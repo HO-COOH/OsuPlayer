@@ -11,6 +11,9 @@ namespace winrt::OsuPlayer::implementation
     {
         OsuPathItem();
 
+        //Construct directly with a view model
+        OsuPathItem(OsuPlayer::OsuPathItemViewModel viewModel);
+
         OsuPlayer::OsuPathItemViewModel ViewModel();
 
         void DeleteButton_Click(

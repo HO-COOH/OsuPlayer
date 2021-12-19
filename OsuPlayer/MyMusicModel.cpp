@@ -77,3 +77,20 @@ void MyMusicModel::sortByRank()
 void MyMusicModel::sortByTitle()
 {
 }
+
+winrt::Windows::Foundation::IAsyncAction MyMusicModel::StartIndexing()
+{
+	for (auto const& osuFolder : SettingsModel::m_osuFolders)
+	{
+		auto songFolders = co_await osuFolder.GetFoldersAsync();
+		std::transform(
+			songFolders.begin(),
+			songFolders.end(),
+			std::back_inserter(m_songs),
+			[](winrt::Windows::Storage::StorageFolder const& songFolder)
+			{
+				return SongItemModel{ songFolder };
+			}
+		);
+	}
+}

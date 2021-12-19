@@ -6,12 +6,16 @@
 
 #include <winrt/Windows.UI.Xaml.Controls.h>
 #include "PlayMods.h"
+#include "MyMusicModel.h"
 
 namespace winrt::OsuPlayer::implementation
 {
 	winrt::Windows::Foundation::IAsyncAction SettingsViewModel::AddOsuPath()
 	{
 		co_await m_model.doPickOsuFolder();
+		m_propertyChanged(*this, winrt::Windows::UI::Xaml::Data::PropertyChangedEventArgs{ L"OsuPaths" });
+		co_await MyMusicModel::StartIndexing();
+
 	}
 
 	void SettingsViewModel::ClearAll()
@@ -35,6 +39,7 @@ namespace winrt::OsuPlayer::implementation
 
 	winrt::Windows::Foundation::Collections::IObservableVector<winrt::OsuPlayer::OsuPathItem> SettingsViewModel::OsuPaths()
 	{
+		auto const& osuFolders = m_model.OsuFolders();
 		return winrt::Windows::Foundation::Collections::IObservableVector<winrt::OsuPlayer::OsuPathItem>();
 	}
 

@@ -33,6 +33,7 @@ public:
 	void setSortOrder(SortOrder order);
 	[[nodiscard]] SortOrder getSortOrder() const;
 
+	static winrt::Windows::Foundation::IAsyncAction StartIndexing();
 private:
 
 	[[nodiscard]] bool hasFinishedIndexing() const;
@@ -50,6 +51,9 @@ private:
 	inline static SortOrder m_sortOrder;
 	inline static SortBy m_sortBy;
 	inline static std::vector<std::future<void>> m_indexingFutures;
+
+
+
 	std::vector<winrt::Windows::Storage::StorageFolder> const& m_osuFolders;
 
 	friend class SearchModel;

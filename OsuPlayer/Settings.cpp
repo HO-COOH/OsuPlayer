@@ -64,7 +64,7 @@ namespace winrt::OsuPlayer::implementation
         {
             try
             {
-                m_model.AddOsuPath();
+                co_await m_model.AddOsuPath();
             }
             catch (InvalidOsuFolderException const& e)
             {

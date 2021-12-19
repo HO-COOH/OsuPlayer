@@ -7,6 +7,9 @@ namespace OsuPlayer
     {
         OsuPathItem();
         
+        //Construct directly with a view model
+        OsuPathItem(OsuPathItemViewModel viewModel);
+        
         //The view-model
         OsuPathItemViewModel ViewModel{ get; };
     }

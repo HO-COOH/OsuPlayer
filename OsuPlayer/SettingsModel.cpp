@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "SettingsModel.h"
 #include <winrt/Windows.Storage.Pickers.h>
+#include <winrt/Windows.Foundation.Collections.h>
 #include <algorithm>
+#include "MyMusicModel.h"
 
 InvalidOsuFolderException::InvalidOsuFolderException(winrt::Windows::Storage::StorageFolder folder)
     : m_folder{ folder }
@@ -23,8 +25,10 @@ winrt::Windows::Foundation::IAsyncAction SettingsModel::doPickOsuFolder()
     winrt::Windows::Storage::Pickers::FolderPicker picker;
     picker.ViewMode(winrt::Windows::Storage::Pickers::PickerViewMode::List);
 
-    if (auto folder = co_await picker.PickSingleFolderAsync(); IsFolderValid(folder) && isFolderUnique(folder))
-        m_osuFolders.push_back(folder);
+    if (auto folder = co_await picker.PickSingleFolderAsync(); co_await IsFolderValid(folder) && isFolderUnique(folder))
+    {
+        m_osuFolders.push_back(co_await folder.GetFolderAsync(L"Songs"));
+    }
     else
         throw InvalidOsuFolderException{ folder };
 }
@@ -44,6 +48,8 @@ void SettingsModel::Mod(PlayMods mod)
     m_mod = mod;
 }
 
+
+
 bool SettingsModel::isFolderUnique(winrt::Windows::Storage::StorageFolder const& folder) const
 {
     return std::find_if(
@@ -56,9 +62,15 @@ bool SettingsModel::isFolderUnique(winrt::Windows::Storage::StorageFolder const&
     ) == m_osuFolders.cend();
 }
 
-bool SettingsModel::IsFolderValid(winrt::Windows::Storage::StorageFolder const& folder)
+std::future<bool> SettingsModel::IsFolderValid(winrt::Windows::Storage::StorageFolder const& folder)
 {
-    return folder && folder.GetFolderAsync(L"Skins").get() && folder.GetFolderAsync(L"Songs").get();
+    return std::async(
+        std::launch::async,
+        [folder]
+        {
+            return folder && folder.GetFolderAsync(L"Skins").get() && folder.GetFolderAsync(L"Songs").get();
+        }
+        );
 }
 
 
