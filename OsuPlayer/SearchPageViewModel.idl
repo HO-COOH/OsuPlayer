@@ -1,0 +1,13 @@
+import "SongItem.idl";
+namespace OsuPlayer
+{
+    [bindable]
+    [default_interface]
+    runtimeclass SearchPageViewModel 
+    {
+        SearchPageViewModel();
+        
+        String Keyword{ get; set; };
+        Windows.Foundation.Collections.IObservableVector<SongItem> SearchResult{ get; };
+    }
+}

@@ -1,66 +1,79 @@
 #include "pch.h"
 #include "MyMusicModel.h"
-#include "OsuParser.hpp"
-#include <filesystem>
-#include <winrt/Windows.Storage.Search.h>
+#include <algorithm>
 
-MyMusicModel::MyMusicModel(winrt::Windows::Storage::StorageFolder folder)
-	:m_folder{std::move(folder)}
+MyMusicModel::MyMusicModel() : m_osuFolders{SettingsModel::m_osuFolders}
 {
 }
 
-MyMusicModel::MyMusicModel(winrt::hstring const& folderPath)
-	: MyMusicModel(winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(folderPath).get())
+void MyMusicModel::doSort(SortBy sortMethod)
 {
-}
-
-winrt::Windows::Foundation::IAsyncAction MyMusicModel::setPath(winrt::hstring const& folderPath)
-{
-	m_folder = co_await winrt::Windows::Storage::StorageFolder::GetFolderFromPathAsync(folderPath);
-}
-
-winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collections::IVector<winrt::OsuPlayer::SongItem>> MyMusicModel::readSomeAsync(size_t count)
-{
-	std::wstring const path{ m_folder.Path() };
-	if (path.substr(path.rfind('\\')) == L"\\Songs")
+	m_sortBy = sortMethod;
+	switch (sortMethod)
 	{
-		/*the path is inside song folder*/
-		std::vector<winrt::OsuPlayer::SongItem> vec;
-		//for(auto item :std::filesystem::directory_iterator{ std::filesystem::path{ pathWstr } })
-		//{
+		case MyMusicModel::SortBy::Artist: sortByArtist(); break;
+		case MyMusicModel::SortBy::BPM: sortByBPM(); break;
+		case MyMusicModel::SortBy::Creator: sortByCreator(); break;
+		case MyMusicModel::SortBy::Date: sortByDate(); break;
+		case MyMusicModel::SortBy::Difficulty: sortByDifficulty(); break;
+		case MyMusicModel::SortBy::Length: sortByLength(); break;
+		case MyMusicModel::SortBy::Rank: sortByRank(); break;
+		case MyMusicModel::SortBy::Title: sortByTitle(); break;
+		default: assert(false);	//not supported sorting method
+	}
+}
 
-		//}
-		auto folders = co_await m_folder.GetFoldersAsync(winrt::Windows::Storage::Search::CommonFolderQuery::DefaultQuery, currentIndex, count);
-		for(auto folder: folders)
+void MyMusicModel::setSortOrder(SortOrder order)
+{
+	m_sortOrder = order;
+	doSort(m_sortBy);
+}
+
+MyMusicModel::SortOrder MyMusicModel::getSortOrder() const
+{
+	return m_sortOrder;
+}
+
+bool MyMusicModel::hasFinishedIndexing() const
+{
+	return std::all_of(
+		m_indexingFutures.cbegin(),
+		m_indexingFutures.cend(),
+		[](std::future<void> const& future)
 		{
-			
-			auto files = co_await folder.GetFilesAsync();
-			winrt::OsuPlayer::SongItem item;
-			for(auto file : files)
-			{
-				auto const fileType = file.FileType();
-				if (fileType == L".osu")
-				{
-					if (item.SongName().empty())
-						item.SongName(winrt::to_hstring(OsuFile::ParseTitleFrom(std::string_view{ winrt::to_string(file.Name()) })));
-					if (item.Mapper().empty())
-						item.Mapper(winrt::to_hstring(OsuFile::ParseCreatorFrom(std::string_view{ winrt::to_string(file.Name()) })));
-					if (item.Singer().empty())
-						item.Singer(winrt::to_hstring(OsuFile::ParseArtistFrom(std::string_view{winrt::to_string(file.Name())})));
-					//item.Vers.emplace_back(winrt::to_hstring(OsuFile::ParseVersionFrom(std::string_view{ winrt::to_string(file.Name()) })));
-				}
-				else if (fileType == L".mp3")
-				{
-					item.SongFile(file);
-				}
-			}
-			vec.emplace_back(std::move(item));
+			return future.wait_for(std::chrono::seconds{ 0 }) == std::future_status::ready;
 		}
-		co_return winrt::single_threaded_vector(std::move(vec));
-	}
-	else
-	{
-		co_return winrt::single_threaded_vector<winrt::OsuPlayer::SongItem>();
-	}
+	);
 }
 
+void MyMusicModel::sortByArtist()
+{
+}
+
+void MyMusicModel::sortByBPM()
+{
+}
+
+void MyMusicModel::sortByCreator()
+{
+}
+
+void MyMusicModel::sortByDate()
+{
+}
+
+void MyMusicModel::sortByDifficulty()
+{
+}
+
+void MyMusicModel::sortByLength()
+{
+}
+
+void MyMusicModel::sortByRank()
+{
+}
+
+void MyMusicModel::sortByTitle()
+{
+}

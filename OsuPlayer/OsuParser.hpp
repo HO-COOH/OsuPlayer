@@ -2254,7 +2254,7 @@ public:
     [[nodiscard]] static auto ParseCreatorFrom(std::string_view fileName)
     {
         auto const start = fileName.find(" (");
-        auto const end = fileName.find('[', start);
+        auto const end = fileName.find(") [", start);
 
         if (start != std::string::npos && end != std::string::npos)
         {

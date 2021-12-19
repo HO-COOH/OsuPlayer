@@ -17,7 +17,7 @@
             <RelativePanel>
                 <TextBlock x:Name="OsuPathTitle" Text="osu! Path" FontSize="30"/>
                 <Button x:Name="AddOsuPathButton" Content="+" Click="AddOsuPathButton_Click" RelativePanel.RightOf="OsuPathTitle" Margin="20,7,0,0"/>
-                <ListBox x:Name="OsuPathListBox" Width="300" ItemsSource="{x:Bind osuPath}" SelectionChanged="ListBox_SelectionChanged" RelativePanel.Below="OsuPathTitle" Margin="0,0,20,0">
+                <ListBox x:Name="OsuPathListBox" Width="300" ItemsSource="{x:Bind ViewModel.OsuPaths}" SelectionChanged="ListBox_SelectionChanged" RelativePanel.Below="OsuPathTitle" Margin="0,0,20,0">
                     <!-- osu paths -->
                 </ListBox>
             </RelativePanel>
@@ -29,26 +29,45 @@
             </muxc:RadioButtons>
 
             <TextBlock Text="Default Mods" FontSize="30"/>
-            <CheckBox x:Name="HalfTimeCheckbox" Content="HT" Checked="HalftimeCheckbox_Checked"/>
-            <CheckBox x:Name="DoubleTimeCheckbox" Content="DT" Checked="DoubleTimeCheckbox_Checked"/>
-            <CheckBox x:Name="NightCoreCheckbox" Content="NC" Checked="NightCoreCheckbox_Checked"/>
+            <muxc:RadioButtons>
+                <RadioButton x:Name="HalfTimeButton" Content="HT" Checked="HalfTimeButton_Checked" Unchecked="HalfTimeButton_Unchecked"/>
+                <RadioButton x:Name="DoubleTimeButton" Content="DT" Checked="DoubleTimeButton_Checked" Unchecked="DoubleTimeButton_Unchecked"/>
+                <RadioButton x:Name="NightCoreButton" Content="NC" Checked="NightCoreButton_Checked" Unchecked="NightCoreButton_Unchecked"/>
+            </muxc:RadioButtons>
+
 
             <TextBlock Text="Default Hitsounds" FontSize="30"/>
             <muxc:ToggleSplitButton x:Name="DefaultHitsoundButton" Click="DefaultHitsoundButton_Click">
                 Use skin hitsounds
                 <muxc:ToggleSplitButton.Flyout>
-                    <Flyout x:Name="SkinFlyout"/>
+                    <Flyout x:Name="SkinFlyout" Placement="Bottom">
+                        <ListView x:Name="SkinList" ItemsSource="{x:Bind ViewModel.Skins}">
+                            <!-- osu skins -->
+                        </ListView>
+                    </Flyout>
                 </muxc:ToggleSplitButton.Flyout>
             </muxc:ToggleSplitButton>
 
-            <TextBlock Text="Store settings" FontSize="30"/>
-            <CheckBox x:Name="StoreAllCheckbox" Content="Select all" IsThreeState="True"
-                      Checked="StoreAllCheckbox_Checked"
-                      Unchecked="StoreAllCheckbox_Unchecked"
-                      Indeterminate="StoreAllCheckbox_Indeterminate"/>
-            <CheckBox x:Name="RememberOsuPathCheckbox" Content="Remember osu! paths" Margin="24,0,0,0"/>
-            <CheckBox x:Name="RememberLastPlayStatusCheckbox" Content="Remember last played status" Margin="24,0,0,0"/>
-            <CheckBox x:Name="RememberModSelectionCheckbox" Content="Remeber mods" Margin="24,0,0,0"/>
+            <TextBlock Text="Jumplist" FontSize="30"/>
+            <TextBlock Text="Recent items" FontSize="20"/>
+            <muxc:NumberBox x:Name="RecentSongItemValue"
+                            SpinButtonPlacementMode="Inline"
+                            Header="Number of songs:"
+                            />
+            <muxc:NumberBox x:Name="RecentCollectionItemValue"
+                            SpinButtonPlacementMode="Inline"
+                            Header="Number of collections:"
+                            />
+            <TextBlock Text="Frequent items" FontSize="20"/>
+            <muxc:NumberBox x:Name="FrequentSongItemValue"
+                            SpinButtonPlacementMode="Inline"
+                            Header="Number of songs:"
+                            />
+            <muxc:NumberBox x:Name="FrequentCollectionItemValue"
+                            SpinButtonPlacementMode="Inline"
+                            Header="Number of collections:"
+                            />
+
 
             <TextBlock Text="Clear All" FontSize="30"/>
             <ToggleButton x:Name="ClearAllButton" Content="Clear all" Click="ClearAllButton_Click"/>

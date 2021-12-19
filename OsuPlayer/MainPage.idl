@@ -1,8 +1,12 @@
+import "Player.idl";
+
 namespace OsuPlayer
 {
     [default_interface]
     runtimeclass MainPage : Windows.UI.Xaml.Controls.Page
     {
         MainPage();
+
+        Player player{ get; };
     }
 }

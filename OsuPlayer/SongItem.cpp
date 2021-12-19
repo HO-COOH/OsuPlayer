@@ -14,65 +14,31 @@ namespace winrt::OsuPlayer::implementation
         InitializeComponent();
     }
 
-    SongItem::SongItem(winrt::hstring songName) : SongItem()
+    OsuPlayer::SongItemViewModel SongItem::ViewModel()
     {
-        this->songName = songName;
+        return m_model;
     }
 
-    SongItem::SongItem(winrt::hstring SongName, winrt::hstring Singer) : SongItem()
+    void SongItem::Grid_DoubleTapped(
+        winrt::Windows::Foundation::IInspectable const& sender, 
+        winrt::Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs const& e)
     {
-        this->songName = SongName;
-        this->singer = Singer;
+        m_model.PlayCurrent();
     }
 
-    SongItem::SongItem(winrt::hstring SongName, winrt::hstring Singer, int Length) : SongItem()
+
+    void SongItem::CheckBox_Checked(
+        winrt::Windows::Foundation::IInspectable const& sender, 
+        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        this->songName = SongName;
-        this->singer = Singer;
-        this->length = Length;
+
     }
 
-    SongItem::SongItem(winrt::hstring SongName, winrt::hstring Singer, int Length, winrt::hstring Mapper) : SongItem()
+
+    void SongItem::CheckBox_Unchecked(
+        winrt::Windows::Foundation::IInspectable const& sender, 
+        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        this->songName = SongName;
-        this->singer = Singer;
-        this->mapper = Mapper;
-        this->length = Length;
+
     }
-
-    
-}
-
-
-winrt::hstring winrt::OsuPlayer::implementation::SongItem::Length()
-{
-    auto const secondsTotal = length / 1'000;
-    auto const minutes = secondsTotal / 60;
-    auto const seconds = secondsTotal - 60 * minutes;
-    return winrt::hstring{ std::to_wstring(minutes) + L":" + std::to_wstring(seconds) };
-}
-
-void winrt::OsuPlayer::implementation::SongItem::CheckBox_Checked(
-    winrt::Windows::Foundation::IInspectable const& sender, 
-    winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-{
-
-}
-
-
-void winrt::OsuPlayer::implementation::SongItem::CheckBox_Unchecked(
-    winrt::Windows::Foundation::IInspectable const& sender,
-    winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-{
-
-}
-
-#include "Utils.h"
-void winrt::OsuPlayer::implementation::SongItem::StackPanel_DoubleTapped(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs const& e)
-{
-    if (auto myMusicView = Utils::FindParent<MyMusic>(*this); myMusicView)
-    {
-        
-    }
-
 }

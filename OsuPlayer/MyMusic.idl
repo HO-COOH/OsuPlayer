@@ -1,11 +1,17 @@
 import "SongItem.idl";
+import "MyMusicViewModel.idl";
 namespace OsuPlayer
 {
     [default_interface]
     runtimeclass MyMusic : Windows.UI.Xaml.Controls.Page
     {
         MyMusic();
-        Windows.Foundation.Collections.IObservableVector<SongItem> SongItems{ get; };
 
+        //void OnSongItemEvent(Windows.Storage.StorageFile file);
+        void OnSongItemEvent(SongItem item);
+
+        MyMusicViewModel ViewModel{ get; };
+
+        //Windows.UI.Xaml.Controls.ComboBoxItem SortOrderSelection{ get; };
     }
 }

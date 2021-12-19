@@ -1,3 +1,5 @@
+import "OsuPathItemViewModel.idl";
+
 namespace OsuPlayer
 {
     [default_interface]
@@ -5,8 +7,7 @@ namespace OsuPlayer
     {
         OsuPathItem();
         
-        Boolean IsLoading{ get; };
-        String OsuPathText{ get; set; };
-        String BeatmapCountText{ get; };
+        //The view-model
+        OsuPathItemViewModel ViewModel{ get; };
     }
 }

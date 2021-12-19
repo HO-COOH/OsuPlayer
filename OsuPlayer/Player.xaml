@@ -17,59 +17,77 @@
         </ControlTemplate>
     </UserControl.Resources>
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-        <Image x:Name="CoverImage"></Image>
+    <Grid HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        
+        <Image x:Name="CoverImage" Grid.Column="0" Source="{x:Bind ImageSource}" Width="150" Height="150"></Image>
         
         <!--Player control area-->
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <RelativePanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+            <StackPanel x:Name="PlayerControls" Orientation="Vertical" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" VerticalAlignment="Center" HorizontalAlignment="Stretch">
             
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Button Height="30" Width="50" x:Name="PreviousSongButton" Click="PreviousSongButton_Click">
-                    <SymbolIcon Symbol="Previous"/>
-                </Button>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Button x:Name="PreviousSongButton" Click="PreviousSongButton_Click">
+                        <SymbolIcon Symbol="Previous"/>
+                    </Button>
                 
-                <Button x:Name="PlayButton" Click="PlayButton_Click">
-                    <SymbolIcon x:Name="PlayButtonIcon" Symbol="Play"/>
-                </Button>
+                    <Button x:Name="PlayButton" Click="PlayButton_Click">
+                        <SymbolIcon x:Name="PlayButtonIcon" Symbol="Play"/>
+                    </Button>
 
-                <Button x:Name="NextSongButton" Click="NextSongButton_Click">
-                    <SymbolIcon Symbol="Next"/>
-                </Button>
+                    <Button x:Name="NextSongButton" Click="NextSongButton_Click">
+                        <SymbolIcon Symbol="Next"/>
+                    </Button>
                 
-                <TextBlock x:Name="SongLengthText" Text="0:00" HorizontalAlignment="Right"/>
+                    <TextBlock x:Name="SongLengthText" Text="0:00" HorizontalAlignment="Right"/>
+
+                    <muxc:SplitButton x:Name="MuteButton" Click="MuteButton_Click" HorizontalAlignment="Right">
+                        <SymbolIcon x:Name="MuteButtonSymbol" Symbol="Mute"/>
+                        <muxc:SplitButton.Flyout>
+                            <Flyout Placement="Top">
+                                <Slider x:Name="VolumeSlider" Orientation="Vertical" Height="100" Width="20" ValueChanged="VolumeSlider_ValueChanged"/>
+                            </Flyout>
+                        </muxc:SplitButton.Flyout>
+                    </muxc:SplitButton>
+                </StackPanel>
+
+                <Slider x:Name="PlayingSlider" Minimum="0.0"/>
+
             </StackPanel>
-
-            <Slider x:Name="PlayingSlider"/>
-
-        </StackPanel>
         
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" >
-            <muxc:SplitButton x:Name="MuteButton" Click="MuteButton_Click">
-                <SymbolIcon Symbol="Mute"/>
-                <muxc:SplitButton.Flyout>
-                    <Flyout Placement="Top">
-                        <Slider x:Name="VolumeSlider" Orientation="Vertical" Height="100" Width="20"/>
-                    </Flyout>
-                </muxc:SplitButton.Flyout>
-            </muxc:SplitButton>
+            <!--<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="100,0,0,0" RelativePanel.RightOf="PlayerControls">
+                <muxc:SplitButton x:Name="MuteButton" Click="MuteButton_Click">
+                    <SymbolIcon Symbol="Mute"/>
+                    <muxc:SplitButton.Flyout>
+                        <Flyout Placement="Top">
+                            <Slider x:Name="VolumeSlider" Orientation="Vertical" Height="100" Width="20"/>
+                        </Flyout>
+                    </muxc:SplitButton.Flyout>
+                </muxc:SplitButton>
             
-            <!--<muxc:Expander>
-                <muxc:Expander.Content>
+                --><!--<muxc:Expander>
+                    <muxc:Expander.Content>
                     
-                </muxc:Expander.Content>
-            </muxc:Expander>-->
+                    </muxc:Expander.Content>
+                </muxc:Expander>--><!--
             
-        </StackPanel>
-
+            </StackPanel>-->
+        </RelativePanel>
         <!-- Mods -->
-        <StackPanel VerticalAlignment="Center" Margin="15, 0, 0, 0">
+        <StackPanel VerticalAlignment="Center" Margin="0, 0, 0, 0" Grid.Column="3">
             <CheckBox x:Name="HalfTimeCheckbox" Content="HT" Checked="HalftimeCheckbox_Checked" Unchecked="HalfTimeCheckbox_Unchecked"/>
             <CheckBox x:Name="DoubleTimeCheckbox" Content="DT" Checked="DoubleTimeCheckbox_Checked" Unchecked="DoubleTimeCheckbox_Unchecked"/>
             <CheckBox x:Name="NightCoreCheckbox" Content="NC" Checked="NightCoreCheckbox_Checked" Unchecked="NightCoreCheckbox_Unchecked"/>
         </StackPanel>
 
-        <CheckBox x:Name="UseSkinHitsoundCheckbox" Content="Use skin hitsound" Checked="UseSkinHitsoundCheckbox_Checked" Unchecked="UseSkinHitsoundCheckbox_Unchecked"/>
-    </StackPanel>
+        <CheckBox x:Name="UseSkinHitsoundCheckbox" Content="Use skin hitsound" Checked="UseSkinHitsoundCheckbox_Checked" Unchecked="UseSkinHitsoundCheckbox_Unchecked" Grid.Column="4"/>
+    </Grid>
 
     <!--Volume-->
 

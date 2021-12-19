@@ -1,10 +1,9 @@
 ﻿#pragma once
 
 #include "winrt/Windows.UI.Xaml.h"
-#include "winrt/Windows.UI.Xaml.Markup.h"
-#include "winrt/Windows.UI.Xaml.Interop.h"
-#include "winrt/Windows.UI.Xaml.Controls.Primitives.h"
+#include <winrt/Windows.Foundation.h>
 #include "OsuPathItem.g.h"
+#include "OsuPathItemViewModel.g.h"
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -12,19 +11,14 @@ namespace winrt::OsuPlayer::implementation
     {
         OsuPathItem();
 
-        bool IsLoading();
-
-        winrt::hstring OsuPathText();
-        void OsuPathText(winrt::hstring const& value);
-
-        winrt::hstring BeatmapCountText();
+        OsuPlayer::OsuPathItemViewModel ViewModel();
 
         void DeleteButton_Click(
             winrt::Windows::Foundation::IInspectable const& sender,
             winrt::Windows::UI::Xaml::RoutedEventArgs const& e
         );
     private:
-        winrt::hstring m_osuPathText;
+        OsuPlayer::OsuPathItemViewModel m_model;
     };
 }
 

@@ -14,27 +14,10 @@ namespace winrt::OsuPlayer::implementation
         InitializeComponent();
     }
 
-    bool OsuPathItem::IsLoading()
+    OsuPlayer::OsuPathItemViewModel OsuPathItem::ViewModel()
     {
-        return true;
+        return m_model;
     }
-
-    winrt::hstring OsuPathItem::OsuPathText()
-    {
-        return m_osuPathText;
-    }
-
-    void OsuPathItem::OsuPathText(winrt::hstring const& value)
-    {
-        m_osuPathText = value;
-    }
-
-    winrt::hstring OsuPathItem::BeatmapCountText()
-    {
-        return L"12,345 beatmaps";
-    }
-
-
 }
 
 

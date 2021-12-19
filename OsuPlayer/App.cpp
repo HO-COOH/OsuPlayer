@@ -2,7 +2,7 @@
 
 #include "App.h"
 #include "MainPage.h"
-
+//https://docs.microsoft.com/en-us/uwp/api/windows.ui.startscreen.jumplistitem?view=winrt-22000 for taskbar jump list
 using namespace winrt;
 using namespace Windows::ApplicationModel;
 using namespace Windows::ApplicationModel::Activation;

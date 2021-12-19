@@ -1,0 +1,9 @@
+namespace OsuPlayer
+{
+    [bindable]
+    [default_interface]
+    runtimeclass MainViewModel 
+    {
+        MainViewModel();
+    }
+}

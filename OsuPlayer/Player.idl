@@ -1,3 +1,5 @@
+import "SongItem.idl";
+
 namespace OsuPlayer
 {
     [default_interface]
@@ -5,6 +7,9 @@ namespace OsuPlayer
     {
         Player();
 
-        void Play(Windows.Storage.StorageFile song);
+        void Play(SongItem item);
+        //void Play2(Windows.Storage.StorageFile song);
+        
+        Windows.UI.Xaml.Media.ImageSource ImageSource{ get; };
     }
 }

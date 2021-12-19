@@ -6,30 +6,32 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    HorizontalAlignment="Stretch">
 
-    <StackPanel Orientation="Horizontal" Height="30" IsDoubleTapEnabled="True" DoubleTapped="StackPanel_DoubleTapped">
-        <!--<Grid.ColumnDefinitions>
+    <Grid Height="30" IsDoubleTapEnabled="True" DoubleTapped="Grid_DoubleTapped" HorizontalAlignment="Stretch" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>-->
-        
-        <CheckBox x:Name="CheckBox" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+        </Grid.ColumnDefinitions>
 
-        <Grid HorizontalAlignment="Stretch">
+        <CheckBox x:Name="CheckBox" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Grid.Column="0"/>
+
+        <Grid Grid.Column="1" Height="30" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50*"/>
-                <ColumnDefinition Width="24*"/>
-                <ColumnDefinition Width="26*"/>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="0"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="SongNameText" Text="{x:Bind SongName}" Grid.Column="0"/>
-            <TextBlock x:Name="SingerText" Text="{x:Bind Singer}" Margin="5,0,0,0" Grid.Column="1"/>
-            <TextBlock x:Name="MapperText" Text="{x:Bind Mapper}" Margin="10,0,0,0" Grid.Column="2"/>
-            <TextBlock x:Name="LengthText" Text="{x:Bind Length}" Margin="20,0,0,0" Grid.Column="3"/>
-            <ComboBox x:Name="VersionSelectionBox" Width="100" Grid.Column="4" HorizontalAlignment="Right"/>
+            <TextBlock x:Name="SongNameText" VerticalAlignment="Stretch" HorizontalAlignment="Left" Text="{x:Bind ViewModel.SongName}" TextTrimming="CharacterEllipsis" Grid.Column="1" />
+            <TextBlock x:Name="SingerText" Text="{x:Bind ViewModel.Singer}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Grid.Column="2"/>
+            <TextBlock x:Name="MapperText" Text="{x:Bind ViewModel.Mapper}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Grid.Column="3"/>
+            <TextBlock x:Name="LengthText" Text="{x:Bind ViewModel.Length}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Grid.Column="4" />
+            <ComboBox x:Name="VersionSelectionBox" ItemsSource="{x:Bind ViewModel.Versions}" SelectedItem="{x:Bind ViewModel.Versions[0]}" Grid.Column="5" Margin="10,0,0,0"/>
         </Grid>
-    </StackPanel>
-    
+    </Grid>
+
 </UserControl>

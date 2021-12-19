@@ -1,48 +1,57 @@
-/*****************************************************************//**
- * \file   MyMusicModel.h
- * \brief  
- * 
- * \author Peter
- * \date   November 2021
- *********************************************************************/
-
 #pragma once
+
 #include <vector>
 #include <winrt/Windows.Storage.h>
-#include <winrt/Windows.Foundation.h>
-//#include <winrt/Windows.Foundation.Collections.h>
-#include <array>
+#include "SongItemModel.h"
 #include <future>
-#include <SongItem.g.h>
+#include "SettingsModel.h"
 
-struct MyMusicItem
-{
-	winrt::hstring songName;
-	winrt::hstring singer;
-	winrt::hstring mapper;
-	std::vector<winrt::hstring> versions;
-};
 
 class MyMusicModel
 {
 public:
-	MyMusicModel() = default;
-	MyMusicModel(winrt::Windows::Storage::StorageFolder folder);
-	MyMusicModel(winrt::hstring const& folderPath);
+	enum class SortBy
+	{
+        Artist = 0,
+        BPM = 1,
+        Creator = 2,
+        Date = 3,
+        Difficulty = 4,
+        Length = 5,
+        Rank = 6,
+        Title = 7,
+	};
+	enum class SortOrder
+	{
+		Ascend,
+		Descend
+	};
+	MyMusicModel();
 
-	winrt::Windows::Foundation::IAsyncAction setPath(winrt::hstring const& folderPath);
+	void doSort(SortBy sortMethod);
 
-	template<size_t Count>
-	std::future<std::array<MyMusicItem, Count>> readSomeAsync();
+	void setSortOrder(SortOrder order);
+	[[nodiscard]] SortOrder getSortOrder() const;
 
-	winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Foundation::Collections::IVector<winrt::OsuPlayer::SongItem>> readSomeAsync(size_t count);
 private:
-	winrt::Windows::Storage::StorageFolder m_folder{ nullptr };
-	size_t currentIndex{};
+
+	[[nodiscard]] bool hasFinishedIndexing() const;
+
+	void sortByArtist();
+	void sortByBPM();
+	void sortByCreator();
+	void sortByDate();
+	void sortByDifficulty();
+	void sortByLength();
+	void sortByRank();
+	void sortByTitle();
+
+	inline static std::vector<SongItemModel> m_songs;
+	inline static SortOrder m_sortOrder;
+	inline static SortBy m_sortBy;
+	inline static std::vector<std::future<void>> m_indexingFutures;
+	std::vector<winrt::Windows::Storage::StorageFolder> const& m_osuFolders;
+
+	friend class SearchModel;
 };
 
-template<size_t Count>
-inline std::future<std::array<MyMusicItem, Count>> MyMusicModel::readSomeAsync()
-{
-	return std::array<MyMusicItem, Count>();
-}

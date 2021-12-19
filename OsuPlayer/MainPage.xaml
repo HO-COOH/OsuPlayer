@@ -36,10 +36,19 @@
                         <muxc:InfoBadge x:Name="MyMusicInfoBadge" Value="1"/>
                     </muxc:NavigationViewItem.InfoBadge>
                 </muxc:NavigationViewItem>
-                <muxc:NavigationViewItem Icon="Clock" Content="Recent"/>
+
+                <muxc:NavigationViewItem Icon="Clock" Content="Recent">
+                    <muxc:NavigationViewItem.InfoBadge>
+                        <muxc:InfoBadge x:Name="RecentInfoBadge" Value="2"/>
+                    </muxc:NavigationViewItem.InfoBadge>
+                </muxc:NavigationViewItem>
             
                 <muxc:NavigationViewItemSeparator/>
-                <muxc:NavigationViewItem Icon="List" Content="Collections"/>
+                <muxc:NavigationViewItem Icon="List" Content="Collections">
+                    <muxc:NavigationViewItem.InfoBadge>
+                        <muxc:InfoBadge x:Name="CollectionsInfoBadge" Value="3"/>
+                    </muxc:NavigationViewItem.InfoBadge>
+                </muxc:NavigationViewItem>
 
             </muxc:NavigationView.MenuItems>
 
@@ -47,7 +56,7 @@
         </muxc:NavigationView>
 
         <Frame x:Name="PlayerFrame" Grid.Row="1" Background="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}">
-            <local:Player></local:Player>
+            <local:Player x:Name="SongPlayer"></local:Player>
         </Frame>
     </Grid>
 

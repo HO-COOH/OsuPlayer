@@ -1,8 +1,6 @@
 ﻿#pragma once
 #include "MyMusic.g.h"
-#include "Settings.g.h"
-#include <future>
-#include "MyMusicModel.h"
+#include "MyMusicViewModel.g.h"
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -18,10 +16,16 @@ namespace winrt::OsuPlayer::implementation
 
         void OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const& e);
 
-        winrt::Windows::Foundation::Collections::IObservableVector<SongItem> SongItems() { return songItems; }
+        void OnSongItemEvent(SongItem item);
+
+        
+
+        void OrderToggleButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void SortOrderSelectionCombobox_SelectionChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::Controls::SelectionChangedEventArgs const& e);
+        
+        OsuPlayer::MyMusicViewModel ViewModel();
     private:
-        std::future<void> onAddOsuPath;
-        winrt::Windows::Foundation::Collections::IObservableVector<SongItem> songItems;
+        OsuPlayer::MyMusicViewModel m_model;
     };
 }
 

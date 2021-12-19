@@ -1,18 +1,13 @@
+import "SongItemViewModel.idl";
+
 namespace OsuPlayer
 {
     [default_interface]
     runtimeclass SongItem : Windows.UI.Xaml.Controls.UserControl
     {
         SongItem();
-        SongItem(String SongName);
-        SongItem(String SongName, String Singer);
-        SongItem(String SongName, String Singer, Int32 Length);
-        SongItem(String SongName, String Singer, Int32 Length, String Mapper);
-
-        String SongName{ get; set; };
-        String Singer{ get; set; };
-        String Mapper{ get; set; };
-        String Length{ get; };
-        Windows.Storage.StorageFile SongFile{ get; set; };
+        
+        //The view-model
+        SongItemViewModel ViewModel{ get; };
     }
 }

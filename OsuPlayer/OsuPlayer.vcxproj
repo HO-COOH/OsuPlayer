@@ -110,14 +110,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BackgroundAcrylic.h" />
+    <ClInclude Include="DataLoader.h" />
+    <ClInclude Include="MainViewModel.h">
+      <DependentUpon>MainViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="MyMusic.h">
       <DependentUpon>MyMusic.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="MyMusicModel.h" />
+    <ClInclude Include="MyMusicViewModel.h">
+      <DependentUpon>MyMusicViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="OsuParser.hpp" />
     <ClInclude Include="OsuPathItem.h">
       <DependentUpon>OsuPathItem.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="OsuPathItemViewModel.h">
+      <DependentUpon>OsuPathItemViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="pch.h" />
@@ -136,12 +149,31 @@
       <DependentUpon>Recent.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="SearchModel.h" />
+    <ClInclude Include="SearchPage.h">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="SearchPageViewModel.h">
+      <DependentUpon>SearchPageViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="Settings.h">
       <DependentUpon>Settings.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="SettingsModel.h" />
+    <ClInclude Include="SettingsViewModel.h">
+      <DependentUpon>SettingsViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="SongItem.h">
       <DependentUpon>SongItem.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="SongItemModel.h" />
+    <ClInclude Include="SongItemViewModel.h">
+      <DependentUpon>SongItemViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="ThemeHelper.h" />
@@ -164,6 +196,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Recent.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SearchPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Settings.xaml">
@@ -189,13 +224,26 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackgroundAcrylic.cpp" />
+    <ClCompile Include="DataLoader.cpp" />
+    <ClCompile Include="MainViewModel.cpp">
+      <DependentUpon>MainViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="MyMusic.cpp">
       <DependentUpon>MyMusic.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="MyMusicModel.cpp" />
+    <ClCompile Include="MyMusicViewModel.cpp">
+      <DependentUpon>MyMusicViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="OsuPathItem.cpp">
       <DependentUpon>OsuPathItem.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="OsuPathItemViewModel.cpp">
+      <DependentUpon>OsuPathItemViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="pch.cpp">
@@ -216,12 +264,31 @@
       <DependentUpon>Recent.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="SearchModel.cpp" />
+    <ClCompile Include="SearchPage.cpp">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="SearchPageViewModel.cpp">
+      <DependentUpon>SearchPageViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="Settings.cpp">
       <DependentUpon>Settings.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="SettingsModel.cpp" />
+    <ClCompile Include="SettingsViewModel.cpp">
+      <DependentUpon>SettingsViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="SongItem.cpp">
       <DependentUpon>SongItem.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="SongItemModel.cpp" />
+    <ClCompile Include="SongItemViewModel.cpp">
+      <DependentUpon>SongItemViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="ThemeHelper.cpp" />
@@ -233,13 +300,22 @@
     <Midl Include="MainPage.idl">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Midl>
+    <Midl Include="MainViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="MyMusic.idl">
       <DependentUpon>MyMusic.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
+    <Midl Include="MyMusicViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="OsuPathItem.idl">
       <DependentUpon>OsuPathItem.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="OsuPathItemViewModel.idl">
+      <SubType>Designer</SubType>
     </Midl>
     <Midl Include="Player.idl">
       <DependentUpon>Player.xaml</DependentUpon>
@@ -249,21 +325,32 @@
       <DependentUpon>Recent.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
+    <Midl Include="SearchPage.idl">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="SearchPageViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="Settings.idl">
       <DependentUpon>Settings.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="SettingsViewModel.idl">
+      <SubType>Designer</SubType>
     </Midl>
     <Midl Include="SongItem.idl">
       <DependentUpon>SongItem.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
+    <Midl Include="SongItemViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="PropertySheet.props" />
-    <Text Include="readme.txt">
-      <DeploymentContent>false</DeploymentContent>
-    </Text>
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

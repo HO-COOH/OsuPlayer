@@ -4,47 +4,110 @@
     <ApplicationDefinition Include="App.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="MainPage.xaml" />
     <Page Include="MyMusic.xaml">
-      <Filter>MyMusicView</Filter>
+      <Filter>Views</Filter>
     </Page>
-    <Page Include="Settings.xaml" />
-    <Page Include="Recent.xaml">
-      <Filter>RecentView</Filter>
-    </Page>
-    <Page Include="SongItem.xaml" />
-    <Page Include="OsuPathItem.xaml" />
     <Page Include="Player.xaml">
-      <Filter>Player</Filter>
+      <Filter>Views</Filter>
+    </Page>
+    <Page Include="Recent.xaml">
+      <Filter>Views</Filter>
+    </Page>
+    <Page Include="Settings.xaml">
+      <Filter>Views</Filter>
+    </Page>
+    <Page Include="OsuPathItem.xaml">
+      <Filter>Views</Filter>
+    </Page>
+    <Page Include="SearchPage.xaml">
+      <Filter>Views</Filter>
+    </Page>
+    <Page Include="SongItem.xaml">
+      <Filter>Views</Filter>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <Filter>Views</Filter>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
     <Midl Include="MainPage.idl" />
+    <Midl Include="SettingsViewModel.idl">
+      <Filter>ViewModels</Filter>
+    </Midl>
+    <Midl Include="OsuPathItemViewModel.idl">
+      <Filter>ViewModels</Filter>
+    </Midl>
+    <Midl Include="SongItemViewModel.idl">
+      <Filter>ViewModels</Filter>
+    </Midl>
+    <Midl Include="MainViewModel.idl">
+      <Filter>ViewModels</Filter>
+    </Midl>
+    <Midl Include="MyMusicViewModel.idl">
+      <Filter>ViewModels</Filter>
+    </Midl>
+    <Midl Include="SearchPageViewModel.idl">
+      <Filter>ViewModels</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="MainPage.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="BackgroundAcrylic.cpp" />
-    <ClCompile Include="ThemeHelper.cpp" />
+    <ClCompile Include="SettingsModel.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundAcrylic.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="ThemeHelper.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="SongItemModel.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
     <ClCompile Include="MyMusicModel.cpp">
-      <Filter>MyMusicView</Filter>
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="DataLoader.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="SearchModel.cpp">
+      <Filter>Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="BackgroundAcrylic.h" />
-    <ClInclude Include="ThemeHelper.h" />
-    <ClInclude Include="MyMusicModel.h">
-      <Filter>MyMusicView</Filter>
-    </ClInclude>
     <ClInclude Include="OsuParser.hpp" />
     <ClInclude Include="PlayMods.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="Utils.h" />
+    <ClInclude Include="SettingsModel.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundAcrylic.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="ThemeHelper.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SongItemModel.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="MyMusicModel.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="DataLoader.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="SearchModel.h">
+      <Filter>Models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -76,21 +139,25 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyMusicView">
-      <UniqueIdentifier>{72bcb4cf-3c3e-46da-a52d-9344c09ddaae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="RecentView">
-      <UniqueIdentifier>{6f652b7d-d9c4-4e96-b29c-71b083c64502}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Player">
       <UniqueIdentifier>{a952e0b4-74ee-461b-bd7d-76035fd35751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views">
+      <UniqueIdentifier>{1945be92-64f7-42c8-b390-086e09db1657}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{097c9c9f-7aa6-4af7-afd1-c79db9a4a54c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModels">
+      <UniqueIdentifier>{263bdbed-569b-498f-8459-3d0c15ca40be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{40870ad5-96a8-480d-bc1f-80db807b6b64}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="readme.txt" />
+    <None Include="README.md" />
   </ItemGroup>
 </Project>

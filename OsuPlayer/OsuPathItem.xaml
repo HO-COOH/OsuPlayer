@@ -21,11 +21,11 @@
         </Grid.ColumnDefinitions>
 
         <muxc:ProgressRing x:Name="IsLoadingRing" Grid.RowSpan="2" 
-                           Grid.Column="0" IsActive="{x:Bind IsLoading}"
+                           Grid.Column="0" IsActive="True"
                            Visibility="Visible"/>
-        <TextBlock x:Name="OsuPathText1" Text="{x:Bind OsuPathText, Mode=OneWay}" 
+        <TextBlock x:Name="OsuPathText1" Text="{x:Bind ViewModel.Path, Mode=OneWay}" 
                    Grid.Row="0" Grid.Column="1"/>
-        <TextBlock x:Name="BeatmapCountText1" Text="{x:Bind BeatmapCountText, Mode=OneWay}"
+        <TextBlock x:Name="BeatmapCountText1" Text="{x:Bind ViewModel.BeatmapCount, Mode=OneWay}"
                    Grid.Row="1" Grid.Column="1"/>
         <Button x:Name="DeleteButton" Grid.RowSpan="2" Grid.Column="2" HorizontalAlignment="Right"
                 Click="DeleteButton_Click">

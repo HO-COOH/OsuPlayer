@@ -13,7 +13,7 @@ public:
 	static void UpdateTitlebarColors();
 private:
 	constexpr inline static auto SelectedAppThemeKey = L"SelectedAppTheme";
-	static inline winrt::Windows::UI::Xaml::Window CurrentApplicationWindow = winrt::Windows::UI::Xaml::Window::Current();
+	static inline winrt::Windows::UI::Xaml::Window CurrentApplicationWindow{nullptr};
 	static inline winrt::Windows::UI::ViewManagement::UISettings uiSettings;
 	static inline winrt::event_revoker<winrt::Windows::UI::ViewManagement::IUISettings3> uiSettingsEventRevoker;
 

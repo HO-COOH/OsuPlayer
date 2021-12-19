@@ -1,0 +1,22 @@
+﻿<Page
+    x:Class="OsuPlayer.SearchPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OsuPlayer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    >
+
+    <Grid>
+        <TextBlock x:Name="SearchTitle" FontSize="30" Text="{x:Bind Keyword}">
+        
+        </TextBlock>
+
+        <!--No result texts-->
+        <StackPanel HorizontalAlignment="Center" Margin="0,100,0,0" Visibility="Visible">
+            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;" FontSize="50"/>
+            <TextBlock Text="Check your spelling, or search for somgthing else" FontSize="40" Margin="0,20,0,0"/>
+        </StackPanel>
+    </Grid>
+</Page>

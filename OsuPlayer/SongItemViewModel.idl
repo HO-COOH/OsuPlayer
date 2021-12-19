@@ -1,0 +1,19 @@
+namespace OsuPlayer
+{
+    [bindable]
+    [default_interface]
+    runtimeclass SongItemViewModel : Windows.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        SongItemViewModel();
+
+        String SongName{ get; };
+        String Singer{ get; };
+        String Mapper{ get; };
+        String Length{ get; };
+        Windows.Media.Core.MediaSource SongFile{ get; };
+        Windows.UI.Xaml.Media.Imaging.BitmapImage Image{ get; };
+        Windows.Foundation.Collections.IObservableVector<String> Versions{ get; };
+
+        void PlayCurrent();
+    }
+}

@@ -165,7 +165,42 @@ void winrt::OsuPlayer::implementation::Player::UseSkinHitsoundCheckbox_Unchecked
     useSkinHitsound = false;
 }
 
+#include <Utils.h>
+#include <winrt/Windows.UI.Core.h>
 void winrt::OsuPlayer::implementation::Player::Play(winrt::Windows::Storage::StorageFile song)
 {
     songPlayer.Play(song);
+    auto const length = songPlayer.getLength();
+    SongLengthText().Text(Utils::GetDurationString(Utils::GetDuration(length)));
+
+    PlayingSlider().Maximum(length);
+    songPlayer.player.PlaybackSession().PositionChanged(
+        [this](auto session, auto const& _)->winrt::Windows::Foundation::IAsyncAction
+        {
+            //auto const percentage = (static_cast<long double>(session.Position().count()) / session.NaturalDuration().count()) * 100.0;
+            co_await winrt::resume_foreground(PlayingSlider().Dispatcher());
+            PlayingSlider().Value(session.Position().count());
+        }
+    );
+}
+
+void winrt::OsuPlayer::implementation::Player::Play(SongItem item)
+{
+    //Play(item.ViewModel().SongFile());
+    songPlayer.player.Source(item.ViewModel().SongFile());
+    songPlayer.player.Play();
+    //CoverImage().Source(item.Image());
+}
+
+
+void winrt::OsuPlayer::implementation::Player::VolumeSlider_ValueChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e)
+{
+    if (e.NewValue() <= 0)
+    {
+        MuteButtonSymbol().Symbol(winrt::Windows::UI::Xaml::Controls::Symbol::Mute);
+        return;
+    }
+    
+
+    MuteButtonSymbol().Symbol(winrt::Windows::UI::Xaml::Controls::Symbol::Volume);
 }

@@ -1,0 +1,10 @@
+namespace OsuPlayer
+{
+    [default_interface]
+    runtimeclass SearchPage : Windows.UI.Xaml.Controls.Page
+    {
+        SearchPage();
+
+        String Keyword{ get; };
+    }
+}
