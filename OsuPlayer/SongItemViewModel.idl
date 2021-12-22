@@ -6,12 +6,17 @@ namespace OsuPlayer
     {
         SongItemViewModel();
 
-        String SongName{ get; };
-        String Singer{ get; };
-        String Mapper{ get; };
-        String Length{ get; };
-        Windows.Media.Core.MediaSource SongFile{ get; };
-        Windows.UI.Xaml.Media.Imaging.BitmapImage Image{ get; };
+
+        String SongName{ get; set; };
+        String Singer{ get; set; };
+        String Mapper{ get; set; };
+        Int32 Length{ get; set; };
+        String LengthString{ get; };
+
+        Int32 Index{ get; set; };
+
+        //Windows.Media.Core.MediaSource SongFile{ get; };
+        //Windows.UI.Xaml.Media.Imaging.BitmapImage Image{ get; };
         Windows.Foundation.Collections.IObservableVector<String> Versions{ get; };
 
         void PlayCurrent();

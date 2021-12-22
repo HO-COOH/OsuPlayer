@@ -6,6 +6,8 @@ namespace OsuPlayer
     runtimeclass SongItem : Windows.UI.Xaml.Controls.UserControl
     {
         SongItem();
+
+        SongItem(SongItemViewModel viewModel);
         
         //The view-model
         SongItemViewModel ViewModel{ get; };

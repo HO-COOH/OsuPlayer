@@ -77,6 +77,9 @@
     <ClCompile Include="SearchModel.cpp">
       <Filter>Models</Filter>
     </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -107,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="SearchModel.h">
       <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

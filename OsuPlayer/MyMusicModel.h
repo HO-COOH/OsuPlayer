@@ -5,6 +5,7 @@
 #include "SongItemModel.h"
 #include <future>
 #include "SettingsModel.h"
+#include <functional>
 
 
 class MyMusicModel
@@ -34,6 +35,8 @@ public:
 	[[nodiscard]] SortOrder getSortOrder() const;
 
 	static winrt::Windows::Foundation::IAsyncAction StartIndexing();
+
+	static void OnIndexingFinished(std::function<void(std::vector<SongItemModel> const&)> handler);
 private:
 
 	[[nodiscard]] bool hasFinishedIndexing() const;
@@ -52,7 +55,7 @@ private:
 	inline static SortBy m_sortBy;
 	inline static std::vector<std::future<void>> m_indexingFutures;
 
-
+	inline static std::vector<std::function<void(std::vector<SongItemModel> const&)>> s_handlers;
 
 	std::vector<winrt::Windows::Storage::StorageFolder> const& m_osuFolders;
 

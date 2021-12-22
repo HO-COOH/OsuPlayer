@@ -4,6 +4,8 @@
 #include <winrt/Windows.UI.Xaml.Media.h>
 #include <utility>
 #include <chrono>
+#include <winrt/Windows.ApplicationModel.Core.h>
+#include <Generated Files/winrt/Windows.UI.Core.h>
 
 namespace Utils
 {
@@ -60,6 +62,11 @@ namespace Utils
 			winrt::to_hstring(min) + 
 			(sec <10 ? L":0" : L":") +
 			winrt::to_hstring(sec);
+	}
+
+	inline winrt::Windows::Foundation::IAsyncAction ReturnToUIThread()
+	{
+		co_await winrt::resume_foreground(winrt::Windows::ApplicationModel::Core::CoreApplication::MainView().CoreWindow().Dispatcher());
 	}
 	
 	/**

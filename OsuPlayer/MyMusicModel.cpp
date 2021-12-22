@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "MyMusicModel.h"
 #include <algorithm>
+#include "Utils.h"
 
 MyMusicModel::MyMusicModel() : m_osuFolders{SettingsModel::m_osuFolders}
 {
@@ -83,14 +84,27 @@ winrt::Windows::Foundation::IAsyncAction MyMusicModel::StartIndexing()
 	for (auto const& osuFolder : SettingsModel::m_osuFolders)
 	{
 		auto songFolders = co_await osuFolder.GetFoldersAsync();
-		std::transform(
-			songFolders.begin(),
-			songFolders.end(),
-			std::back_inserter(m_songs),
-			[](winrt::Windows::Storage::StorageFolder const& songFolder)
-			{
-				return SongItemModel{ songFolder };
-			}
-		);
+		co_await std::async(std::launch::async, [&songFolders] {
+			std::transform(
+				songFolders.begin(),
+				songFolders.end(),
+				std::back_inserter(m_songs),
+				[](winrt::Windows::Storage::StorageFolder const& songFolder)
+				{
+					return SongItemModel{ songFolder };
+				}
+			);
+		});
 	}
+
+	for (auto& handler : s_handlers)
+	{
+		co_await winrt::resume_foreground(winrt::Windows::ApplicationModel::Core::CoreApplication::MainView().CoreWindow().Dispatcher());
+		handler(m_songs);
+	}
+}
+
+void MyMusicModel::OnIndexingFinished(std::function<void(std::vector<SongItemModel>const&)> handler)
+{
+	s_handlers.emplace_back(std::move(handler));
 }

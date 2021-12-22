@@ -51,6 +51,7 @@ winrt::Windows::Media::Core::MediaSource SongItemModel::Source() const
 	return m_songSource;
 }
 
+#include "Log.h"
 void SongItemModel::handleOsuFile(winrt::Windows::Storage::StorageFile && file)
 {
 	//Basic informations
@@ -63,6 +64,8 @@ void SongItemModel::handleOsuFile(winrt::Windows::Storage::StorageFile && file)
 
 	//versions
 	m_versionFiles.emplace_back(std::move(file));
+
+	//OutputDebugString((m_songName + L" " + m_singer + L" " + m_mapper + L'\n').c_str());
 }
 
 void SongItemModel::handleSongFile(winrt::Windows::Storage::StorageFile&& file)

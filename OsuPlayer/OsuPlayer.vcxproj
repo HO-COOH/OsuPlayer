@@ -111,6 +111,7 @@
   <ItemGroup>
     <ClInclude Include="BackgroundAcrylic.h" />
     <ClInclude Include="DataLoader.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="MainViewModel.h">
       <DependentUpon>MainViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -225,6 +226,7 @@
   <ItemGroup>
     <ClCompile Include="BackgroundAcrylic.cpp" />
     <ClCompile Include="DataLoader.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="MainViewModel.cpp">
       <DependentUpon>MainViewModel.idl</DependentUpon>
       <SubType>Code</SubType>

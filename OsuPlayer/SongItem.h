@@ -8,6 +8,8 @@ namespace winrt::OsuPlayer::implementation
     {
         SongItem();
 
+        SongItem(OsuPlayer::SongItemViewModel viewModel);
+
         OsuPlayer::SongItemViewModel ViewModel();
 
         //Methods

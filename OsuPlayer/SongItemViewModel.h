@@ -15,15 +15,25 @@ namespace winrt::OsuPlayer::implementation
         winrt::hstring SongName();
         winrt::hstring Singer();
         winrt::hstring Mapper();
-        winrt::hstring Length();
+        winrt::hstring LengthString();
+        int Length();
+        int Index();
+
+
+        void SongName(winrt::hstring songName);
+        void Singer(winrt::hstring singer);
+        void Mapper(winrt::hstring mapper);
+        void Length(int length);
+        void Index(int index);
+        
 
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> Versions();
 
 
-        winrt::Windows::Media::Core::MediaSource SongFile();
+        //winrt::Windows::Media::Core::MediaSource SongFile();
 
 
-        winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage Image();
+        //winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage Image();
 
         void PlayCurrent();
 
@@ -32,7 +42,14 @@ namespace winrt::OsuPlayer::implementation
         void PropertyChanged(winrt::event_token const& token) noexcept;
 
     private:
-        SongItemModel m_model;
+        winrt::hstring m_songName;
+        winrt::hstring m_singer;
+        winrt::hstring m_mapper;
+        int m_length;
+        int m_index;
+        
+        winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> m_versions = winrt::single_threaded_observable_vector<winrt::hstring>();
+        //SongItemModel m_model;
 
         //This is for supporting property change events
         winrt::event<winrt::Windows::UI::Xaml::Data::PropertyChangedEventHandler> m_propertyChanged;

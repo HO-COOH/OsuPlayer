@@ -187,7 +187,7 @@ void winrt::OsuPlayer::implementation::Player::Play(winrt::Windows::Storage::Sto
 void winrt::OsuPlayer::implementation::Player::Play(SongItem item)
 {
     //Play(item.ViewModel().SongFile());
-    songPlayer.player.Source(item.ViewModel().SongFile());
+    //songPlayer.player.Source(item.ViewModel().SongFile());
     songPlayer.player.Play();
     //CoverImage().Source(item.Image());
 }

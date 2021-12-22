@@ -40,6 +40,12 @@ namespace winrt::OsuPlayer::implementation
 	winrt::Windows::Foundation::Collections::IObservableVector<winrt::OsuPlayer::OsuPathItem> SettingsViewModel::OsuPaths()
 	{
 		auto const& osuFolders = m_model.OsuFolders();
+
+		//auto osuFolderItems = winrt::
+		//for (auto const& osuFolder : osuFolders)
+		//{
+
+		//}
 		return winrt::Windows::Foundation::Collections::IObservableVector<winrt::OsuPlayer::OsuPathItem>();
 	}
 

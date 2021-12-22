@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "MainPage.h"
 #include "MainPage.g.cpp"
+#include "MyMusicModel.h"
 
 
 using namespace winrt;
@@ -11,6 +12,12 @@ namespace winrt::OsuPlayer::implementation
     MainPage::MainPage()
     {
         InitializeComponent();
+        MyMusicModel::OnIndexingFinished(
+            [this](std::vector<SongItemModel> const& songs)
+            {
+                MyMusicInfoBadge().Value(songs.size());
+            }
+        );
     }
 
     void MainPage::SearchBox_QuerySubmitted(

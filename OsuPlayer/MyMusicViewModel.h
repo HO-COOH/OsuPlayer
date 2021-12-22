@@ -6,7 +6,7 @@ namespace winrt::OsuPlayer::implementation
 {
     struct MyMusicViewModel : MyMusicViewModelT<MyMusicViewModel>
     {
-        MyMusicViewModel() = default;
+        MyMusicViewModel();
         
         OsuPlayer::SortBy SortBy();
 
@@ -14,7 +14,7 @@ namespace winrt::OsuPlayer::implementation
 
         winrt::Windows::Foundation::Collections::IObservableVector<SongItem> Songs();
     private:
-
+        inline static winrt::Windows::Foundation::Collections::IObservableVector<SongItem> s_songItems = winrt::single_threaded_observable_vector<SongItem>();
     };
 }
 

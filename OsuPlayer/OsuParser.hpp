@@ -2234,6 +2234,8 @@ public:
         if (start != std::string::npos && end != std::string::npos)
         {
             auto const realStart = start + sizeof(" - ") - 1;
+            if(end <= realStart)
+                return std::string{};
             return std::string{ &fileName[realStart], end - realStart };
         }
 

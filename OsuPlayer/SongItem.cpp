@@ -14,6 +14,11 @@ namespace winrt::OsuPlayer::implementation
         InitializeComponent();
     }
 
+    SongItem::SongItem(OsuPlayer::SongItemViewModel viewModel) : m_model{viewModel}
+    {
+        InitializeComponent();
+    }
+
     OsuPlayer::SongItemViewModel SongItem::ViewModel()
     {
         return m_model;
