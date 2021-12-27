@@ -1,0 +1,12 @@
+import "SongPropertyViewModel.idl";
+
+namespace OsuPlayer
+{
+    [default_interface]
+    runtimeclass SongItemDialog : Windows.UI.Xaml.Controls.Page
+    {
+        SongItemDialog();
+
+        SongPropertyViewModel ViewModel{ get; };
+    }
+}

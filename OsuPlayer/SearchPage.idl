@@ -1,3 +1,5 @@
+import "SearchPageViewModel.idl";
+
 namespace OsuPlayer
 {
     [default_interface]
@@ -5,6 +7,7 @@ namespace OsuPlayer
     {
         SearchPage();
 
-        String Keyword{ get; };
+        //The view-model
+        SearchPageViewModel ViewModel{ get; };
     }
 }

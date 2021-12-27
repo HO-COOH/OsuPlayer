@@ -18,6 +18,8 @@ namespace winrt::OsuPlayer::implementation
         void CheckBox_Unchecked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
     private:
         OsuPlayer::SongItemViewModel m_model;
+    public:
+        void PropertyMenuItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
     };
 }
 

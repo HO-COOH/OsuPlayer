@@ -3,6 +3,7 @@
 #include "SearchPageViewModel.g.h"
 #include "SongItem.g.h"
 #include "SearchModel.h"
+#include <functional>
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -14,10 +15,13 @@ namespace winrt::OsuPlayer::implementation
         winrt::hstring Keyword();
         void Keyword(winrt::hstring keyword);
 
+        winrt::hstring SearchInfo();
+
         winrt::Windows::Foundation::Collections::IObservableVector<SongItem> SearchResult();
     private:
         winrt::hstring m_keyword;
         SearchModel m_model;
+        std::function<bool()> m_onSearchStateChangedHandler;
     };
 }
 

@@ -7,9 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
-    HorizontalAlignment="Stretch">
+    HorizontalAlignment="Stretch" IsRightTapEnabled="True">
 
-    <Grid Height="30" IsDoubleTapEnabled="True" DoubleTapped="Grid_DoubleTapped" HorizontalAlignment="Stretch" >
+    <Grid Height="30" IsDoubleTapEnabled="True" DoubleTapped="Grid_DoubleTapped" HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="*"/>
@@ -26,12 +26,57 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="SongNameText" VerticalAlignment="Stretch" HorizontalAlignment="Left" Text="{x:Bind ViewModel.SongName}" TextTrimming="CharacterEllipsis" Grid.Column="1" />
-            <TextBlock x:Name="SingerText" Text="{x:Bind ViewModel.Singer}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Grid.Column="2"/>
-            <TextBlock x:Name="MapperText" Text="{x:Bind ViewModel.Mapper}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Grid.Column="3"/>
-            <TextBlock x:Name="LengthText" Text="{x:Bind ViewModel.Length}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Grid.Column="4" />
+            <TextBlock x:Name="SongNameText" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.SongName}" TextTrimming="CharacterEllipsis" Grid.Column="1" />
+            <TextBlock x:Name="SingerText" Text="{x:Bind ViewModel.Singer}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="2"/>
+            <TextBlock x:Name="MapperText" Text="{x:Bind ViewModel.Mapper}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="3"/>
+            <TextBlock x:Name="LengthText" Text="{x:Bind ViewModel.Length}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="4" />
             <ComboBox x:Name="VersionSelectionBox" ItemsSource="{x:Bind ViewModel.Versions}" SelectedItem="{x:Bind ViewModel.Versions[0]}" Grid.Column="5" Margin="10,0,0,0"/>
         </Grid>
+
+        <Grid.ContextFlyout>
+            <MenuFlyout>
+                
+                <MenuFlyoutItem Text="Play">
+                    <MenuFlyoutItem.Icon>
+                        <SymbolIcon Symbol="Play"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                
+                <MenuFlyoutItem Text="Remove from list">
+                    <MenuFlyoutItem.Icon>
+                        <SymbolIcon Symbol="Clear"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                
+                <MenuFlyoutItem Text="Delete this beatmap">
+                    <MenuFlyoutItem.Icon>
+                        <SymbolIcon Symbol="Delete"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutSeparator/>
+                
+                <MenuFlyoutItem Text="Move up">
+                    <MenuFlyoutItem.Icon>
+                        <SymbolIcon Symbol="Up"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutItem Text="Move down">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74B;"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutSeparator/>
+
+                <MenuFlyoutItem x:Name="PropertyMenuItem" Text="Properties" Click="PropertyMenuItem_Click">
+                    <MenuFlyoutItem.Icon>
+                        <SymbolIcon Symbol="MusicInfo"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuFlyout>
+        </Grid.ContextFlyout>
     </Grid>
 
 </UserControl>

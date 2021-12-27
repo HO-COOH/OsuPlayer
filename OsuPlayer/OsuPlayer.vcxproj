@@ -145,6 +145,11 @@
       <DependentUpon>Player.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="PlayerModel.h" />
+    <ClInclude Include="PlayerViewModel.h">
+      <DependentUpon>PlayerViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="PlayMods.h" />
     <ClInclude Include="Recent.h">
       <DependentUpon>Recent.xaml</DependentUpon>
@@ -172,9 +177,17 @@
       <DependentUpon>SongItem.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="SongItemDialog.h">
+      <DependentUpon>SongItemDialog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="SongItemModel.h" />
     <ClInclude Include="SongItemViewModel.h">
       <DependentUpon>SongItemViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="SongPropertyViewModel.h">
+      <DependentUpon>SongPropertyViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="ThemeHelper.h" />
@@ -206,6 +219,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SongItem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SongItemDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
@@ -262,6 +278,11 @@
       <DependentUpon>Player.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="PlayerModel.cpp" />
+    <ClCompile Include="PlayerViewModel.cpp">
+      <DependentUpon>PlayerViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="Recent.cpp">
       <DependentUpon>Recent.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -288,9 +309,17 @@
       <DependentUpon>SongItem.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="SongItemDialog.cpp">
+      <DependentUpon>SongItemDialog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="SongItemModel.cpp" />
     <ClCompile Include="SongItemViewModel.cpp">
       <DependentUpon>SongItemViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="SongPropertyViewModel.cpp">
+      <DependentUpon>SongPropertyViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="ThemeHelper.cpp" />
@@ -323,6 +352,9 @@
       <DependentUpon>Player.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
+    <Midl Include="PlayerViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="Recent.idl">
       <DependentUpon>Recent.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -345,7 +377,14 @@
       <DependentUpon>SongItem.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
+    <Midl Include="SongItemDialog.idl">
+      <DependentUpon>SongItemDialog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
     <Midl Include="SongItemViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="SongPropertyViewModel.idl">
       <SubType>Designer</SubType>
     </Midl>
   </ItemGroup>
@@ -353,6 +392,9 @@
     <None Include="..\README.md" />
     <None Include="packages.config" />
     <None Include="PropertySheet.props" />
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Resources.resw" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

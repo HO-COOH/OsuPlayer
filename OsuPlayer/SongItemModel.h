@@ -17,15 +17,23 @@ public:
 	int Length() const;
 	std::vector<winrt::Windows::Storage::StorageFile> const& VersionFiles() const;
 	winrt::Windows::Media::Core::MediaSource Source() const;
-private:
+	winrt::Windows::Foundation::DateTime DateModified() const;
+	winrt::Windows::Foundation::DateTime DateCreated() const;
 
+	int BitRate() const;
+private:
 	void handleOsuFile(winrt::Windows::Storage::StorageFile&& file);
 	void handleSongFile(winrt::Windows::Storage::StorageFile&& file);
 	void handleImageFile(winrt::Windows::Storage::StorageFile&& file);
 public:
 	using FileHandlerFunction = decltype(&handleOsuFile);
+	using FileExtension = winrt::hstring;
 private:
-	static std::unordered_map<winrt::hstring, FileHandlerFunction> fileHandlers;
+	/**
+	 * @brief Stores the file handler function according to different file extensions
+	 * @details For example, audio files can either be .mp3 or .wav, and they should be registered with handleSongFile() in this unordered_map
+	 */
+	static std::unordered_map<FileExtension, FileHandlerFunction> fileHandlers;
 
 	int m_length{};	//in milliseconds
 	winrt::hstring m_songName;

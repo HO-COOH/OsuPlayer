@@ -31,16 +31,19 @@ namespace winrt::OsuPlayer::implementation
                     viewModel.Index(i++);
                     s_songItems.Append(SongItem{ viewModel });
                 }
-                
+
             }
         );
     }
-    OsuPlayer::SortBy MyMusicViewModel::SortBy()
+
+    int MyMusicViewModel::SortByIndex()
     {
-        return OsuPlayer::SortBy();
+        return static_cast<int>(MyMusicModel::m_sortOrder);
     }
-    void MyMusicViewModel::SortBy(OsuPlayer::SortBy SortMethod)
+
+    void MyMusicViewModel::SortByIndex(int index)
     {
+        MyMusicModel::m_sortBy = MyMusicModel::SortByMethodIndex[index];
     }
 
     winrt::Windows::Foundation::Collections::IObservableVector<SongItem> MyMusicViewModel::Songs()

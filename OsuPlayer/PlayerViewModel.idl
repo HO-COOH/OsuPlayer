@@ -1,0 +1,31 @@
+import "SongItem.idl";
+
+
+namespace OsuPlayer
+{
+    enum PlayMod
+    {
+        Normal,
+        HalfTime,
+        DoubleTime,
+        NightCore
+    };
+
+
+    [bindable]
+    [default_interface]
+    runtimeclass PlayerViewModel 
+    {
+        PlayerViewModel();
+
+        void Play(SongItem item);
+        void Play();
+        void PlayPrevious();
+        void PlayNext();
+        
+        PlayMod Mod{ get; set; };
+        Boolean UseSkinHitsound{ get; set; };
+        Int32 Volume{ get; set; };
+        Windows.UI.Xaml.Media.ImageSource ImageSource{ get; };
+    }
+}

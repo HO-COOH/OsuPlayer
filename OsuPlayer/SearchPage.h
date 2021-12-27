@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "SearchPage.g.h"
+#include "SearchPageViewModel.g.h"
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -8,11 +9,11 @@ namespace winrt::OsuPlayer::implementation
     {
         SearchPage();
 
-        winrt::hstring Keyword() { return std::wstring{L"Results for \""} + m_keyword + L"\""; }
-
         void OnNavigatedTo(winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs args);
+
+        OsuPlayer::SearchPageViewModel ViewModel();
     private:
-        winrt::hstring m_keyword;
+        OsuPlayer::SearchPageViewModel m_model;
     };
 }
 

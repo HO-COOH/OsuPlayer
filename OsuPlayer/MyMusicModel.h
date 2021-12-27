@@ -6,6 +6,7 @@
 #include <future>
 #include "SettingsModel.h"
 #include <functional>
+#include <array>
 
 
 class MyMusicModel
@@ -22,11 +23,25 @@ public:
         Rank = 6,
         Title = 7,
 	};
+
+	static constexpr std::array SortByMethodIndex
+	{
+		SortBy::Artist,
+		SortBy::BPM,
+		SortBy::Creator,
+		SortBy::Date,
+		SortBy::Difficulty,
+		SortBy::Length,
+		SortBy::Rank,
+		SortBy::Title,
+	};
+
 	enum class SortOrder
 	{
 		Ascend,
 		Descend
 	};
+
 	MyMusicModel();
 
 	void doSort(SortBy sortMethod);
@@ -37,9 +52,14 @@ public:
 	static winrt::Windows::Foundation::IAsyncAction StartIndexing();
 
 	static void OnIndexingFinished(std::function<void(std::vector<SongItemModel> const&)> handler);
+
+	[[nodiscard]] static bool HasFinishedIndexing();
+
+	inline static SortOrder m_sortOrder;
+	inline static SortBy m_sortBy;
 private:
 
-	[[nodiscard]] bool hasFinishedIndexing() const;
+	
 
 	void sortByArtist();
 	void sortByBPM();
@@ -51,8 +71,7 @@ private:
 	void sortByTitle();
 
 	inline static std::vector<SongItemModel> m_songs;
-	inline static SortOrder m_sortOrder;
-	inline static SortBy m_sortBy;
+
 	inline static std::vector<std::future<void>> m_indexingFutures;
 
 	inline static std::vector<std::function<void(std::vector<SongItemModel> const&)>> s_handlers;

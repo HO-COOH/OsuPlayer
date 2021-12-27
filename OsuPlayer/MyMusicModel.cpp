@@ -2,6 +2,7 @@
 #include "MyMusicModel.h"
 #include <algorithm>
 #include "Utils.h"
+#include <execution>
 
 MyMusicModel::MyMusicModel() : m_osuFolders{SettingsModel::m_osuFolders}
 {
@@ -35,7 +36,7 @@ MyMusicModel::SortOrder MyMusicModel::getSortOrder() const
 	return m_sortOrder;
 }
 
-bool MyMusicModel::hasFinishedIndexing() const
+bool MyMusicModel::HasFinishedIndexing()
 {
 	return std::all_of(
 		m_indexingFutures.cbegin(),
@@ -49,14 +50,37 @@ bool MyMusicModel::hasFinishedIndexing() const
 
 void MyMusicModel::sortByArtist()
 {
+	std::sort(
+		std::execution::par_unseq,
+		m_songs.begin(),
+		m_songs.end(),
+		[](SongItemModel const& lhs, SongItemModel const& rhs)
+		{
+			return m_sortOrder == SortOrder::Ascend ?
+				(lhs.Singer() < rhs.Singer()) :
+				(lhs.Singer() > rhs.Singer());
+		}
+	);
 }
 
 void MyMusicModel::sortByBPM()
 {
+
 }
 
 void MyMusicModel::sortByCreator()
 {
+	std::sort(
+		std::execution::par_unseq,
+		m_songs.begin(),
+		m_songs.end(),
+		[](SongItemModel const& lhs, SongItemModel const& rhs)
+		{
+			return m_sortOrder == SortOrder::Ascend ?
+				(lhs.Mapper() < rhs.Mapper()) :
+				(lhs.Mapper() > rhs.Mapper());
+		}
+	);
 }
 
 void MyMusicModel::sortByDate()
@@ -69,6 +93,17 @@ void MyMusicModel::sortByDifficulty()
 
 void MyMusicModel::sortByLength()
 {
+	std::sort(
+		std::execution::par_unseq,
+		m_songs.begin(),
+		m_songs.end(),
+		[](SongItemModel const& lhs, SongItemModel const& rhs)
+		{
+			return m_sortOrder == SortOrder::Ascend ?
+				(lhs.Length() < rhs.Length()) :
+				(lhs.Length() > rhs.Length());
+		}
+	);
 }
 
 void MyMusicModel::sortByRank()
@@ -77,26 +112,43 @@ void MyMusicModel::sortByRank()
 
 void MyMusicModel::sortByTitle()
 {
+	std::sort(
+		std::execution::par_unseq,
+		m_songs.begin(),
+		m_songs.end(),
+		[](SongItemModel const& lhs, SongItemModel const& rhs)
+		{
+			return m_sortOrder == SortOrder::Ascend ?
+				(lhs.SongName() < rhs.SongName()) :
+				(lhs.SongName() > rhs.SongName());
+		}
+	);
 }
 
 winrt::Windows::Foundation::IAsyncAction MyMusicModel::StartIndexing()
 {
+	//Indexing every osu folder if necessary
 	for (auto const& osuFolder : SettingsModel::m_osuFolders)
 	{
 		auto songFolders = co_await osuFolder.GetFoldersAsync();
-		co_await std::async(std::launch::async, [&songFolders] {
-			std::transform(
-				songFolders.begin(),
-				songFolders.end(),
-				std::back_inserter(m_songs),
-				[](winrt::Windows::Storage::StorageFolder const& songFolder)
-				{
-					return SongItemModel{ songFolder };
-				}
-			);
-		});
+		co_await std::async(
+			std::launch::async, 
+			[&songFolders] 
+			{
+				std::transform(
+					songFolders.begin(),
+					songFolders.end(),
+					std::back_inserter(m_songs),
+					[](winrt::Windows::Storage::StorageFolder const& songFolder)
+					{
+						return SongItemModel{ songFolder };
+					}
+				);
+			}
+		);
 	}
 
+	//Call event handlers
 	for (auto& handler : s_handlers)
 	{
 		co_await winrt::resume_foreground(winrt::Windows::ApplicationModel::Core::CoreApplication::MainView().CoreWindow().Dispatcher());
@@ -106,5 +158,7 @@ winrt::Windows::Foundation::IAsyncAction MyMusicModel::StartIndexing()
 
 void MyMusicModel::OnIndexingFinished(std::function<void(std::vector<SongItemModel>const&)> handler)
 {
+	if (HasFinishedIndexing())
+		handler(m_songs);
 	s_handlers.emplace_back(std::move(handler));
 }

@@ -16,7 +16,12 @@ namespace winrt::OsuPlayer::implementation
 
     void SearchPage::OnNavigatedTo(winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs args)
     {
-        m_keyword = args.Parameter().as<winrt::hstring>();
+        m_model.Keyword(args.Parameter().as<winrt::hstring>());
+    }
+
+    OsuPlayer::SearchPageViewModel SearchPage::ViewModel()
+    {
+        return m_model;
     }
 
 }

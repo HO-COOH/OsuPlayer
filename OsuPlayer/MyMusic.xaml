@@ -228,6 +228,7 @@
                     Header="Sorted by:"
                     x:Name="SortOrderSelectionCombobox"
                     SelectionChanged="SortOrderSelectionCombobox_SelectionChanged"
+                    SelectedIndex="{x:Bind ViewModel.SortByIndex}"
                 >
                     <ComboBox.Items>
                         <ComboBoxItem Content="Artist"/>
@@ -270,6 +271,7 @@
                               HorizontalAlignment="Stretch"
                               ItemsSource="{x:Bind ViewModel.Songs}"
                               Grid.Row="1"
+                              
                     >
                         <!-- songs -->
                     </ListView>

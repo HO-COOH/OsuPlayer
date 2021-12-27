@@ -1,8 +1,10 @@
+#define NOMINMAX
 #include "pch.h"
 #include "SongItemModel.h"
 #include "OsuParser.hpp"
 #include <chrono>
 #include <winrt/Windows.Storage.FileProperties.h>
+#include <algorithm>
 
 std::unordered_map<winrt::hstring, SongItemModel::FileHandlerFunction> SongItemModel::fileHandlers
 {
@@ -49,6 +51,39 @@ std::vector<winrt::Windows::Storage::StorageFile> const& SongItemModel::VersionF
 winrt::Windows::Media::Core::MediaSource SongItemModel::Source() const
 {
 	return m_songSource;
+}
+
+winrt::Windows::Foundation::DateTime SongItemModel::DateModified() const
+{
+	return std::transform_reduce(
+		m_versionFiles.cbegin(),
+		m_versionFiles.cend(),
+		winrt::Windows::Foundation::DateTime{},
+		[](winrt::Windows::Foundation::DateTime time1, winrt::Windows::Foundation::DateTime time2) { return (std::max)(time1, time2); },
+		[](winrt::Windows::Storage::StorageFile const& osuFile)
+		{
+			return osuFile.GetBasicPropertiesAsync().get().DateModified();
+		}
+	);
+}
+
+winrt::Windows::Foundation::DateTime SongItemModel::DateCreated() const
+{
+	return std::transform_reduce(
+		m_versionFiles.cbegin(),
+		m_versionFiles.cend(),
+		winrt::Windows::Foundation::DateTime{},
+		[](winrt::Windows::Foundation::DateTime time1, winrt::Windows::Foundation::DateTime time2) { return (std::max)(time1, time2); },
+		[](winrt::Windows::Storage::StorageFile const& osuFile)
+		{
+			return osuFile.DateCreated();
+		}
+	);
+}
+
+int SongItemModel::BitRate() const
+{
+	return m_songSource.MediaStreamSource().MusicProperties().Bitrate();
 }
 
 #include "Log.h"

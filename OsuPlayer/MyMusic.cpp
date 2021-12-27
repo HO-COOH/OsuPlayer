@@ -39,13 +39,12 @@ void winrt::OsuPlayer::implementation::MyMusic::OnNavigatedTo(Windows::UI::Xaml:
 void winrt::OsuPlayer::implementation::MyMusic::OnSongItemEvent(SongItem item)
 {
     auto mainPage = Utils::FindParent<MainPage>(*this);
-    mainPage.player().Play(item);
+    mainPage.player().ViewModel().Play(item);
 }
 
 
 void winrt::OsuPlayer::implementation::MyMusic::OrderToggleButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
 {
-
 }
 
 

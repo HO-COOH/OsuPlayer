@@ -8,9 +8,9 @@ namespace winrt::OsuPlayer::implementation
     {
         MyMusicViewModel();
         
-        OsuPlayer::SortBy SortBy();
+        int SortByIndex();
 
-        void SortBy(OsuPlayer::SortBy SortMethod);
+        void SortByIndex(int index);
 
         winrt::Windows::Foundation::Collections::IObservableVector<SongItem> Songs();
     private:

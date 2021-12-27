@@ -1,4 +1,4 @@
-import "SongItem.idl";
+import "PlayerViewModel.idl";
 
 namespace OsuPlayer
 {
@@ -6,10 +6,8 @@ namespace OsuPlayer
     runtimeclass Player : Windows.UI.Xaml.Controls.UserControl
     {
         Player();
-
-        void Play(SongItem item);
-        //void Play2(Windows.Storage.StorageFile song);
         
-        Windows.UI.Xaml.Media.ImageSource ImageSource{ get; };
+        //The view-model
+        PlayerViewModel ViewModel{ get; };
     }
 }

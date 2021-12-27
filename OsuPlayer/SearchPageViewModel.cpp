@@ -16,6 +16,11 @@ namespace winrt::OsuPlayer::implementation
         m_keyword = keyword;
     }
 
+    winrt::hstring SearchPageViewModel::SearchInfo()
+    {
+        return std::wstring{ L"Results for \"" } + m_keyword + L"\"";
+    }
+
     winrt::Windows::Foundation::Collections::IObservableVector<SongItem> SearchPageViewModel::SearchResult()
     {
         //auto result = co_await m_model.doSearch(m_keyword);

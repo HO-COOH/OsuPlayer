@@ -1,25 +1,13 @@
 import "SongItem.idl";
 namespace OsuPlayer
 {
-    enum SortBy
-    {
-        Artist,
-        BPM,
-        Creator,
-        Date,
-        Difficulty,
-        Length,
-        Rank,
-        Title
-    };
-
     [bindable]
     [default_interface]
     runtimeclass MyMusicViewModel 
     {
         MyMusicViewModel();
         
-        SortBy SortBy{ get; set; };
+        Int32 SortByIndex{ get; set; };
 
         Windows.Foundation.Collections.IObservableVector<SongItem> Songs{ get; };
     }

@@ -47,3 +47,9 @@ namespace winrt::OsuPlayer::implementation
 
     }
 }
+
+
+void winrt::OsuPlayer::implementation::SongItem::PropertyMenuItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+{
+
+}

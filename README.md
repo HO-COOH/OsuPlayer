@@ -15,7 +15,8 @@ It stricly follows MVVM pattern.
 
 ## Current Development Progress
 - [x] Add your osu! path, then give it some time to index your beatmaps
-- [ ] Song lists
+- [x] Song lists
+- [x] Property page
 - [ ] Sort
 - [ ] View collections
 
