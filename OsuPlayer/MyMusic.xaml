@@ -252,12 +252,12 @@
             IsBackButtonVisible="Collapsed"
             SelectionFollowsFocus="Enabled"
             IsSettingsVisible="False"
-            ItemInvoked="Category_ItemInvoked"
+            SelectionChanged="Category_SelectionChanged"
         >
             <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem Content="Collections"/>
-                <muxc:NavigationViewItem Content="Artists"/>
-                <muxc:NavigationViewItem Content="No Grouping"/>
+                <muxc:NavigationViewItem x:Name="CollectionsCategoryItem" Content="Collections"/>
+                <muxc:NavigationViewItem x:Name="ArtistsCategoryItem" Content="Artists"/>
+                <muxc:NavigationViewItem x:Name="NoGroupingCategoryItem" Content="No Grouping"/>
             </muxc:NavigationView.MenuItems>
 
             <Frame x:Name="MusicListFrame" Background="{ThemeResource SystemControlAcrylicWindowBrush}">
@@ -273,7 +273,7 @@
                               Grid.Row="1"
                               
                     >
-                        <!-- songs -->
+                        <!--songs--> 
                     </ListView>
                 </Grid>
             </Frame>

@@ -31,6 +31,9 @@
     <Page Include="SongItemDialog.xaml">
       <Filter>Views</Filter>
     </Page>
+    <Page Include="ArtistView.xaml">
+      <Filter>Views</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -128,6 +131,9 @@
     </ClInclude>
     <ClInclude Include="PlayerModel.h">
       <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="FileStreamAdaptor.hpp">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

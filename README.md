@@ -19,6 +19,8 @@ It stricly follows MVVM pattern.
 - [x] Property page
 - [ ] Sort
 - [ ] View collections
+- [ ] View Singers
+- [ ] IRC
 
 MainPage:
 ![](screenshots/MainPage.png)

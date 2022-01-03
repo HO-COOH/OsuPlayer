@@ -19,6 +19,10 @@ namespace OsuPlayer
         //Windows.UI.Xaml.Media.Imaging.BitmapImage Image{ get; };
         Windows.Foundation.Collections.IObservableVector<String> Versions{ get; };
 
+        Int32 SelectedVersionIndex{ get; set; };
+
+        //Windows.Foundation.IAsyncAction ShowProporty();
+
         void PlayCurrent();
     }
 }

@@ -81,9 +81,44 @@ winrt::Windows::Foundation::DateTime SongItemModel::DateCreated() const
 	);
 }
 
+#include "FileStreamAdaptor.hpp"
+std::string SongItemModel::Tags(int versionIndex) const
+{
+	if (m_versionFiles.empty())
+		return "";
+
+	if (versionIndex < 0 || versionIndex >= m_versionFiles.size())
+		return "";
+
+	//auto file = m_versionFiles[versionIndex].CopyAsync(
+	//	winrt::Windows::Storage::ApplicationData::Current().LocalFolder(), 
+	//	L"temp.txt", 
+	//	winrt::Windows::Storage::NameCollisionOption::ReplaceExisting
+	//).get();
+	//You got file access except when it's not, so you can't directly construct std::ifstream from StorageFile::Path()
+	//Metadata meta{std::ifstream{std::wstring{m_versionFiles[versionIndex].Path()}}};
+	StreambufAdaptor buf{ m_versionFiles[versionIndex] };
+
+	Metadata meta{ std::istream{&buf} };
+	std::string s;
+	for (auto const& tag : meta.tags)
+		(s += tag) += " ";
+	return s;
+}
+
+#include <winrt/Windows.Media.Playback.h>
+#include <winrt/Windows.Media.MediaProperties.h>
 int SongItemModel::BitRate() const
 {
-	return m_songSource.MediaStreamSource().MusicProperties().Bitrate();
+	if (!m_songSource)
+		return {};
+
+	m_songSource.OpenAsync().get();
+	winrt::Windows::Media::Playback::MediaPlaybackItem item{ m_songSource };
+	
+	return item.AudioTracks().GetAt(0).GetEncodingProperties().Bitrate();
+	//m_songSource.OpenAsync().get();
+	//return m_songSource.MediaStreamSource().MusicProperties().Bitrate();
 }
 
 #include "Log.h"

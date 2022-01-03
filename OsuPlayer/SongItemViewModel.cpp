@@ -5,6 +5,7 @@
 #endif
 #include "Utils.h"
 #include "OsuParser.hpp"
+#include "MyMusic.g.h"
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -39,6 +40,11 @@ namespace winrt::OsuPlayer::implementation
         return m_index;
     }
 
+    int SongItemViewModel::SelectedVersionIndex()
+    {
+        return m_versionIndex;
+    }
+
     void SongItemViewModel::SongName(winrt::hstring songName)
     {
         m_songName = songName;
@@ -64,6 +70,11 @@ namespace winrt::OsuPlayer::implementation
         m_index = index;
     }
 
+    void SongItemViewModel::SelectedVersionIndex(int index)
+    {
+        m_versionIndex = index;
+    }
+
     winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> SongItemViewModel::Versions()
     {
         //auto versionNames = winrt::single_threaded_observable_vector<winrt::hstring>();
@@ -80,6 +91,7 @@ namespace winrt::OsuPlayer::implementation
     //{
     //    return m_model.Source();
     //}
+
 
     //winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage SongItemViewModel::Image()
     //{

@@ -25,6 +25,7 @@
 #include <iterator>
 #include <cstring>
 
+#define ifstream istream
 //#include <queue>
 
 /**
@@ -1649,6 +1650,8 @@ struct Metadata
      */
     Metadata(std::ifstream& osuFile, bool partial = true)
     {
+        /*if (!osuFile.is_open()) 
+            throw std::exception{};*/
         std::string line;
 
         if (partial)
@@ -2471,3 +2474,5 @@ namespace Utils
         return result;
     }
 }
+
+#undef ifstream

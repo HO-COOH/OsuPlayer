@@ -19,7 +19,7 @@ namespace winrt::OsuPlayer::implementation
     private:
         OsuPlayer::SongItemViewModel m_model;
     public:
-        void PropertyMenuItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        winrt::Windows::Foundation::IAsyncAction PropertyMenuItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
     };
 }
 

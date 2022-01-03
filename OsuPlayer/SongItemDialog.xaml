@@ -32,22 +32,24 @@
 
         <TextBlock Grid.ColumnSpan="2" Text="Properties" FontSize="50" Margin="20,10,0,0"/>
 
-        <TextBlock Text="Title" Grid.Row="1" Grid.Column="0"/>
+        <TextBlock Text="Title" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="1" Grid.Column="0"/>
         <RichTextBlock x:Name="TitleText" Grid.Row="2" Grid.Column="0"/>
 
-        <TextBlock Text="Artist" Grid.Row="1" Grid.Column="1"/>
+        <TextBlock Text="Artist" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="1" Grid.Column="1"/>
         <RichTextBlock x:Name="ArtistText" Grid.Row="2" Grid.Column="1"/>
 
-        <TextBlock Text="Bit rate" Grid.Row="3" Grid.Column="0"/>
+        <TextBlock Text="Bit rate" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="3" Grid.Column="0"/>
         <TextBlock x:Name="BitrateText" Text="{x:Bind ViewModel.Bitrate}" Grid.Row="4" Grid.Column="0"/>
 
-        <TextBlock Text="Length" Grid.Row="3" Grid.Column="1"/>
+        <TextBlock Text="Length" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="3" Grid.Column="1"/>
         <TextBlock x:Name="LengthText" Text="{x:Bind ViewModel.Length}" Grid.Row="4" Grid.Column="1"/>
 
-        <TextBlock Text="Song location" Grid.Row="5" Grid.ColumnSpan="2"/>
-        <HyperlinkButton x:Name="SongPathButton" Content="{x:Bind ViewModel.SongPath}" Grid.Row="6" Grid.ColumnSpan="2"/>
+        <TextBlock Text="Song location" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="5" Grid.ColumnSpan="2"/>
+        <HyperlinkButton x:Name="SongPathButton" Click="SongPathButton_Click" Grid.Row="6" Grid.ColumnSpan="2">
+            <TextBlock Text="{x:Bind ViewModel.SongPath}" TextWrapping="Wrap"></TextBlock>
+        </HyperlinkButton>
 
-        <TextBlock Text="Tags" Grid.Row="7" Grid.ColumnSpan="2"/>
+        <TextBlock Text="Tags" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="7" Grid.ColumnSpan="2"/>
         <RichTextBlock x:Name="TagsText" Grid.Row="8" Grid.ColumnSpan="2"/>
     </Grid>
 </Page>

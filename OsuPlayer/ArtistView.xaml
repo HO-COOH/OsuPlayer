@@ -1,0 +1,52 @@
+﻿<Page
+    x:Class="OsuPlayer.ArtistView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OsuPlayer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <CollectionViewSource x:Name="AlphabetGroups" Source="{x:Bind groups, Mode=OneWay}" ItemsPath="groups.data" IsSourceGrouped="True"/>
+
+        <DataTemplate x:Key="ZoomOutTemplate" x:DataType="local:GroupedData">
+            <TextBlock Text="{x:Bind Title}"/>
+        </DataTemplate>
+    </Page.Resources>
+    <!--
+        Zoomed-in view and zoomed-out view has to implement ISemanticZoomInformation interface,
+        The Xaml framework provide 3 controls that implement this interface:
+            ListView
+            GridView
+            Hub
+    -->
+    <SemanticZoom>
+        <SemanticZoom.ZoomedInView>
+            <GridView x:Name="GridView" ItemsSource="{x:Bind AlphabetGroups.View}" ScrollViewer.IsHorizontalScrollChainingEnabled="False" GotFocus="GridView_GotFocus">
+
+                <GridView.GroupStyle>
+                    <GroupStyle HidesIfEmpty="False">
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Testing header" FontSize="50"/>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </GridView.GroupStyle>
+                
+            </GridView>
+        </SemanticZoom.ZoomedInView>
+
+        <!-- Zoom out-->
+        <SemanticZoom.ZoomedOutView>
+            <GridView ItemsSource="{x:Bind AlphabetGroups.View.CollectionGroups}" ScrollViewer.IsHorizontalScrollChainingEnabled="False"
+                      ItemTemplate="{StaticResource ZoomOutTemplate}">
+                <GridView.GroupStyle>
+                    <GroupStyle HidesIfEmpty="False">
+                    </GroupStyle>
+                </GridView.GroupStyle>
+            </GridView>
+        </SemanticZoom.ZoomedOutView>
+    </SemanticZoom>
+</Page>

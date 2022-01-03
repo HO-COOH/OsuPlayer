@@ -109,8 +109,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ArtistView.h">
+      <DependentUpon>ArtistView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="BackgroundAcrylic.h" />
     <ClInclude Include="DataLoader.h" />
+    <ClInclude Include="FileStreamAdaptor.hpp" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="MainViewModel.h">
       <DependentUpon>MainViewModel.idl</DependentUpon>
@@ -197,6 +202,9 @@
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="ArtistView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -240,6 +248,10 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ArtistView.cpp">
+      <DependentUpon>ArtistView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="BackgroundAcrylic.cpp" />
     <ClCompile Include="DataLoader.cpp" />
     <ClCompile Include="Log.cpp" />
@@ -327,6 +339,10 @@
   <ItemGroup>
     <Midl Include="App.idl">
       <DependentUpon>App.xaml</DependentUpon>
+    </Midl>
+    <Midl Include="ArtistView.idl">
+      <DependentUpon>ArtistView.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Midl>
     <Midl Include="MainPage.idl">
       <DependentUpon>MainPage.xaml</DependentUpon>

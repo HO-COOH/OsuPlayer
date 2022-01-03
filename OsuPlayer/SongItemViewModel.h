@@ -18,6 +18,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::hstring LengthString();
         int Length();
         int Index();
+        int SelectedVersionIndex();
 
 
         void SongName(winrt::hstring songName);
@@ -25,6 +26,7 @@ namespace winrt::OsuPlayer::implementation
         void Mapper(winrt::hstring mapper);
         void Length(int length);
         void Index(int index);
+        void SelectedVersionIndex(int index);
         
 
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> Versions();
@@ -34,6 +36,7 @@ namespace winrt::OsuPlayer::implementation
 
 
         //winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage Image();
+
 
         void PlayCurrent();
 
@@ -47,6 +50,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::hstring m_mapper;
         int m_length;
         int m_index;
+        int m_versionIndex = 0;
         
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> m_versions = winrt::single_threaded_observable_vector<winrt::hstring>();
         //SongItemModel m_model;

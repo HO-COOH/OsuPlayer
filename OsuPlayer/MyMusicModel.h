@@ -53,6 +53,8 @@ public:
 
 	static void OnIndexingFinished(std::function<void(std::vector<SongItemModel> const&)> handler);
 
+	static SongItemModel& get(int index);
+
 	[[nodiscard]] static bool HasFinishedIndexing();
 
 	inline static SortOrder m_sortOrder;

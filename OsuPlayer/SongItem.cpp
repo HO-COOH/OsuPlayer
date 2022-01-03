@@ -4,6 +4,10 @@
 #include "SongItem.g.cpp"
 #endif
 
+#include "SongItemDialog.g.h"
+#include "MyMusic.g.h"
+#include "Utils.h"
+
 using namespace winrt;
 using namespace Windows::UI::Xaml;
 
@@ -28,7 +32,8 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs const& e)
     {
-        m_model.PlayCurrent();
+        auto myMusicView = Utils::FindParent<OsuPlayer::MyMusic>(*this);
+        myMusicView.OnSongItemEvent(*this);
     }
 
 
@@ -46,10 +51,13 @@ namespace winrt::OsuPlayer::implementation
     {
 
     }
-}
 
-
-void winrt::OsuPlayer::implementation::SongItem::PropertyMenuItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-{
+    winrt::Windows::Foundation::IAsyncAction winrt::OsuPlayer::implementation::SongItem::PropertyMenuItem_Click(
+        winrt::Windows::Foundation::IInspectable const& sender, 
+        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    {
+        auto myMusicView = Utils::FindParent<OsuPlayer::MyMusic>(*this);
+        co_await myMusicView.ViewModel().ShowPropertyOf(m_model.Index(), m_model.SelectedVersionIndex());
+    }
 
 }

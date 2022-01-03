@@ -13,6 +13,8 @@ namespace winrt::OsuPlayer::implementation
         void SortByIndex(int index);
 
         winrt::Windows::Foundation::Collections::IObservableVector<SongItem> Songs();
+
+        winrt::Windows::Foundation::IAsyncAction ShowPropertyOf(int index, int versionIndex);
     private:
         inline static winrt::Windows::Foundation::Collections::IObservableVector<SongItem> s_songItems = winrt::single_threaded_observable_vector<SongItem>();
     };

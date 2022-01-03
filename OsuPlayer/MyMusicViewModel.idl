@@ -9,6 +9,7 @@ namespace OsuPlayer
         
         Int32 SortByIndex{ get; set; };
 
+        Windows.Foundation.IAsyncAction ShowPropertyOf(Int32 index, Int32 versionIndex);
         Windows.Foundation.Collections.IObservableVector<SongItem> Songs{ get; };
     }
 }

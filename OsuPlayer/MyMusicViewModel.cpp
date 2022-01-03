@@ -6,6 +6,8 @@
 
 #include "MyMusicModel.h"
 #include "SongItemViewModel.g.h"
+#include <winrt/Windows.ApplicationModel.Core.h>
+#include <Generated Files/winrt/Windows.UI.Core.h>
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -50,5 +52,30 @@ namespace winrt::OsuPlayer::implementation
     {
         return s_songItems;
         
+    }
+
+    winrt::Windows::Foundation::IAsyncAction MyMusicViewModel::ShowPropertyOf(int index, int versionIndex)
+    {
+        auto const& songItem = MyMusicModel::get(index);
+
+        
+       
+        OsuPlayer::SongItemDialog content;
+        OsuPlayer::SongPropertyViewModel model;
+        auto result = co_await std::async(std::launch::async, [&]() {return songItem.Tags(versionIndex); });
+        model.Tags(winrt::to_hstring(result));
+        model.Bitrate(winrt::to_hstring(songItem.BitRate()) + L" kbps");
+        model.SongPath(songItem.VersionFiles()[versionIndex].Path());
+        model.Title(songItem.SongName());
+
+
+        co_await winrt::resume_foreground(winrt::Windows::ApplicationModel::Core::CoreApplication::MainView().CoreWindow().Dispatcher());
+        winrt::Windows::UI::Xaml::Controls::ContentDialog propertyDialog;
+        
+        content.ViewModel(model);
+       
+        propertyDialog.Content(content);
+        propertyDialog.CloseButtonText(L"Close");
+        co_await propertyDialog.ShowAsync();
     }
 }

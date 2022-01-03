@@ -7,6 +7,6 @@ namespace OsuPlayer
     {
         SongItemDialog();
 
-        SongPropertyViewModel ViewModel{ get; };
+        SongPropertyViewModel ViewModel{ get; set; };
     }
 }

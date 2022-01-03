@@ -1,0 +1,21 @@
+namespace OsuPlayer
+{
+    runtimeclass GroupedData
+    {
+        GroupedData();
+        String Title{ get; set; };
+        Windows.Foundation.Collections.IObservableVector<Windows.UI.Xaml.Controls.Button> data{get; };
+    }
+
+    [default_interface]
+    runtimeclass ArtistView : Windows.UI.Xaml.Controls.Page
+    {
+        ArtistView();
+        
+        /*Resource */
+        Windows.UI.Xaml.Data.CollectionViewSource AlphabetGroups{ get; };
+
+        Windows.Foundation.Collections.IObservableVector<GroupedData> groups{ get; };
+        
+    }
+}

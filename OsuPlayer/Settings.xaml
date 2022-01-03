@@ -30,9 +30,12 @@
 
             <TextBlock Text="Default Mods" FontSize="30"/>
             <muxc:RadioButtons>
-                <RadioButton x:Name="HalfTimeButton" Content="HT" Checked="HalfTimeButton_Checked" Unchecked="HalfTimeButton_Unchecked"/>
-                <RadioButton x:Name="DoubleTimeButton" Content="DT" Checked="DoubleTimeButton_Checked" Unchecked="DoubleTimeButton_Unchecked"/>
-                <RadioButton x:Name="NightCoreButton" Content="NC" Checked="NightCoreButton_Checked" Unchecked="NightCoreButton_Unchecked"/>
+                <RadioButton x:Name="HalfTimeButton" Content="HT" Checked="HalfTimeButton_Checked" Unchecked="HalfTimeButton_Unchecked"
+                             ToolTipService.ToolTip="Less Zoom"/>
+                <RadioButton x:Name="DoubleTimeButton" Content="DT" Checked="DoubleTimeButton_Checked" Unchecked="DoubleTimeButton_Unchecked"
+                             ToolTipService.ToolTip="Zoooooooooom..."/>
+                <RadioButton x:Name="NightCoreButton" Content="NC" Checked="NightCoreButton_Checked" Unchecked="NightCoreButton_Unchecked"
+                             ToolTipService.ToolTip="Uguuuuuuuuuu..."/>
             </muxc:RadioButtons>
 
 

@@ -1,0 +1,9 @@
+namespace OsuPlayer
+{
+    [default_interface]
+    runtimeclass CollectionView : Windows.UI.Xaml.Controls.Page
+    {
+        CollectionView();
+        Int32 MyProperty;
+    }
+}

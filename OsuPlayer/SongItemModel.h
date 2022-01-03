@@ -19,7 +19,7 @@ public:
 	winrt::Windows::Media::Core::MediaSource Source() const;
 	winrt::Windows::Foundation::DateTime DateModified() const;
 	winrt::Windows::Foundation::DateTime DateCreated() const;
-
+	std::string Tags(int versionIndex) const;
 	int BitRate() const;
 private:
 	void handleOsuFile(winrt::Windows::Storage::StorageFile&& file);

@@ -162,3 +162,8 @@ void MyMusicModel::OnIndexingFinished(std::function<void(std::vector<SongItemMod
 		handler(m_songs);
 	s_handlers.emplace_back(std::move(handler));
 }
+
+SongItemModel& MyMusicModel::get(int index)
+{
+	return m_songs[index];
+}
