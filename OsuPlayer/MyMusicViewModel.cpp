@@ -25,7 +25,7 @@ namespace winrt::OsuPlayer::implementation
                     viewModel.Singer(song.Singer());
                     viewModel.Length(song.Length());
                     viewModel.Mapper(song.Mapper());
-                    auto& versions = viewModel.Versions();
+                    auto versions = viewModel.Versions();
                     for (auto const& path : song.VersionFiles())
                     {
                         versions.Append(path.Path());
@@ -62,7 +62,9 @@ namespace winrt::OsuPlayer::implementation
        
         OsuPlayer::SongItemDialog content;
         OsuPlayer::SongPropertyViewModel model;
-        auto result = co_await std::async(std::launch::async, [&]() {return songItem.Tags(versionIndex); });
+
+        auto future = std::async(std::launch::async, [&]() {return songItem.Tags(versionIndex); });
+        auto result = co_await future;
         model.Tags(winrt::to_hstring(result));
         model.Bitrate(winrt::to_hstring(songItem.BitRate()) + L" kbps");
         model.SongPath(songItem.VersionFiles()[versionIndex].Path());

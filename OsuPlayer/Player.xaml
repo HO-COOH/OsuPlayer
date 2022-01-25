@@ -15,6 +15,13 @@
                 <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="{TemplateBinding Height}"/>
             </Grid>
         </ControlTemplate>
+
+        <Style x:Key="ControlButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="45"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="CornerRadius" Value="30"/>
+            <Setter Property="Background" Value="{ThemeResource SystemControlTransparentRevealBackgroundBrush}"/>
+        </Style>
     </UserControl.Resources>
 
     <Grid HorizontalAlignment="Stretch">
@@ -33,31 +40,33 @@
             <StackPanel x:Name="PlayerControls" Orientation="Vertical" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" VerticalAlignment="Center" HorizontalAlignment="Stretch">
             
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Button x:Name="PreviousSongButton" Click="PreviousSongButton_Click">
+                    <Button x:Name="PreviousSongButton" Click="PreviousSongButton_Click" Style="{StaticResource ControlButtonStyle}">
                         <SymbolIcon Symbol="Previous"/>
                     </Button>
-                
-                    <Button x:Name="PlayButton" Click="PlayButton_Click">
+
+                    <Button x:Name="PlayButton" Click="PlayButton_Click" Style="{StaticResource ControlButtonStyle}">
                         <SymbolIcon x:Name="PlayButtonIcon" Symbol="Play"/>
                     </Button>
 
-                    <Button x:Name="NextSongButton" Click="NextSongButton_Click">
+                    <Button x:Name="NextSongButton" Click="NextSongButton_Click" Style="{StaticResource ControlButtonStyle}">
                         <SymbolIcon Symbol="Next"/>
                     </Button>
-                
-                    <TextBlock x:Name="SongLengthText" Text="0:00" HorizontalAlignment="Right"/>
 
-                    <muxc:SplitButton x:Name="MuteButton" Click="MuteButton_Click" HorizontalAlignment="Right">
+                    <TextBlock x:Name="ProgressText" Text="{x:Bind ViewModel.ProgressString, Mode=OneWay}"  VerticalAlignment="Center"  Margin="50,0,0,0"/>
+                    <TextBlock Text="/" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="SongLengthText" Text="{x:Bind ViewModel.SongLengthString, Mode=OneWay}"  VerticalAlignment="Center" />
+
+                    <muxc:SplitButton x:Name="MuteButton" Click="MuteButton_Click" HorizontalAlignment="Right" Margin="50,0,0,0">
                         <SymbolIcon x:Name="MuteButtonSymbol" Symbol="Mute"/>
                         <muxc:SplitButton.Flyout>
                             <Flyout Placement="Top">
-                                <Slider x:Name="VolumeSlider" Orientation="Vertical" Height="100" Width="20" ValueChanged="VolumeSlider_ValueChanged"/>
+                                <Slider x:Name="VolumeSlider" Orientation="Vertical" Height="100" Width="20" Value="{x:Bind ViewModel.Volume, Mode=TwoWay}"/>
                             </Flyout>
                         </muxc:SplitButton.Flyout>
                     </muxc:SplitButton>
                 </StackPanel>
 
-                <Slider x:Name="PlayingSlider" Minimum="0.0"/>
+                <Slider x:Name="PlayingSlider" Minimum="0" Maximum="{x:Bind ViewModel.SongLength, Mode=OneWay}" Value="{x:Bind ViewModel.Progress, Mode=OneWay}"/>
 
             </StackPanel>
         

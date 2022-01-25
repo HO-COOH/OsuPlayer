@@ -1,17 +1,23 @@
 #include "pch.h"
 #include "PlayerModel.h"
-#include <winrt/Windows.Media.h>
-#include <winrt/Windows.Media.Playback.h>
 #include <winrt/Windows.Storage.h>
+#include "Log.h"
 
-void PlayerModel::Play()
+bool PlayerModel::Play()
 {
     m_songPlayer.Play();
+    return static_cast<bool>(m_songPlayer.Source());
 }
 
 void PlayerModel::Source(winrt::Windows::Storage::StorageFile file)
 {
-    m_songPlayer.Source(winrt::Windows::Media::Core::MediaSource::CreateFromStorageFile(file));
+    Source(winrt::Windows::Media::Core::MediaSource::CreateFromStorageFile(file));
+}
+
+void PlayerModel::Source(winrt::Windows::Media::Core::MediaSource source)
+{
+    m_songPlayer.Pause();
+    m_songPlayer.Source(source);
     m_songPlayer.Play();
 }
 

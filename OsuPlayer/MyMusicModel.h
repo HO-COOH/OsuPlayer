@@ -7,6 +7,7 @@
 #include "SettingsModel.h"
 #include <functional>
 #include <array>
+#include "CollectionItemModel.h"
 
 
 class MyMusicModel
@@ -59,6 +60,8 @@ public:
 
 	inline static SortOrder m_sortOrder;
 	inline static SortBy m_sortBy;
+
+	inline static std::vector<CollectionItemModel> m_collections;
 private:
 
 	
@@ -73,6 +76,7 @@ private:
 	void sortByTitle();
 
 	inline static std::vector<SongItemModel> m_songs;
+	
 
 	inline static std::vector<std::future<void>> m_indexingFutures;
 

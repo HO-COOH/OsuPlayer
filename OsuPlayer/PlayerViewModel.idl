@@ -14,7 +14,7 @@ namespace OsuPlayer
 
     [bindable]
     [default_interface]
-    runtimeclass PlayerViewModel 
+    runtimeclass PlayerViewModel : Windows.UI.Xaml.Data.INotifyPropertyChanged
     {
         PlayerViewModel();
 
@@ -27,5 +27,11 @@ namespace OsuPlayer
         Boolean UseSkinHitsound{ get; set; };
         Int32 Volume{ get; set; };
         Windows.UI.Xaml.Media.ImageSource ImageSource{ get; };
+
+        String ProgressString{ get; };
+        String SongLengthString{ get; };
+
+        Int32 SongLength{ get; };
+        Int32 Progress{ get; };
     }
 }

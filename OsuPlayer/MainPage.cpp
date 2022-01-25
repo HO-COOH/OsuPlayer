@@ -16,6 +16,7 @@ namespace winrt::OsuPlayer::implementation
             [this](std::vector<SongItemModel> const& songs)
             {
                 MyMusicInfoBadge().Value(songs.size());
+                CollectionsInfoBadge().Value(MyMusicModel::m_collections.size());
             }
         );
     }

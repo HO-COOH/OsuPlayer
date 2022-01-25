@@ -34,6 +34,9 @@
     <Page Include="ArtistView.xaml">
       <Filter>Views</Filter>
     </Page>
+    <Page Include="CollectionView.xaml">
+      <Filter>Views</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -60,6 +63,9 @@
       <Filter>ViewModels</Filter>
     </Midl>
     <Midl Include="SongPropertyViewModel.idl">
+      <Filter>ViewModels</Filter>
+    </Midl>
+    <Midl Include="CollectionItemViewModel.idl">
       <Filter>ViewModels</Filter>
     </Midl>
   </ItemGroup>
@@ -93,6 +99,9 @@
       <Filter>Utility</Filter>
     </ClCompile>
     <ClCompile Include="PlayerModel.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="CollectionItemModel.cpp">
       <Filter>Models</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,6 +143,10 @@
     </ClInclude>
     <ClInclude Include="FileStreamAdaptor.hpp">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="OsuDBParser.hpp" />
+    <ClInclude Include="CollectionItemModel.h">
+      <Filter>Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

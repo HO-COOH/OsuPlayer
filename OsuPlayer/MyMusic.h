@@ -9,10 +9,10 @@ namespace winrt::OsuPlayer::implementation
         
         MyMusic();
 
-        void Category_ItemInvoked(
-            winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender,
-            winrt::Microsoft::UI::Xaml::Controls::NavigationViewItemInvokedEventArgs const& args
-        );
+        //void Category_ItemInvoked(
+        //    winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender,
+        //    winrt::Microsoft::UI::Xaml::Controls::NavigationViewItemInvokedEventArgs const& args
+        //);
 
         void OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const& e);
 

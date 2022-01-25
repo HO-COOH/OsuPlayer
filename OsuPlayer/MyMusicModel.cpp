@@ -128,7 +128,7 @@ void MyMusicModel::sortByTitle()
 winrt::Windows::Foundation::IAsyncAction MyMusicModel::StartIndexing()
 {
 	//Indexing every osu folder if necessary
-	for (auto const& osuFolder : SettingsModel::m_osuFolders)
+	for (auto const& osuFolder : SettingsModel::OsuFolders())
 	{
 		auto songFolders = co_await osuFolder.GetFoldersAsync();
 		co_await std::async(
@@ -148,12 +148,28 @@ winrt::Windows::Foundation::IAsyncAction MyMusicModel::StartIndexing()
 		);
 	}
 
+	//handle collections
+	{
+		auto const& collectionFile = SettingsModel::GetLocalData<SettingsModel::LocalDataType::CollectionDB>();
+		auto const& osuDbFile = SettingsModel::GetLocalData<SettingsModel::LocalDataType::OsuDB>();
+
+		assert(collectionFile.size() == osuDbFile.size());
+		for (auto i = 0; i < osuDbFile.size(); ++i)
+		{
+			StreambufAdaptor osuDbBuf{ osuDbFile[i] };
+			auto collectionItemModel = GetCollectionItemModel(Db::Osu{ osuDbBuf.getBuffer()}.getBeatmapSet(), collectionFile[i]);
+			std::move(collectionItemModel.begin(), collectionItemModel.end(), std::back_inserter(m_collections));
+		}
+	}
+
+
 	//Call event handlers
 	for (auto& handler : s_handlers)
 	{
 		co_await winrt::resume_foreground(winrt::Windows::ApplicationModel::Core::CoreApplication::MainView().CoreWindow().Dispatcher());
 		handler(m_songs);
 	}
+
 }
 
 void MyMusicModel::OnIndexingFinished(std::function<void(std::vector<SongItemModel>const&)> handler)

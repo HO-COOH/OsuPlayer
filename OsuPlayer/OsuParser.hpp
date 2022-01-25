@@ -1674,6 +1674,11 @@ struct Metadata
         }
     }
 
+    Metadata(std::istream&& s, bool partial = true)
+        : Metadata(s, partial)
+    {
+    }
+
     /**
      * @brief Default constructor, all members set to empty.
      */

@@ -1,9 +1,12 @@
+import "CollectionItemViewModel.idl";
 namespace OsuPlayer
 {
     [default_interface]
     runtimeclass CollectionView : Windows.UI.Xaml.Controls.Page
     {
         CollectionView();
-        Int32 MyProperty;
+
+        //Windows.UI.Xaml.Data.CollectionViewSource CollectionsCVS{ get; };
+        Windows.Foundation.Collections.IObservableVector<CollectionItemViewModel> CollectionItems{ get; };
     }
 }

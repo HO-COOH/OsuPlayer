@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CollectionView.g.h"
+#include "CollectionItemViewModel.g.h"
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -8,10 +9,9 @@ namespace winrt::OsuPlayer::implementation
     {
         CollectionView();
 
-        int32_t MyProperty();
-        void MyProperty(int32_t value);
-
-        void ClickHandler(Windows::Foundation::IInspectable const& sender, Windows::UI::Xaml::RoutedEventArgs const& args);
+        Windows::Foundation::Collections::IObservableVector<OsuPlayer::CollectionItemViewModel> CollectionItems();
+    private:
+        Windows::Foundation::Collections::IObservableVector<OsuPlayer::CollectionItemViewModel> m_collectionItems;
     };
 }
 

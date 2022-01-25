@@ -5,9 +5,40 @@
     xmlns:local="using:OsuPlayer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="Button" Click="ClickHandler">Click Me</Button>
-    </StackPanel>
+    <Page.Resources>
+        <!--<CollectionViewSource x:Name="CollectionsCVS" IsSourceGrouped="False" Source="{x:Bind CollectionItems}"/>-->
+
+        <DataTemplate x:Key="CollectionItemTemplate" x:DataType="local:CollectionItemViewModel">
+            <muxc:Expander IsExpanded="True"
+                           ExpandDirection="Down"
+                           Header="{x:Bind Name}"
+                           HorizontalAlignment="Stretch"
+                           >
+                <muxc:Expander.Content>
+                    <ListView ItemsSource="{x:Bind SongItems}"/>
+                </muxc:Expander.Content>
+            </muxc:Expander>
+        </DataTemplate>
+    </Page.Resources>
+    
+    <ListView ItemsSource="{x:Bind CollectionItems, Mode=OneWay}" 
+              ItemTemplate="{StaticResource CollectionItemTemplate}">
+        <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
+            </ItemsPanelTemplate>
+        </ListView.ItemsPanel>
+        <!--<ListView.GroupStyle>
+            <GroupStyle>
+                <GroupStyle.HeaderTemplate>
+                    <DataTemplate x:DataType="local:CollectionItemViewModel">
+                        <TextBlock Text="{x:Bind Name}"
+                    </DataTemplate>
+                </GroupStyle.HeaderTemplate>
+            </GroupStyle>
+        </ListView.GroupStyle>-->
+    </ListView>
 </Page>

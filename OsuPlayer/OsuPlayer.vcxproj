@@ -97,6 +97,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdcpp20</LanguageStandard>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -114,6 +116,15 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="BackgroundAcrylic.h" />
+    <ClInclude Include="CollectionItemModel.h" />
+    <ClInclude Include="CollectionItemViewModel.h">
+      <DependentUpon>CollectionItemViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="CollectionView.h">
+      <DependentUpon>CollectionView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="DataLoader.h" />
     <ClInclude Include="FileStreamAdaptor.hpp" />
     <ClInclude Include="Log.h" />
@@ -130,6 +141,7 @@
       <DependentUpon>MyMusicViewModel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="OsuDBParser.hpp" />
     <ClInclude Include="OsuParser.hpp" />
     <ClInclude Include="OsuPathItem.h">
       <DependentUpon>OsuPathItem.xaml</DependentUpon>
@@ -205,6 +217,9 @@
     <Page Include="ArtistView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="CollectionView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -253,6 +268,15 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="BackgroundAcrylic.cpp" />
+    <ClCompile Include="CollectionItemModel.cpp" />
+    <ClCompile Include="CollectionItemViewModel.cpp">
+      <DependentUpon>CollectionItemViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="CollectionView.cpp">
+      <DependentUpon>CollectionView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="DataLoader.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="MainViewModel.cpp">
@@ -342,6 +366,13 @@
     </Midl>
     <Midl Include="ArtistView.idl">
       <DependentUpon>ArtistView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="CollectionItemViewModel.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="CollectionView.idl">
+      <DependentUpon>CollectionView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="MainPage.idl">

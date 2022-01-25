@@ -18,6 +18,7 @@ namespace winrt::OsuPlayer::implementation
     void MyMusic::OnSongItemEvent(SongItem item)
     {
         auto mainPage = Utils::FindParent<MainPage>(*this);
+        
         mainPage.player().ViewModel().Play(item);
     }
 
@@ -37,9 +38,14 @@ namespace winrt::OsuPlayer::implementation
     void MyMusic::Category_SelectionChanged(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender, winrt::Microsoft::UI::Xaml::Controls::NavigationViewSelectionChangedEventArgs const& args)
     {
         auto&& invokedItem = args.SelectedItemContainer();
-        if (invokedItem.Name() == L"ArtistsCategoryItem")
+        auto&& name = invokedItem.Name();
+        if (name == L"ArtistsCategoryItem")
         {
             MusicListFrame().Navigate(::xaml_typename<OsuPlayer::ArtistView>());
+        }
+        else if (name == L"CollectionsCategoryItem")
+        {
+            MusicListFrame().Navigate(::xaml_typename<OsuPlayer::CollectionView>());
         }
     }
 
@@ -49,18 +55,18 @@ namespace winrt::OsuPlayer::implementation
     }
 
 
-    void MyMusic::Category_ItemInvoked(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender, winrt::Microsoft::UI::Xaml::Controls::NavigationViewItemInvokedEventArgs const& args)
-    {
-        auto&& invokedItem = args.InvokedItemContainer();
-        if (invokedItem.IsSelected())
-            return;
+    //void MyMusic::Category_ItemInvoked(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender, winrt::Microsoft::UI::Xaml::Controls::NavigationViewItemInvokedEventArgs const& args)
+    //{
+    //    auto&& invokedItem = args.InvokedItemContainer();
+    //    if (invokedItem.IsSelected())
+    //        return;
 
-        if (invokedItem.Name() == L"ArtistsCategoryItem")
-        {
-            MusicListFrame().Navigate(::xaml_typename<OsuPlayer::ArtistView>());
-        }
+    //    if (invokedItem.Name() == L"ArtistsCategoryItem")
+    //    {
+    //        MusicListFrame().Navigate(::xaml_typename<OsuPlayer::ArtistView>());
+    //    }
 
-    }
+    //}
 
 
 

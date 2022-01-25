@@ -1,14 +1,15 @@
 namespace OsuPlayer
 {
-    runtimeclass GroupedData
+    runtimeclass GroupedData : Windows.UI.Xaml.Data.INotifyPropertyChanged
     {
         GroupedData();
         String Title{ get; set; };
-        Windows.Foundation.Collections.IObservableVector<Windows.UI.Xaml.Controls.Button> data{get; };
+        Windows.Foundation.Collections.IObservableVector<String> data{ get; set; };
+        void Raise();
     }
 
     [default_interface]
-    runtimeclass ArtistView : Windows.UI.Xaml.Controls.Page
+    runtimeclass ArtistView : Windows.UI.Xaml.Controls.Page, Windows.UI.Xaml.Data.INotifyPropertyChanged
     {
         ArtistView();
         
