@@ -10,5 +10,7 @@ namespace OsuPlayer
         
         String Name{ get; set; };
         Windows.Foundation.Collections.IObservableVector<SongItem> SongItems{ get; };
+
+        Int32 Count{ get; };
     }
 }

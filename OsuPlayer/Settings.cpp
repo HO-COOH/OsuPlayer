@@ -145,6 +145,22 @@ namespace winrt::OsuPlayer::implementation
     {
         m_model.DefaultMod(Mod::Normal);
     }
+
+    winrt::Windows::Foundation::IAsyncAction Settings::AllowModifyOsuDataCheckbox_Checked(
+        winrt::Windows::Foundation::IInspectable const& sender,
+        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    {
+        auto result = co_await ExperimentFeatureWarningDialog().ShowAsync();
+        if (result != winrt::Windows::UI::Xaml::Controls::ContentDialogResult::Secondary)
+        {
+            //Do not allow modifying osu! data
+            AllowModifyOsuDataCheckbox().IsChecked(false);
+        }
+        else
+        {
+            //Allow modifying osu! data
+
+        }
+    }
+
 }
-
-

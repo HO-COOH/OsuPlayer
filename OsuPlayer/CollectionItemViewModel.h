@@ -12,6 +12,8 @@ namespace winrt::OsuPlayer::implementation
         void Name(winrt::hstring name);
 
         Windows::Foundation::Collections::IObservableVector<OsuPlayer::SongItem> SongItems();
+
+        int Count();
     private:
         winrt::hstring m_name;
         Windows::Foundation::Collections::IObservableVector<OsuPlayer::SongItem> m_songItems = winrt::single_threaded_observable_vector<OsuPlayer::SongItem>();

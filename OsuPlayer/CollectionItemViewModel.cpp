@@ -18,4 +18,8 @@ namespace winrt::OsuPlayer::implementation
 	{
 		return m_songItems;
 	}
+	int CollectionItemViewModel::Count()
+	{
+		return m_songItems.Size();
+	}
 }

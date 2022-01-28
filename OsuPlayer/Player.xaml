@@ -44,7 +44,7 @@
                         <SymbolIcon Symbol="Previous"/>
                     </Button>
 
-                    <Button x:Name="PlayButton" Click="PlayButton_Click" Style="{StaticResource ControlButtonStyle}">
+                    <Button x:Name="PlayButton" Click="PlayButton_Click" Style="{StaticResource ControlButtonStyle}" Margin="10,0,10,0">
                         <SymbolIcon x:Name="PlayButtonIcon" Symbol="Play"/>
                     </Button>
 

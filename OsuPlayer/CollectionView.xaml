@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:System="using:System"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -14,16 +15,33 @@
         <DataTemplate x:Key="CollectionItemTemplate" x:DataType="local:CollectionItemViewModel">
             <muxc:Expander IsExpanded="True"
                            ExpandDirection="Down"
-                           Header="{x:Bind Name}"
-                           HorizontalAlignment="Stretch"
-                           >
+                           HorizontalAlignment="Stretch">
+                
+                <muxc:Expander.HeaderTemplate>
+                    <DataTemplate x:DataType="local:CollectionItemViewModel">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{x:Bind Name}" Grid.Column="0" HorizontalAlignment="Left"/>
+                            <muxc:InfoBadge Value="{x:Bind Count}" Grid.Column="1" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </DataTemplate>
+                </muxc:Expander.HeaderTemplate>
+                
                 <muxc:Expander.Content>
                     <ListView ItemsSource="{x:Bind SongItems}"/>
                 </muxc:Expander.Content>
             </muxc:Expander>
         </DataTemplate>
     </Page.Resources>
-    
+
+
+    <StackPanel>
+        <Popup IsOpen="True">
+            <TextBlock Text="Pop up!" FontSize="50"/>
+        </Popup>
     <ListView ItemsSource="{x:Bind CollectionItems, Mode=OneWay}" 
               ItemTemplate="{StaticResource CollectionItemTemplate}">
         <ListView.ItemsPanel>
@@ -41,4 +59,5 @@
             </GroupStyle>
         </ListView.GroupStyle>-->
     </ListView>
+    </StackPanel>
 </Page>

@@ -68,6 +68,9 @@
     <Midl Include="CollectionItemViewModel.idl">
       <Filter>ViewModels</Filter>
     </Midl>
+    <Midl Include="RecentViewModel.idl">
+      <Filter>ViewModels</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -104,6 +107,7 @@
     <ClCompile Include="CollectionItemModel.cpp">
       <Filter>Models</Filter>
     </ClCompile>
+    <ClCompile Include="ViewModelLocator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -148,6 +152,7 @@
     <ClInclude Include="CollectionItemModel.h">
       <Filter>Models</Filter>
     </ClInclude>
+    <ClInclude Include="ViewModelLocator.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

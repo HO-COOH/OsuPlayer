@@ -200,6 +200,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="HighlightButtonStyle" TargetType="Button">
+            <Style.Setters>
+                <Setter Property="Background" Value="OrangeRed"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Style.Setters>
+        </Style>
     </Page.Resources>
 
     <Grid>
@@ -262,19 +269,37 @@
 
             <Frame x:Name="MusicListFrame" Background="{ThemeResource SystemControlAcrylicWindowBrush}">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <muxc:ProgressBar HorizontalAlignment="Stretch" IsIndeterminate="True" Grid.Row="0"/>
-                    <ListView x:Name="MusicList" 
-                              HorizontalAlignment="Stretch"
-                              ItemsSource="{x:Bind ViewModel.Songs}"
-                              Grid.Row="1"
+                    <Grid VerticalAlignment="Top" Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Horizontal" Grid.Column="0">
+                            <CheckBox x:Name="MultiSelectionCheckBox" Content="1 item selected"/>
+                            <Button x:Name="ClearSelectionButton" Content="Clear" Background="OrangeRed"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+                            <Button x:Name="Other" Content="Clear" Background="OrangeRed"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <muxc:ProgressBar HorizontalAlignment="Stretch" IsIndeterminate="True" Grid.Row="0"/>
+                        <ListView x:Name="MusicList" 
+                                  HorizontalAlignment="Stretch"
+                                  ItemsSource="{x:Bind ViewModel.Songs}"
+                                  Grid.Row="1"
                               
-                    >
-                        <!--songs--> 
-                    </ListView>
+                        >
+                            <!--songs--> 
+                        </ListView>
+                    </Grid>
                 </Grid>
             </Frame>
 

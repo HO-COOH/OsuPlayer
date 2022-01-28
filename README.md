@@ -29,6 +29,9 @@ MainPage:
 Settings:
 ![](screenshots/Settings.png)
 
+Collections:
+![](screenshots/Collections.png)
+
 Currently I am limited by the unresolved WinUI related bugs:
 - [CollectionViewSource ItemsPath binding not working with public fields](https://github.com/microsoft/microsoft-ui-xaml/issues/6619)
 

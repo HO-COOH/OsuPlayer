@@ -10,6 +10,13 @@
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     >
 
+    <Page.Resources>
+        <ContentDialog x:Name="ExperimentFeatureWarningDialog" Title="Be careful!"
+                       PrimaryButtonText="I don't mean that!" SecondaryButtonText="I understand!"
+                       DefaultButton="Primary" Content="This is an expriment feature that will probably break your local osu! data! Are you sure you want to do that?">
+        </ContentDialog>
+    </Page.Resources>
+
     <ScrollViewer>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20, 40">
             <TextBlock Text="Settings" FontSize="50"/>
@@ -74,6 +81,10 @@
 
             <TextBlock Text="Clear All" FontSize="30"/>
             <ToggleButton x:Name="ClearAllButton" Content="Clear all" Click="ClearAllButton_Click"/>
+
+            <TextBlock Text="Experimental" FontSize="30" Foreground="Red"/>
+            <CheckBox x:Name="AllowModifyOsuDataCheckbox" Content="Allow modifying osu! data" ToolTipService.ToolTip="Modifying osu! data as you edit your play list"
+                      Checked="AllowModifyOsuDataCheckbox_Checked"/>
         </StackPanel>
     </ScrollViewer>
 </Page>

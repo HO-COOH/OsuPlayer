@@ -1,0 +1,10 @@
+namespace OsuPlayer
+{
+    [bindable]
+    [default_interface]
+    runtimeclass RecentViewModel 
+    {
+        RecentViewModel();
+        Int32 MyProperty;
+    }
+}

@@ -9,5 +9,8 @@ namespace OsuPlayer
         
         //The view-model
         SettingsViewModel ViewModel{ get; };
+        
+        //Resource
+        Windows.UI.Xaml.Controls.ContentDialog ExperimentFeatureWarningDialog{ get; };
     }
 }

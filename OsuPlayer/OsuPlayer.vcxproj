@@ -172,6 +172,10 @@
       <DependentUpon>Recent.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="RecentViewModel.h">
+      <DependentUpon>RecentViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="SearchModel.h" />
     <ClInclude Include="SearchPage.h">
       <DependentUpon>SearchPage.xaml</DependentUpon>
@@ -209,6 +213,7 @@
     </ClInclude>
     <ClInclude Include="ThemeHelper.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="ViewModelLocator.h" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -323,6 +328,10 @@
       <DependentUpon>Recent.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="RecentViewModel.cpp">
+      <DependentUpon>RecentViewModel.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="SearchModel.cpp" />
     <ClCompile Include="SearchPage.cpp">
       <DependentUpon>SearchPage.xaml</DependentUpon>
@@ -359,6 +368,7 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="ThemeHelper.cpp" />
+    <ClCompile Include="ViewModelLocator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl">
@@ -405,6 +415,9 @@
     <Midl Include="Recent.idl">
       <DependentUpon>Recent.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="RecentViewModel.idl">
+      <SubType>Designer</SubType>
     </Midl>
     <Midl Include="SearchPage.idl">
       <DependentUpon>SearchPage.xaml</DependentUpon>
