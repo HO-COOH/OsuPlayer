@@ -94,6 +94,13 @@ void App::OnLaunched(LaunchActivatedEventArgs const& e)
             Window::Current().Activate();
         }
     }
+
+    enum class A
+    {
+        a,b,c
+    };
+    struct B {};
+    auto v = winrt::box_value(B{});
 }
 
 /// <summary>
