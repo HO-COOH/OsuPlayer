@@ -1,3 +1,4 @@
+//Docs: https://github.com/ppy/osu/wiki/Legacy-database-file-structure#osudb-format
 #pragma once
 #include <fstream>
 #include <vector>
@@ -52,21 +53,32 @@ namespace Db
     class TrivialParsable
     {
         Underlying value{};
+        static constexpr inline auto bytes = sizeof(Underlying);
     public:
         TrivialParsable() = default;
 
         TrivialParsable(unsigned char const*& ptr) :
             value(*reinterpret_cast<Underlying const*>(ptr))
         {
-            ptr += sizeof(Underlying);
+            ptr += bytes;
         }
 
+        TrivialParsable(Underlying value) : value{ value }
+        {
+        }
 
         constexpr operator Underlying() const
         {
             return value;
         }
+
+        void write(unsigned char*& ptr) const
+        {
+            memcpy(ptr, &value, bytes);
+            ptr += bytes;
+        }
     };
+
     using Byte = TrivialParsable<unsigned char>;
     using Short = TrivialParsable<short>;
     using Int = TrivialParsable<int32_t>;
@@ -100,6 +112,21 @@ namespace Db
         return result;
     }
 
+    template<typename T>
+    void WriteArrayWithCount(unsigned char*& ptr, std::vector<T> const& data)
+    {
+        Int{ static_cast<int>(data.size()) }.write(ptr);
+        for (auto const& element : data)
+            element.write(ptr);
+    }
+
+    template<typename T>
+    void WriteArrayWithoutCount(unsigned char*& ptr, std::vector<T> const& data)
+    {
+        for (auto const& element : data)
+            element.write(ptr);
+    }
+
     inline std::unique_ptr<unsigned char[]> LoadBinaryFromStream(std::istream&& fs)
     {
         size_t const bytes = fs.seekg(0, std::ios_base::end).tellg();
@@ -119,9 +146,18 @@ namespace Db
 
     class ULEB128
     {
-        uint64_t value{};
+        uint64_t m_value{};
+
+        constexpr static inline unsigned char LOW_7_BIT_MASK = 0x7f;
+        constexpr static inline unsigned char HIGHEST_BIT_MASK = 0x80;
+
     public:
         ULEB128() = default;
+
+        ULEB128(uint64_t value) : m_value{ value }
+        {
+        }
+
         ULEB128(unsigned char const*& ptr)
         {
             unsigned long result = 0;
@@ -134,18 +170,33 @@ namespace Db
                 ptr++;
                 count++;
 
-                result |= (byte & 0x7f) << shift;
+                result |= (byte & LOW_7_BIT_MASK) << shift;
                 shift += 7;
 
-                if (!(byte & 0x80)) break;
+                if (!(byte & HIGHEST_BIT_MASK)) break;
             }
 
-            value = result;
+            m_value = result;
         }
 
         operator uint64_t() const
         {
-            return value;
+            return m_value;
+        }
+
+        void write(unsigned char*& ptr) const
+        {
+            auto valueCopy = m_value;
+            do
+            {
+                unsigned char byte = valueCopy & LOW_7_BIT_MASK; //low order 7 bits
+                valueCopy >>= 7;
+                if(valueCopy != 0)
+                    byte |= HIGHEST_BIT_MASK; //there are more bytes, set the highest bit
+
+                *ptr = byte;
+                ++ptr;
+            } while (valueCopy != 0);
         }
     };
 
@@ -162,6 +213,15 @@ namespace Db
 
             ULEB128 bytes{ ptr };
             (std::string&)(*this) = std::string{ reinterpret_cast<char const*>(ptr), bytes };
+            ptr += bytes;
+        }
+
+        void write(unsigned char*& ptr) const
+        {
+            auto const& stringBase = static_cast<std::string const&>(*this);
+            auto const bytes = stringBase.size();
+            ULEB128{ bytes }.write(ptr);
+            memcpy(ptr, &stringBase.front(), bytes);
             ptr += bytes;
         }
     };
@@ -187,6 +247,17 @@ namespace Db
             ptr += 8;
         }
 
+        void write(unsigned char*& ptr) const
+        {
+            *ptr = 0x08;    //first byte is 0x08
+            ++ptr;
+            *reinterpret_cast<Int*>(ptr) = first; //followed by an Int
+            ptr += sizeof(Int);
+            *ptr = 0x0d;    //this byte is 0x0d
+            ++ptr;
+            *reinterpret_cast<Double*>(ptr) = second;   //
+            ptr += sizeof(Double);
+        }
     };
 
     class TimingPoint
@@ -203,6 +274,12 @@ namespace Db
         {
         }
 
+        void write(unsigned char*& ptr) const
+        {
+            bpm.write(ptr);
+            offset.write(ptr);
+            uninherited.write(ptr);
+        }
     };
 
     class DateTime
@@ -214,6 +291,12 @@ namespace Db
             : ticks{ *reinterpret_cast<int64_t const*>(ptr) }
         {
             ptr += sizeof(int64_t);
+        }
+
+        void write(unsigned char*& ptr) const
+        {
+            memcpy(ptr, &ticks, sizeof(ticks));
+            ptr += sizeof(ticks);
         }
     };
 
@@ -361,6 +444,63 @@ namespace Db
         {
             return md5 == otherMd5;
         }
+
+        void write(unsigned char*& ptr) const
+        {
+            artistName.write(ptr);
+            artistNameUnicode.write(ptr);
+            songTitle.write(ptr);
+            songTitleUnicode.write(ptr);
+            creator.write(ptr);
+            difficulty.write(ptr);
+            audioFileName.write(ptr);
+            md5.write(ptr);
+            osuFileName.write(ptr);
+            TrivialParsable<unsigned char>{static_cast<unsigned char>(rankStatus)}.write(ptr);
+            numHitCircles.write(ptr);
+            numSliders.write(ptr);
+            numSpinners.write(ptr);
+            lastModified.write(ptr);
+            approachRate.write(ptr);
+            circleSize.write(ptr);
+            hpDrainRate.write(ptr);
+            overallDifficulty.write(ptr);
+            sliderVelocity.write(ptr);
+            WriteArrayWithCount(ptr, stdModStarRating);
+            WriteArrayWithCount(ptr, taikoModStarRating);
+            WriteArrayWithCount(ptr, ctbModStarRating);
+            WriteArrayWithCount(ptr, maniaModStarRating);
+            drainTime.write(ptr);
+            totalTime.write(ptr);
+            previewTime.write(ptr);
+            WriteArrayWithCount(ptr, timingPoints);
+            difficultyId.write(ptr);
+            beatmapId.write(ptr);
+            threadId.write(ptr);
+            stdGrade.write(ptr);
+            taikoGrade.write(ptr);
+            ctbGrade.write(ptr);
+            maniaGrade.write(ptr);
+            localOffset.write(ptr);
+            stackLeniency.write(ptr);
+            TrivialParsable<unsigned char>{static_cast<unsigned char>(mode)}.write(ptr);
+            songSource.write(ptr);
+            songTags.write(ptr);
+            onlineOffset.write(ptr);
+            font.write(ptr);
+            unplayed.write(ptr);
+            lastPlayed.write(ptr);
+            isOsz2.write(ptr);
+            folderName.write(ptr);
+            lastChecked.write(ptr);
+            ignoreBitmapSound.write(ptr);
+            ignoreSkin.write(ptr);
+            disableStoryboard.write(ptr);
+            disableVideo.write(ptr);
+            visualOverride.write(ptr);
+            lastModified2.write(ptr);
+            maniaScrollSpeed.write(ptr);
+        }
     };
 
     enum class UserPermission
@@ -458,6 +598,17 @@ namespace Db
         {
         }
 
+        void write(unsigned char*& ptr) const
+        {
+            version.write(ptr);
+            folderCount.write(ptr);
+            accountUnlocked.write(ptr);
+            unlockAccountDate.write(ptr);
+            playerName.write(ptr);
+            numBeatmaps.write(ptr);
+            WriteArrayWithoutCount(ptr, beatmaps);
+            TrivialParsable<unsigned char>{static_cast<unsigned char>(userPermission)}.write(ptr);
+        }
 
         auto getBeatmapSet() const
         {
@@ -473,6 +624,7 @@ namespace Db
         {
             String name;
             std::vector<String> md5s;
+
             Collection(unsigned char const*& ptr) : name(ptr)
             {
                 Int const count{ ptr };
@@ -481,6 +633,12 @@ namespace Db
                 {
                     md5s.emplace_back(ptr);
                 }
+            }
+
+            void write(unsigned char*& ptr) const
+            {
+                name.write(ptr);
+                WriteArrayWithCount(ptr, md5s);
             }
         };
 
@@ -507,6 +665,12 @@ namespace Db
 
         Collections(std::istream&& fs) : Collections(LoadBinaryFromStream(std::move(fs)))
         {
+        }
+
+        void write(unsigned char*& ptr)
+        {
+            version.write(ptr);
+            WriteArrayWithCount(ptr, collections);
         }
     };
 
@@ -573,6 +737,30 @@ namespace Db
                     }
                 }
 
+                void write(unsigned char*& ptr) const
+                {
+                    TrivialParsable<unsigned char>{static_cast<unsigned char>(mode)}.write(ptr);
+                    version.write(ptr);
+                    beatmapMd5.write(ptr);
+                    playerName.write(ptr);
+                    replayMd5.write(ptr);
+                    num300.write(ptr);
+                    num100.write(ptr);
+                    num50.write(ptr);
+                    numGeki.write(ptr);
+                    numKatus.write(ptr);
+                    numMiss.write(ptr);
+                    replayScore.write(ptr);
+                    maxCombo.write(ptr);
+                    perfectCombo.write(ptr);
+                    mods.write(ptr);
+                    _.write(ptr);
+                    timestamp.write(ptr);
+                    __.write(ptr);
+                    scoreId.write(ptr);
+                    if (additionalMod.has_value())
+                        additionalMod->write(ptr);
+                }
             };
 
             std::vector<Score> scores;
@@ -586,6 +774,12 @@ namespace Db
                 {
                     scores.emplace_back(ptr);
                 }
+            }
+
+            void write(unsigned char*& ptr) const
+            {
+                md5.write(ptr);
+                WriteArrayWithCount(ptr, scores);
             }
         };
 
@@ -608,6 +802,12 @@ namespace Db
 
         Scores(std::ifstream&& fs) : Scores(LoadBinaryFromFile(std::move(fs)))
         {
+        }
+
+        void write(unsigned char*& ptr) const
+        {
+            version.write(ptr);
+            WriteArrayWithCount(ptr, beatmapScores);
         }
     };
 };

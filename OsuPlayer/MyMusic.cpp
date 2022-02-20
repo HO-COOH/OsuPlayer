@@ -4,6 +4,7 @@
 #include "MyMusic.g.cpp"
 #endif
 #include "Utils.h"
+#include "ViewModelLocator.h"
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -51,7 +52,7 @@ namespace winrt::OsuPlayer::implementation
 
     OsuPlayer::MyMusicViewModel MyMusic::ViewModel()
     {
-        return m_model;
+        return ViewModelLocator::Current().MyMusicViewModel();
     }
 
 

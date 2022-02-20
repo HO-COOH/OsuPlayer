@@ -24,7 +24,7 @@ namespace winrt::OsuPlayer::implementation
         
         OsuPlayer::MyMusicViewModel ViewModel();
     private:
-        OsuPlayer::MyMusicViewModel m_model;
+        //OsuPlayer::MyMusicViewModel m_model;
 
     };
 }

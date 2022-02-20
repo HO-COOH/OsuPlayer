@@ -62,6 +62,7 @@ public:
 	inline static SortBy m_sortBy;
 
 	inline static std::vector<CollectionItemModel> m_collections;
+	
 private:
 
 	
