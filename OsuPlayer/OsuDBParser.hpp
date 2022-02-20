@@ -7,6 +7,7 @@
 #include <optional>
 #include <memory> //for std::unique_ptr
 #include <unordered_set>
+#include <numeric>
 
 namespace Db
 {
@@ -53,14 +54,18 @@ namespace Db
     class TrivialParsable
     {
         Underlying value{};
-        static constexpr inline auto bytes = sizeof(Underlying);
     public:
+        static constexpr auto bytes()
+        {
+            return sizeof(Underlying);
+        }
+
         TrivialParsable() = default;
 
         TrivialParsable(unsigned char const*& ptr) :
             value(*reinterpret_cast<Underlying const*>(ptr))
         {
-            ptr += bytes;
+            ptr += bytes();
         }
 
         TrivialParsable(Underlying value) : value{ value }
@@ -74,8 +79,8 @@ namespace Db
 
         void write(unsigned char*& ptr) const
         {
-            memcpy(ptr, &value, bytes);
-            ptr += bytes;
+            memcpy(ptr, &value, bytes());
+            ptr += bytes();
         }
     };
 
@@ -86,6 +91,7 @@ namespace Db
     using Single = TrivialParsable<float>;
     using Double = TrivialParsable<double>;
     using Boolean = TrivialParsable<unsigned char>;
+    class String;
 
     template<typename T>
     std::vector<T> GetArray(unsigned char const*& ptr)
@@ -127,6 +133,33 @@ namespace Db
             element.write(ptr);
     }
 
+    template<typename T>
+    auto GetArrayBytesWithoutCount(std::vector<T> const& data)
+    {
+        return data.front().bytes() * data.size();
+    }
+
+    template<typename T>
+    auto GetArrayBytesWithCount(std::vector<T> const& data)
+    {
+        return Int::bytes() + GetArrayBytesWithoutCount(data);
+    }
+
+    auto GetArrayBytesWithoutCount(std::vector<String> const& data)
+    {
+        return std::accumulate(
+            data.cbegin(),
+            data.cend(),
+            size_t{},
+            [](size_t val, String const& curr) { return val + curr.bytes(); }
+        );
+    }
+
+    auto GetArrayBytesWithCount(std::vector<String> const& data)
+    {
+        return Int::bytes() + GetArrayBytesWithoutCount(data);
+    }
+
     inline std::unique_ptr<unsigned char[]> LoadBinaryFromStream(std::istream&& fs)
     {
         size_t const bytes = fs.seekg(0, std::ios_base::end).tellg();
@@ -162,13 +195,11 @@ namespace Db
         {
             unsigned long result = 0;
             int shift = 0;
-            std::size_t count = 0;
 
             while (true)
             {
                 unsigned char byte = *ptr;
                 ptr++;
-                count++;
 
                 result |= (byte & LOW_7_BIT_MASK) << shift;
                 shift += 7;
@@ -198,6 +229,18 @@ namespace Db
                 ++ptr;
             } while (valueCopy != 0);
         }
+
+        auto bytes() const
+        {
+            size_t byte{};
+            auto valueCopy = m_value;
+            do 
+            {
+                valueCopy >>= 7;
+                ++byte;
+            } while (valueCopy != 0);
+            return byte;
+        }
     };
 
 
@@ -223,6 +266,12 @@ namespace Db
             ULEB128{ bytes }.write(ptr);
             memcpy(ptr, &stringBase.front(), bytes);
             ptr += bytes;
+        }
+
+        auto bytes() const
+        {
+            auto const size = static_cast<std::string const&>(*this).size();
+            return ULEB128{ size }.bytes() + size;
         }
     };
 
@@ -258,6 +307,11 @@ namespace Db
             *reinterpret_cast<Double*>(ptr) = second;   //
             ptr += sizeof(Double);
         }
+
+        static constexpr auto bytes()
+        {
+            return 1 + Int::bytes() + 1 + Double::bytes();
+        }
     };
 
     class TimingPoint
@@ -280,6 +334,11 @@ namespace Db
             offset.write(ptr);
             uninherited.write(ptr);
         }
+
+        static constexpr auto bytes()
+        {
+            return 2 * Double::bytes() + Boolean::bytes();
+        }
     };
 
     class DateTime
@@ -297,6 +356,11 @@ namespace Db
         {
             memcpy(ptr, &ticks, sizeof(ticks));
             ptr += sizeof(ticks);
+        }
+
+        static constexpr auto bytes()
+        {
+            return sizeof(ticks);
         }
     };
 
@@ -501,6 +565,63 @@ namespace Db
             lastModified2.write(ptr);
             maniaScrollSpeed.write(ptr);
         }
+
+        auto bytes() const
+        {
+            return
+                artistName.bytes() +
+                artistNameUnicode.bytes() +
+                songTitle.bytes() +
+                songTitleUnicode.bytes() +
+                creator.bytes() +
+                difficulty.bytes() +
+                audioFileName.bytes() +
+                md5.bytes() +
+                osuFileName.bytes() +
+                1 +
+                numHitCircles.bytes() +
+                numSliders.bytes() +
+                numSpinners.bytes() +
+                lastModified.bytes() +
+                approachRate.bytes() +
+                circleSize.bytes() +
+                hpDrainRate.bytes() +
+                overallDifficulty.bytes() +
+                sliderVelocity.bytes() +
+                GetArrayBytesWithCount(stdModStarRating) +
+                GetArrayBytesWithCount(taikoModStarRating) +
+                GetArrayBytesWithCount(ctbModStarRating) +
+                GetArrayBytesWithCount(maniaModStarRating) +
+                drainTime.bytes() +
+                totalTime.bytes() +
+                previewTime.bytes() +
+                GetArrayBytesWithCount(timingPoints) +
+                difficultyId.bytes() +
+                beatmapId.bytes() +
+                threadId.bytes() +
+                stdGrade.bytes() +
+                taikoGrade.bytes() +
+                ctbGrade.bytes() +
+                maniaGrade.bytes() +
+                localOffset.bytes() +
+                stackLeniency.bytes() +
+                1 +
+                songSource.bytes() +
+                songTags.bytes() +
+                onlineOffset.bytes() +
+                font.bytes() +
+                unplayed.bytes() +
+                lastPlayed.bytes() +
+                isOsz2.bytes() +
+                folderName.bytes() +
+                lastChecked.bytes() +
+                ignoreBitmapSound.bytes() +
+                ignoreSkin.bytes() +
+                disableStoryboard.bytes() +
+                visualOverride.bytes() +
+                lastModified2.bytes() +
+                maniaScrollSpeed.bytes();
+        }
     };
 
     enum class UserPermission
@@ -610,6 +731,17 @@ namespace Db
             TrivialParsable<unsigned char>{static_cast<unsigned char>(userPermission)}.write(ptr);
         }
 
+        auto bytes() const
+        {
+            return version.bytes() +
+                folderCount.bytes() +
+                accountUnlocked.bytes() +
+                playerName.bytes() +
+                numBeatmaps.bytes() +
+                GetArrayBytesWithoutCount(beatmaps) +
+                1;
+        }
+
         auto getBeatmapSet() const
         {
             return std::unordered_set(beatmaps.cbegin(), beatmaps.cend());
@@ -639,6 +771,11 @@ namespace Db
             {
                 name.write(ptr);
                 WriteArrayWithCount(ptr, md5s);
+            }
+
+            auto bytes() const
+            {
+                return name.bytes() + GetArrayBytesWithCount(md5s);
             }
         };
 
@@ -671,6 +808,11 @@ namespace Db
         {
             version.write(ptr);
             WriteArrayWithCount(ptr, collections);
+        }
+
+        auto bytes() const
+        {
+            return version.bytes() + GetArrayBytesWithCount(collections);
         }
     };
 
@@ -710,7 +852,7 @@ namespace Db
                 std::optional<Double> additionalMod;
 
                 Score(unsigned char const*& ptr) :
-                    mode(static_cast<Beatmap::ModeEnum>(static_cast<unsigned char>(Beatmap::Mode{ptr}))),
+                    mode(static_cast<Beatmap::ModeEnum>(static_cast<unsigned char>(Beatmap::Mode{ ptr }))),
                     version(ptr),
                     beatmapMd5(ptr),
                     playerName(ptr),
@@ -735,6 +877,30 @@ namespace Db
                         Double value{ ptr };
                         additionalMod = value;
                     }
+                }
+
+                auto bytes() const
+                {
+                    return 1 +
+                        version.bytes() +
+                        beatmapMd5.bytes() +
+                        playerName.bytes() +
+                        replayMd5.bytes() +
+                        num300.bytes() +
+                        num100.bytes() +
+                        num50.bytes() +
+                        numGeki.bytes() +
+                        numKatus.bytes() +
+                        numMiss.bytes() +
+                        replayScore.bytes() +
+                        maxCombo.bytes() +
+                        perfectCombo.bytes() +
+                        mods.bytes() +
+                        _.bytes() +
+                        timestamp.bytes() +
+                        __.bytes() +
+                        scoreId.bytes() +
+                        additionalMod.has_value() ? additionalMod->bytes() : 0;
                 }
 
                 void write(unsigned char*& ptr) const
@@ -781,6 +947,11 @@ namespace Db
                 md5.write(ptr);
                 WriteArrayWithCount(ptr, scores);
             }
+
+            auto bytes() const
+            {
+                return md5.size() + GetArrayBytesWithCount(scores);
+            }
         };
 
         std::vector<BeatmapScore> beatmapScores;
@@ -802,6 +973,11 @@ namespace Db
 
         Scores(std::ifstream&& fs) : Scores(LoadBinaryFromFile(std::move(fs)))
         {
+        }
+
+        auto bytes() const
+        {
+            return version.bytes() + GetArrayBytesWithCount(beatmapScores);
         }
 
         void write(unsigned char*& ptr) const
