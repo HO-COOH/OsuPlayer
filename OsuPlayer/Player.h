@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "Player.g.h"
-#include "PlayerViewModel.g.h"
+#include "ViewModel.PlayerViewModel.g.h"
 
 /*
     According to microsoft: https://docs.microsoft.com/zh-cn/uwp/api/windows.ui.xaml.media.imagesource?view=winrt-22000
@@ -65,10 +65,10 @@ namespace winrt::OsuPlayer::implementation
             winrt::Windows::Foundation::IInspectable const& sender, 
             winrt::Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e);
         
-        OsuPlayer::PlayerViewModel ViewModel();
+        OsuPlayer::ViewModel::PlayerViewModel ViewModel();
     private:
-        void handlePlayMod(PlayMod newPlayMod);
-        OsuPlayer::PlayerViewModel m_model;
+        void handlePlayMod(ViewModel::PlayMod newPlayMod);
+        OsuPlayer::ViewModel::PlayerViewModel m_model;
     };
 }
 

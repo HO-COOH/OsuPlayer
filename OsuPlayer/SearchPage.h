@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "SearchPage.g.h"
-#include "SearchPageViewModel.g.h"
+#include "ViewModel.SearchPageViewModel.g.h"
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -11,9 +11,9 @@ namespace winrt::OsuPlayer::implementation
 
         void OnNavigatedTo(winrt::Windows::UI::Xaml::Navigation::NavigationEventArgs args);
 
-        OsuPlayer::SearchPageViewModel ViewModel();
+        ViewModel::SearchPageViewModel ViewModel();
     private:
-        OsuPlayer::SearchPageViewModel m_model;
+        ViewModel::SearchPageViewModel m_model;
     };
 }
 

@@ -1,0 +1,15 @@
+import "SongItem.idl";
+namespace OsuPlayer.ViewModel
+{
+    [bindable]
+    [default_interface]
+    runtimeclass MyMusicViewModel 
+    {
+        MyMusicViewModel();
+        
+        Int32 SortByIndex{ get; set; };
+
+        Windows.Foundation.IAsyncAction ShowPropertyOf(Int32 index, Int32 versionIndex);
+        Windows.Foundation.Collections.IObservableVector<OsuPlayer.SongItem> Songs{ get; };
+    }
+}

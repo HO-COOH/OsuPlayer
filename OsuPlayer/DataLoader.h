@@ -2,13 +2,13 @@
 
 #include <winrt/Windows.Storage.h>
 #include <vector>
-#include "SongItemModel.h"
+#include "Model.SongItem.h"
 
 class DataLoader
 {
 public:
 	static std::vector<winrt::Windows::Storage::StorageFolder> LoadOsuFolders();
-	static std::vector<SongItemModel> LoadSongs();
+	static std::vector<Model::SongItemModel> LoadSongs();
 private:
 
 };

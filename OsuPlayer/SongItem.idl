@@ -1,4 +1,4 @@
-import "SongItemViewModel.idl";
+import "ViewModel.SongItem.idl";
 
 namespace OsuPlayer
 {
@@ -7,9 +7,9 @@ namespace OsuPlayer
     {
         SongItem();
 
-        SongItem(SongItemViewModel viewModel);
+        SongItem(OsuPlayer.ViewModel.SongItemViewModel viewModel);
         
         //The view-model
-        SongItemViewModel ViewModel{ get; };
+        OsuPlayer.ViewModel.SongItemViewModel ViewModel{ get; };
     }
 }

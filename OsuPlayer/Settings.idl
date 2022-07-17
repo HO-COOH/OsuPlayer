@@ -1,4 +1,4 @@
-import "SettingsViewModel.idl";
+import "ViewModel.Settings.idl";
 
 namespace OsuPlayer
 {
@@ -8,7 +8,7 @@ namespace OsuPlayer
         Settings();
         
         //The view-model
-        SettingsViewModel ViewModel{ get; };
+        OsuPlayer.ViewModel.SettingsViewModel ViewModel{ get; };
         
         //Resource
         Windows.UI.Xaml.Controls.ContentDialog ExperimentFeatureWarningDialog{ get; };

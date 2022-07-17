@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "MyMusic.g.h"
-#include "MyMusicViewModel.g.h"
+#include "ViewModel.MyMusicViewModel.g.h"
+#include "SongItem.g.h"
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -22,7 +23,7 @@ namespace winrt::OsuPlayer::implementation
         void SortOrderSelectionCombobox_SelectionChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::Controls::SelectionChangedEventArgs const& e);
         void Category_SelectionChanged(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender, winrt::Microsoft::UI::Xaml::Controls::NavigationViewSelectionChangedEventArgs const& args);
         
-        OsuPlayer::MyMusicViewModel ViewModel();
+        ViewModel::MyMusicViewModel ViewModel();
     private:
         //OsuPlayer::MyMusicViewModel m_model;
 

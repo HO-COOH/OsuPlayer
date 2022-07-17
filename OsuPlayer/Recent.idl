@@ -1,9 +1,0 @@
-namespace OsuPlayer
-{
-    [default_interface]
-    runtimeclass Recent : Windows.UI.Xaml.Controls.Page
-    {
-        Recent();
-        Int32 MyProperty;
-    }
-}

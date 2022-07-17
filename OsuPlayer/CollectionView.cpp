@@ -4,7 +4,7 @@
 #include "CollectionView.g.cpp"
 #endif
 #include <winrt/Windows.Foundation.Collections.h>
-#include "MyMusicModel.h"
+#include "Model.MyMusic.h"
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -15,16 +15,16 @@ namespace winrt::OsuPlayer::implementation
     {
         InitializeComponent();
        
-        m_collectionItems = winrt::single_threaded_observable_vector<OsuPlayer::CollectionItemViewModel>();
+        m_collectionItems = winrt::single_threaded_observable_vector<OsuPlayer::ViewModel::CollectionItem>();
 
-        for (auto const& collectionItemModel : MyMusicModel::m_collections)
+        for (auto const& collectionItemModel : Model::MyMusicModel::m_collections)
         {
-            CollectionItemViewModel collectionItemViewModel;
+            ViewModel::CollectionItem collectionItemViewModel;
             collectionItemViewModel.Name(winrt::to_hstring(collectionItemModel.m_name));
 
             for (auto const& songItem : collectionItemModel.m_beatmapPtr)
             {
-                SongItemViewModel itemViewModel;
+                ViewModel::SongItemViewModel itemViewModel;
                 itemViewModel.SongName(winrt::to_hstring(songItem.songTitle));
                 itemViewModel.Singer(winrt::to_hstring(songItem.artistName));
                 itemViewModel.Mapper(winrt::to_hstring(songItem.creator));
@@ -37,7 +37,7 @@ namespace winrt::OsuPlayer::implementation
 
     }
 
-    Windows::Foundation::Collections::IObservableVector<OsuPlayer::CollectionItemViewModel> CollectionView::CollectionItems()
+    Windows::Foundation::Collections::IObservableVector<OsuPlayer::ViewModel::CollectionItem> CollectionView::CollectionItems()
     {
         return m_collectionItems;
     }

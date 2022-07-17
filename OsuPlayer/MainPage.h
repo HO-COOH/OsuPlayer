@@ -1,9 +1,8 @@
 ﻿#pragma once
-#include <winrt/Windows.UI.Xaml.Input.h>
-#include "MyMusic.g.h"
+
 #include "MainPage.g.h"
-#include "Settings.g.h"
-#include "SearchPage.g.h"
+#include "Player.g.h"
+#include <winrt/Windows.UI.Xaml.Input.h>
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -14,7 +13,7 @@ namespace winrt::OsuPlayer::implementation
         void NavigationViewItem_PointerPressed(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::Input::PointerRoutedEventArgs const& e);
         void NavigationViewControl_ItemInvoked(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender, winrt::Microsoft::UI::Xaml::Controls::NavigationViewItemInvokedEventArgs const& args);
 
-        Player player() { return SongPlayer(); }
+        Player player() { return {}; }
     };
 }
 

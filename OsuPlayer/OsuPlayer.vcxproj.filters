@@ -10,9 +10,6 @@
     <Page Include="Player.xaml">
       <Filter>Views</Filter>
     </Page>
-    <Page Include="Recent.xaml">
-      <Filter>Views</Filter>
-    </Page>
     <Page Include="Settings.xaml">
       <Filter>Views</Filter>
     </Page>
@@ -40,71 +37,66 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
-    <Midl Include="MainPage.idl" />
-    <Midl Include="SettingsViewModel.idl">
+    <Midl Include="ViewModel.Settings.idl">
       <Filter>ViewModels</Filter>
     </Midl>
-    <Midl Include="OsuPathItemViewModel.idl">
+    <Midl Include="ViewModel.OsuPathItem.idl">
       <Filter>ViewModels</Filter>
     </Midl>
-    <Midl Include="SongItemViewModel.idl">
+    <Midl Include="ViewModel.SongItem.idl">
       <Filter>ViewModels</Filter>
     </Midl>
-    <Midl Include="MainViewModel.idl">
+    <Midl Include="ViewModel.Main.idl">
       <Filter>ViewModels</Filter>
     </Midl>
-    <Midl Include="MyMusicViewModel.idl">
+    <Midl Include="ViewModel.MyMusic.idl">
       <Filter>ViewModels</Filter>
     </Midl>
-    <Midl Include="SearchPageViewModel.idl">
+    <Midl Include="ViewModel.Search.idl">
       <Filter>ViewModels</Filter>
     </Midl>
-    <Midl Include="PlayerViewModel.idl">
+    <Midl Include="ViewModel.Player.idl">
       <Filter>ViewModels</Filter>
     </Midl>
-    <Midl Include="SongPropertyViewModel.idl">
+    <Midl Include="ViewModel.SongProperty.idl">
       <Filter>ViewModels</Filter>
     </Midl>
-    <Midl Include="CollectionItemViewModel.idl">
+    <Midl Include="ViewModel.CollectionItem.idl">
       <Filter>ViewModels</Filter>
     </Midl>
-    <Midl Include="RecentViewModel.idl">
+    <Midl Include="ViewModel.Recent.idl">
       <Filter>ViewModels</Filter>
     </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="MainPage.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="SettingsModel.cpp">
+    <ClCompile Include="Model.Settings.cpp">
       <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="BackgroundAcrylic.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="ThemeHelper.cpp">
+    <ClCompile Include="Utils.ThemeHelper.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="SongItemModel.cpp">
+    <ClCompile Include="Model.SongItem.cpp">
       <Filter>Models</Filter>
     </ClCompile>
-    <ClCompile Include="MyMusicModel.cpp">
+    <ClCompile Include="Model.MyMusic.cpp">
       <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="DataLoader.cpp">
       <Filter>Models</Filter>
     </ClCompile>
-    <ClCompile Include="SearchModel.cpp">
+    <ClCompile Include="Model.Search.cpp">
       <Filter>Models</Filter>
     </ClCompile>
-    <ClCompile Include="Log.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerModel.cpp">
+    <ClCompile Include="Model.Player.cpp">
       <Filter>Models</Filter>
     </ClCompile>
-    <ClCompile Include="CollectionItemModel.cpp">
+    <ClCompile Include="Model.CollectionItem.cpp">
       <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="ViewModelLocator.cpp" />
@@ -115,41 +107,41 @@
     <ClInclude Include="PlayMods.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="SettingsModel.h">
+    <ClInclude Include="Model.Settings.h">
       <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="BackgroundAcrylic.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="ThemeHelper.h">
+    <ClInclude Include="Utils.ThemeHelper.h">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="SongItemModel.h">
+    <ClInclude Include="Model.SongItem.h">
       <Filter>Models</Filter>
     </ClInclude>
-    <ClInclude Include="MyMusicModel.h">
+    <ClInclude Include="Model.MyMusic.h">
       <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="DataLoader.h">
       <Filter>Models</Filter>
     </ClInclude>
-    <ClInclude Include="SearchModel.h">
+    <ClInclude Include="Model.Search.h">
       <Filter>Models</Filter>
     </ClInclude>
-    <ClInclude Include="Log.h">
+    <ClInclude Include="Utils.Log.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerModel.h">
+    <ClInclude Include="Model.Player.h">
       <Filter>Models</Filter>
     </ClInclude>
-    <ClInclude Include="FileStreamAdaptor.hpp">
+    <ClInclude Include="Utils.FileStreamAdaptor.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="OsuDBParser.hpp" />
-    <ClInclude Include="CollectionItemModel.h">
+    <ClInclude Include="Model.CollectionItem.h">
       <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="ViewModelLocator.h" />

@@ -45,12 +45,12 @@ namespace winrt::OsuPlayer::implementation
         InitializeComponent();
     }
 
-    OsuPlayer::SongPropertyViewModel SongItemDialog::ViewModel()
+    ViewModel::SongPropertyViewModel SongItemDialog::ViewModel()
     {
         return m_model;
     }
 
-    void SongItemDialog::ViewModel(OsuPlayer::SongPropertyViewModel viewModel)
+    void SongItemDialog::ViewModel(ViewModel::SongPropertyViewModel viewModel)
     {
         m_model = viewModel;
 

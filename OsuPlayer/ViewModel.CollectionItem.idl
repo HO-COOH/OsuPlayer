@@ -1,0 +1,16 @@
+import "SongItem.idl";
+
+namespace OsuPlayer.ViewModel
+{
+    [bindable]
+    [default_interface]
+    runtimeclass CollectionItem
+    {
+        CollectionItem();
+        
+        String Name{ get; set; };
+        Windows.Foundation.Collections.IObservableVector<OsuPlayer.SongItem> SongItems{ get; };
+
+        Int32 Count{ get; };
+    }
+}

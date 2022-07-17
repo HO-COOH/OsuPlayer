@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/compileData.scor
+/compileData.scor.incl
+/compileData.scor.t0000

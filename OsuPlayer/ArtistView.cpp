@@ -5,11 +5,11 @@
 #endif
 
 #include "GroupedData.g.cpp"
-#include "Log.h"
+#include "Utils.Log.hpp"
 #include <future>
 using namespace winrt;
 using namespace Windows::UI::Xaml;
-
+using namespace Utils;
 namespace winrt::OsuPlayer::implementation
 {
     ArtistView::ArtistView()

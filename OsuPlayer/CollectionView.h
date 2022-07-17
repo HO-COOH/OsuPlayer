@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "CollectionView.g.h"
-#include "CollectionItemViewModel.g.h"
+#include "ViewModel.CollectionItem.g.h"
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -9,9 +9,9 @@ namespace winrt::OsuPlayer::implementation
     {
         CollectionView();
 
-        Windows::Foundation::Collections::IObservableVector<OsuPlayer::CollectionItemViewModel> CollectionItems();
+        Windows::Foundation::Collections::IObservableVector<OsuPlayer::ViewModel::CollectionItem> CollectionItems();
     private:
-        Windows::Foundation::Collections::IObservableVector<OsuPlayer::CollectionItemViewModel> m_collectionItems;
+        Windows::Foundation::Collections::IObservableVector<OsuPlayer::ViewModel::CollectionItem> m_collectionItems;
     };
 }
 

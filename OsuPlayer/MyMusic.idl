@@ -1,5 +1,4 @@
-import "SongItem.idl";
-import "MyMusicViewModel.idl";
+import "ViewModel.MyMusic.idl";
 namespace OsuPlayer
 {
     [default_interface]
@@ -10,7 +9,7 @@ namespace OsuPlayer
         //void OnSongItemEvent(Windows.Storage.StorageFile file);
         void OnSongItemEvent(SongItem item);
 
-        MyMusicViewModel ViewModel{ get; };
+        OsuPlayer.ViewModel.MyMusicViewModel ViewModel{ get; };
 
         //Windows.UI.Xaml.Controls.ComboBoxItem SortOrderSelection{ get; };
     }

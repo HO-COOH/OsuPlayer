@@ -1,4 +1,4 @@
-import "SearchPageViewModel.idl";
+import "ViewModel.Search.idl";
 
 namespace OsuPlayer
 {
@@ -8,6 +8,6 @@ namespace OsuPlayer
         SearchPage();
 
         //The view-model
-        SearchPageViewModel ViewModel{ get; };
+        OsuPlayer.ViewModel.SearchPageViewModel ViewModel{ get; };
     }
 }

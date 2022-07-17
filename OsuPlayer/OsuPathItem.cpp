@@ -14,13 +14,13 @@ namespace winrt::OsuPlayer::implementation
         InitializeComponent();
     }
 
-    OsuPathItem::OsuPathItem(OsuPlayer::OsuPathItemViewModel viewModel)
+    OsuPathItem::OsuPathItem(ViewModel::OsuPathItemViewModel viewModel)
         : m_model{ viewModel }
     {
         InitializeComponent();
     }
 
-    OsuPlayer::OsuPathItemViewModel OsuPathItem::ViewModel()
+    ViewModel::OsuPathItemViewModel OsuPathItem::ViewModel()
     {
         return m_model;
     }

@@ -15,25 +15,63 @@
                        PrimaryButtonText="I don't mean that!" SecondaryButtonText="I understand!"
                        DefaultButton="Primary" Content="This is an expriment feature that will probably break your local osu! data! Are you sure you want to do that?">
         </ContentDialog>
+
+        <Style x:Key="SettingTitleTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Margin" Value="20,0,0,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
     </Page.Resources>
 
     <ScrollViewer>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20, 40">
+        <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="20, 40">
             <TextBlock Text="Settings" FontSize="50"/>
 
-            <RelativePanel>
-                <TextBlock x:Name="OsuPathTitle" Text="osu! Path" FontSize="30"/>
-                <Button x:Name="AddOsuPathButton" Content="+" Click="AddOsuPathButton_Click" RelativePanel.RightOf="OsuPathTitle" Margin="20,7,0,0"/>
-                <ListBox x:Name="OsuPathListBox" Width="300" ItemsSource="{x:Bind ViewModel.OsuPaths}" SelectionChanged="ListBox_SelectionChanged" RelativePanel.Below="OsuPathTitle" Margin="0,0,20,0">
-                    <!-- osu paths -->
-                </ListBox>
-            </RelativePanel>
+            <muxc:Expander HorizontalAlignment="Stretch">
+                <muxc:Expander.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="MapDrive"/>
+                        <TextBlock x:Name="OsuPathTitle" Text="osu! Path" Style="{StaticResource SettingTitleTextStyle}"/>
+                    </StackPanel>
+                </muxc:Expander.Header>
+                <muxc:Expander.Content>
+                    <StackPanel Orientation="Vertical">
+                        <Button x:Name="AddOsuPathButton" Content="+" Click="AddOsuPathButton_Click"  Margin="20,7,0,0"/>
+                        <ListBox x:Name="OsuPathListBox" Width="300" ItemsSource="{x:Bind ViewModel.OsuPaths}" SelectionChanged="ListBox_SelectionChanged" Margin="0,0,20,0">
+                            --><!-- osu paths --><!--
+                        </ListBox>
+                    </StackPanel>
+                </muxc:Expander.Content>
+            </muxc:Expander>
 
-            <muxc:RadioButtons Header="Mode" FontSize="30">
-                <RadioButton Content="Light" x:Name="LightButton" Checked="LightButton_Checked"/>
-                <RadioButton Content="Dark" x:Name="DarkButton" Checked="DarkButton_Checked"/>
-                <RadioButton Content="Use system setting" x:Name="SystemThemeButton" Checked="SystemThemeButton_Checked"/>
-            </muxc:RadioButtons>
+            <muxc:Expander HorizontalAlignment="Stretch" AllowDrop="False">
+                <muxc:Expander.Header>
+                    <ComboBox x:Name="ThemeComboBox" HorizontalAlignment="Right">
+                        <ComboBox.Items>
+                            <ComboBoxItem Content="Light" x:Name="LightButton"/>
+                            <ComboBoxItem Content="Dark" x:Name="DarkButton"/>
+                            <ComboBoxItem Content="Use system setting" x:Name="SystemThemeButton"/>
+                        </ComboBox.Items>
+                    </ComboBox>
+                </muxc:Expander.Header>
+            </muxc:Expander>
+
+            <ContentControl HorizontalAlignment="Stretch">
+                <ContentControl.Template>
+                    <ControlTemplate>
+                        
+                    </ControlTemplate>
+                </ContentControl.Template>
+                <ComboBox x:Name="ThemeComboBox2" HorizontalAlignment="Right">
+                    <ComboBox.Items>
+                        <ComboBoxItem Content="Light" x:Name="LightButton2"/>
+                        <ComboBoxItem Content="Dark" x:Name="DarkButton2"/>
+                        <ComboBoxItem Content="Use system setting" x:Name="SystemThemeButton2"/>
+                    </ComboBox.Items>
+                </ComboBox>
+            </ContentControl>
+
 
             <TextBlock Text="Default Mods" FontSize="30"/>
             <muxc:RadioButtons>
@@ -52,7 +90,7 @@
                 <muxc:ToggleSplitButton.Flyout>
                     <Flyout x:Name="SkinFlyout" Placement="Bottom">
                         <ListView x:Name="SkinList" ItemsSource="{x:Bind ViewModel.Skins}">
-                            <!-- osu skins -->
+                            --><!-- osu skins --><!--
                         </ListView>
                     </Flyout>
                 </muxc:ToggleSplitButton.Flyout>
@@ -85,6 +123,6 @@
             <TextBlock Text="Experimental" FontSize="30" Foreground="Red"/>
             <CheckBox x:Name="AllowModifyOsuDataCheckbox" Content="Allow modifying osu! data" ToolTipService.ToolTip="Modifying osu! data as you edit your play list"
                       Checked="AllowModifyOsuDataCheckbox_Checked"/>
-        </StackPanel>
+        </StackPanel>-->
     </ScrollViewer>
 </Page>

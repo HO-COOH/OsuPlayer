@@ -18,12 +18,12 @@ namespace winrt::OsuPlayer::implementation
         InitializeComponent();
     }
 
-    SongItem::SongItem(OsuPlayer::SongItemViewModel viewModel) : m_model{viewModel}
+    SongItem::SongItem(OsuPlayer::ViewModel::SongItemViewModel viewModel) : m_model{viewModel}
     {
         InitializeComponent();
     }
 
-    OsuPlayer::SongItemViewModel SongItem::ViewModel()
+    OsuPlayer::ViewModel::SongItemViewModel SongItem::ViewModel()
     {
         return m_model;
     }

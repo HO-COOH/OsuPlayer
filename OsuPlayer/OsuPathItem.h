@@ -3,7 +3,7 @@
 #include "winrt/Windows.UI.Xaml.h"
 #include <winrt/Windows.Foundation.h>
 #include "OsuPathItem.g.h"
-#include "OsuPathItemViewModel.g.h"
+#include "ViewModel.OsuPathItemViewModel.g.h"
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -12,16 +12,16 @@ namespace winrt::OsuPlayer::implementation
         OsuPathItem();
 
         //Construct directly with a view model
-        OsuPathItem(OsuPlayer::OsuPathItemViewModel viewModel);
+        OsuPathItem(ViewModel::OsuPathItemViewModel viewModel);
 
-        OsuPlayer::OsuPathItemViewModel ViewModel();
+        ViewModel::OsuPathItemViewModel ViewModel();
 
         void DeleteButton_Click(
             winrt::Windows::Foundation::IInspectable const& sender,
             winrt::Windows::UI::Xaml::RoutedEventArgs const& e
         );
     private:
-        OsuPlayer::OsuPathItemViewModel m_model;
+        ViewModel::OsuPathItemViewModel m_model;
     };
 }
 

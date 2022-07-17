@@ -1,4 +1,4 @@
-import "SongPropertyViewModel.idl";
+import "ViewModel.SongProperty.idl";
 
 namespace OsuPlayer
 {
@@ -7,6 +7,6 @@ namespace OsuPlayer
     {
         SongItemDialog();
 
-        SongPropertyViewModel ViewModel{ get; set; };
+        OsuPlayer.ViewModel.SongPropertyViewModel ViewModel{ get; set; };
     }
 }

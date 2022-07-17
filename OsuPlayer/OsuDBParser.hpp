@@ -145,25 +145,13 @@ namespace Db
         return Int::bytes() + GetArrayBytesWithoutCount(data);
     }
 
-    auto GetArrayBytesWithoutCount(std::vector<String> const& data)
-    {
-        return std::accumulate(
-            data.cbegin(),
-            data.cend(),
-            size_t{},
-            [](size_t val, String const& curr) { return val + curr.bytes(); }
-        );
-    }
 
-    auto GetArrayBytesWithCount(std::vector<String> const& data)
-    {
-        return Int::bytes() + GetArrayBytesWithoutCount(data);
-    }
+
 
     inline std::unique_ptr<unsigned char[]> LoadBinaryFromStream(std::istream&& fs)
     {
         size_t const bytes = fs.seekg(0, std::ios_base::end).tellg();
-        fs.exceptions(std::ios_base::badbit | std::ios_base::failbit);
+        //fs.exceptions(std::ios_base::badbit | std::ios_base::failbit);
         auto buffer = std::make_unique<unsigned char[]>(bytes);
         fs.seekg(0, std::ios_base::beg).read(reinterpret_cast<char*>(buffer.get()), bytes);
 
@@ -263,17 +251,38 @@ namespace Db
         {
             auto const& stringBase = static_cast<std::string const&>(*this);
             auto const bytes = stringBase.size();
+            if (bytes == 0)
+            {
+                *ptr = 0x00;
+                ++ptr;
+                return;
+            }
             ULEB128{ bytes }.write(ptr);
-            memcpy(ptr, &stringBase.front(), bytes);
+            if (!stringBase.empty())
+                memcpy(ptr, &stringBase.front(), bytes);
             ptr += bytes;
         }
 
         auto bytes() const
         {
             auto const size = static_cast<std::string const&>(*this).size();
-            return ULEB128{ size }.bytes() + size;
+            return size == 0 ? 1 : 1 + ULEB128{ size }.bytes() + size;
         }
     };
+
+    inline auto GetArrayBytesWithoutCount(std::vector<String> const& data)
+    {
+        return std::accumulate(
+            data.cbegin(),
+            data.cend(),
+            size_t{},
+            [](size_t val, String const& curr) { return val + curr.bytes(); }
+        );
+    }
+    inline auto GetArrayBytesWithCount(std::vector<String> const& data)
+    {
+        return Int::bytes() + GetArrayBytesWithoutCount(data);
+    }
 
 
 
@@ -675,10 +684,24 @@ namespace std
 }
 namespace Db
 {
-
-
-    struct Osu
+    template<typename Derived>
+    struct ISerializable
     {
+        auto getBuffer() const
+        {
+            auto& derivedThis = *static_cast<Derived const*>(this);
+            auto buffer = std::make_unique<unsigned char[]>(derivedThis.bytes());
+            auto rawPtr = buffer.get();
+            derivedThis.write(rawPtr);
+            return buffer;
+        }
+    };
+
+    class Osu : public ISerializable<Osu>
+    {
+        unsigned char const* m_ptrRecord{};
+        std::optional<size_t> m_bytes{}; //stored for getting size of buffer for allocation
+    public:
         Int version{};
 
         Int folderCount{};
@@ -696,6 +719,7 @@ namespace Db
         UserPermission userPermission;
 
         Osu(unsigned char const* ptr) :
+            m_ptrRecord(ptr),
             version(ptr),
             folderCount(ptr),
             accountUnlocked(ptr),
@@ -705,6 +729,7 @@ namespace Db
             beatmaps(GetArray<Beatmap>(ptr, numBeatmaps)),
             userPermission(static_cast<UserPermission>(*reinterpret_cast<unsigned char const*>(ptr++)))
         {
+            m_bytes = std::distance(m_ptrRecord, ptr);
         }
 
         Osu(std::unique_ptr<unsigned char[]>&& ptr) : Osu(ptr.get())
@@ -733,14 +758,24 @@ namespace Db
 
         auto bytes() const
         {
-            return version.bytes() +
+            return m_bytes.value_or(version.bytes() +
                 folderCount.bytes() +
                 accountUnlocked.bytes() +
+                unlockAccountDate.bytes() +
                 playerName.bytes() +
                 numBeatmaps.bytes() +
                 GetArrayBytesWithoutCount(beatmaps) +
-                1;
+                1
+            );
         }
+
+        //auto getBuffer() const
+        //{
+        //    auto buffer = std::make_unique<unsigned char[]>(bytes());
+        //    auto rawPtr = buffer.get();
+        //    write(rawPtr);
+        //    return buffer;
+        //}
 
         auto getBeatmapSet() const
         {
@@ -748,7 +783,7 @@ namespace Db
         }
     };
 
-    struct Collections
+    struct Collections : public ISerializable<Collections>
     {
         Int version;
 
@@ -804,7 +839,7 @@ namespace Db
         {
         }
 
-        void write(unsigned char*& ptr)
+        void write(unsigned char*& ptr) const
         {
             version.write(ptr);
             WriteArrayWithCount(ptr, collections);
@@ -816,7 +851,7 @@ namespace Db
         }
     };
 
-    struct Scores
+    struct Scores : ISerializable<Scores>
     {
         Int version;
         
@@ -900,7 +935,7 @@ namespace Db
                         timestamp.bytes() +
                         __.bytes() +
                         scoreId.bytes() +
-                        additionalMod.has_value() ? additionalMod->bytes() : 0;
+                        (additionalMod.has_value() ? additionalMod->bytes() : 0);
                 }
 
                 void write(unsigned char*& ptr) const

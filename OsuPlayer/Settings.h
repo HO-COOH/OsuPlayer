@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "Settings.g.h"
-#include "SettingsViewModel.g.h"
+#include "ViewModel.SettingsViewModel.g.h"
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -9,7 +9,7 @@ namespace winrt::OsuPlayer::implementation
     {
         Settings();
 
-        OsuPlayer::SettingsViewModel ViewModel();
+        OsuPlayer::ViewModel::SettingsViewModel ViewModel();
 
         void LightButton_Checked(
             winrt::Windows::Foundation::IInspectable const& sender,
@@ -48,7 +48,7 @@ namespace winrt::OsuPlayer::implementation
 
 
     private:
-        OsuPlayer::SettingsViewModel m_model;
+        OsuPlayer::ViewModel::SettingsViewModel m_model;
     public:
         void HalfTimeButton_Checked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
         void DoubleTimeButton_Checked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);

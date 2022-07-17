@@ -1,0 +1,13 @@
+namespace OsuPlayer.ViewModel
+{
+    [bindable]
+    [default_interface]
+    runtimeclass OsuPathItemViewModel 
+    {
+        OsuPathItemViewModel();
+        
+        Boolean IsLoading{ get; set; };
+        String Path{ get; set; };
+        Int32 BeatmapCount{ get; set; };
+    }
+}

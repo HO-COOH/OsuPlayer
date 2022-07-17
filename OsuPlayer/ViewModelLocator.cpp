@@ -7,22 +7,22 @@ ViewModelLocator& ViewModelLocator::Current()
     return locator;
 }
 
-winrt::OsuPlayer::PlayerViewModel ViewModelLocator::PlayerViewModel() const
+winrt::OsuPlayer::ViewModel::PlayerViewModel ViewModelLocator::PlayerViewModel() const
 {
     return m_playerViewModel;
 }
 
-winrt::OsuPlayer::MainViewModel ViewModelLocator::MainViewModel() const
+winrt::OsuPlayer::ViewModel::MainViewModel ViewModelLocator::MainViewModel() const
 {
     return m_mainViewModel;
 }
 
-winrt::OsuPlayer::MyMusicViewModel ViewModelLocator::MyMusicViewModel() const
+winrt::OsuPlayer::ViewModel::MyMusicViewModel ViewModelLocator::MyMusicViewModel() const
 {
     return m_myMusicViewModel;
 }
 
-winrt::OsuPlayer::SettingsViewModel ViewModelLocator::SettingsViewModel() const
+winrt::OsuPlayer::ViewModel::SettingsViewModel ViewModelLocator::SettingsViewModel() const
 {
     return m_settingsViewModel;
 }

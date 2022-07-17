@@ -3,15 +3,16 @@
 #if __has_include("Settings.g.cpp")
 #include "Settings.g.cpp"
 #endif
-#include "ThemeHelper.h"
+#include "Utils.ThemeHelper.h"
 #include "winrt/Windows.Storage.Pickers.h"
-#include "SettingsViewModel.g.h"
-#include "SettingsModel.h"
+#include "ViewModel.SettingsViewModel.g.h"
+#include "Model.Settings.h"
 #include "winrt/Windows.UI.ViewManagement.h"
 
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
+using namespace Utils;
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -20,7 +21,7 @@ namespace winrt::OsuPlayer::implementation
         InitializeComponent();
     }
 
-    OsuPlayer::SettingsViewModel Settings::ViewModel()
+    OsuPlayer::ViewModel::SettingsViewModel Settings::ViewModel()
     {
         return m_model;
     }
@@ -67,7 +68,7 @@ namespace winrt::OsuPlayer::implementation
             {
                 co_await m_model.AddOsuPath();
             }
-            catch (InvalidOsuFolderException const& e)
+            catch (Model::InvalidOsuFolderException const& e)
             {
                 hasException = true;
             }
@@ -103,7 +104,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        m_model.DefaultMod(Mod::HalfTime);
+        m_model.DefaultMod(ViewModel::Mod::HalfTime);
     }
 
 
@@ -111,7 +112,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        m_model.DefaultMod(Mod::DoubleTime);
+        m_model.DefaultMod(ViewModel::Mod::DoubleTime);
     }
 
 
@@ -119,7 +120,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        m_model.DefaultMod(Mod::NightCore);
+        m_model.DefaultMod(ViewModel::Mod::NightCore);
     }
 
 
@@ -127,7 +128,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        m_model.DefaultMod(Mod::Normal);
+        m_model.DefaultMod(ViewModel::Mod::Normal);
     }
 
 
@@ -135,7 +136,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        m_model.DefaultMod(Mod::Normal);
+        m_model.DefaultMod(ViewModel::Mod::Normal);
     }
 
 
@@ -143,7 +144,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        m_model.DefaultMod(Mod::Normal);
+        m_model.DefaultMod(ViewModel::Mod::Normal);
     }
 
     winrt::Windows::Foundation::IAsyncAction Settings::AllowModifyOsuDataCheckbox_Checked(
@@ -154,7 +155,7 @@ namespace winrt::OsuPlayer::implementation
         if (result != winrt::Windows::UI::Xaml::Controls::ContentDialogResult::Secondary)
         {
             //Do not allow modifying osu! data
-            AllowModifyOsuDataCheckbox().IsChecked(false);
+            //AllowModifyOsuDataCheckbox().IsChecked(false);
         }
         else
         {

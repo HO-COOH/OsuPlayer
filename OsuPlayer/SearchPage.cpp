@@ -19,7 +19,7 @@ namespace winrt::OsuPlayer::implementation
         m_model.Keyword(args.Parameter().as<winrt::hstring>());
     }
 
-    OsuPlayer::SearchPageViewModel SearchPage::ViewModel()
+    OsuPlayer::ViewModel::SearchPageViewModel SearchPage::ViewModel()
     {
         return m_model;
     }

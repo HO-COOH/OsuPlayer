@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "SongPropertyViewModel.g.h"
+#include "ViewModel.SongPropertyViewModel.g.h"
 #include "SongItemDialog.g.h"
 
 namespace winrt::OsuPlayer::implementation
@@ -8,14 +8,14 @@ namespace winrt::OsuPlayer::implementation
     {
         SongItemDialog();
 
-        OsuPlayer::SongPropertyViewModel ViewModel();
+        ViewModel::SongPropertyViewModel ViewModel();
 
-        void ViewModel(OsuPlayer::SongPropertyViewModel viewModel);
+        void ViewModel(ViewModel::SongPropertyViewModel viewModel);
     private:
 
         static winrt::Windows::UI::Xaml::Documents::Paragraph HandleTagsRichText(winrt::hstring const& tags);
         static winrt::Windows::UI::Xaml::Documents::Paragraph HandleTitleRichText(winrt::hstring const& title);
-        OsuPlayer::SongPropertyViewModel m_model;
+        ViewModel::SongPropertyViewModel m_model;
     public:
         winrt::Windows::Foundation::IAsyncAction SongPathButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
     };

@@ -1,4 +1,4 @@
-import "PlayerViewModel.idl";
+import "ViewModel.Player.idl";
 
 namespace OsuPlayer
 {
@@ -8,6 +8,6 @@ namespace OsuPlayer
         Player();
         
         //The view-model
-        PlayerViewModel ViewModel{ get; };
+        OsuPlayer.ViewModel.PlayerViewModel ViewModel{ get; };
     }
 }

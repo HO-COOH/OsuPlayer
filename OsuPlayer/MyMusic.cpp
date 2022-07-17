@@ -50,7 +50,7 @@ namespace winrt::OsuPlayer::implementation
         }
     }
 
-    OsuPlayer::MyMusicViewModel MyMusic::ViewModel()
+    OsuPlayer::ViewModel::MyMusicViewModel MyMusic::ViewModel()
     {
         return ViewModelLocator::Current().MyMusicViewModel();
     }

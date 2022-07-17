@@ -1,4 +1,4 @@
-import "CollectionItemViewModel.idl";
+import "ViewModel.CollectionItem.idl";
 namespace OsuPlayer
 {
     [default_interface]
@@ -7,6 +7,6 @@ namespace OsuPlayer
         CollectionView();
 
         //Windows.UI.Xaml.Data.CollectionViewSource CollectionsCVS{ get; };
-        Windows.Foundation.Collections.IObservableVector<CollectionItemViewModel> CollectionItems{ get; };
+        Windows.Foundation.Collections.IObservableVector<OsuPlayer.ViewModel.CollectionItem> CollectionItems{ get; };
     }
 }

@@ -56,7 +56,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        handlePlayMod(PlayMod::HalfTime);
+        handlePlayMod(ViewModel::PlayMod::HalfTime);
     }
 
 
@@ -64,7 +64,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender,
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        handlePlayMod(PlayMod::DoubleTime);
+        handlePlayMod(ViewModel::PlayMod::DoubleTime);
     }
 
 
@@ -72,7 +72,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        handlePlayMod(PlayMod::NightCore);
+        handlePlayMod(ViewModel::PlayMod::NightCore);
     }
 
 
@@ -90,24 +90,24 @@ namespace winrt::OsuPlayer::implementation
         m_model.Volume(0);
     }
 
-    void Player::handlePlayMod(PlayMod newPlayMod)
+    void Player::handlePlayMod(ViewModel::PlayMod newPlayMod)
     {
         if (newPlayMod == m_model.Mod())
             return;
 
         switch (newPlayMod)
         {
-            case PlayMod::HalfTime:
+            case ViewModel::PlayMod::HalfTime:
                 HalfTimeCheckbox().IsChecked(true);
                 DoubleTimeCheckbox().IsChecked(false);
                 NightCoreCheckbox().IsChecked(false);
                 break;
-            case PlayMod::DoubleTime:
+            case ViewModel::PlayMod::DoubleTime:
                 HalfTimeCheckbox().IsChecked(false);
                 DoubleTimeCheckbox().IsChecked(true);
                 NightCoreCheckbox().IsChecked(false);
                 break;
-            case PlayMod::NightCore:
+            case ViewModel::PlayMod::NightCore:
                 HalfTimeCheckbox().IsChecked(false);
                 DoubleTimeCheckbox().IsChecked(false);
                 NightCoreCheckbox().IsChecked(true);
@@ -126,7 +126,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        handlePlayMod(PlayMod::Normal);
+        handlePlayMod(ViewModel::PlayMod::Normal);
     }
 
 
@@ -134,7 +134,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender,
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        handlePlayMod(PlayMod::Normal);
+        handlePlayMod(ViewModel::PlayMod::Normal);
     }
 
 
@@ -142,7 +142,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender,
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        handlePlayMod(PlayMod::Normal);
+        handlePlayMod(ViewModel::PlayMod::Normal);
     }
 
     void Player::UseSkinHitsoundCheckbox_Unchecked(
@@ -183,7 +183,7 @@ namespace winrt::OsuPlayer::implementation
         MuteButtonSymbol().Symbol(winrt::Windows::UI::Xaml::Controls::Symbol::Volume);
     }
 
-    OsuPlayer::PlayerViewModel Player::ViewModel()
+    OsuPlayer::ViewModel::PlayerViewModel Player::ViewModel()
     {
         return m_model;
     }

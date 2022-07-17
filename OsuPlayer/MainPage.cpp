@@ -1,11 +1,15 @@
 ﻿#include "pch.h"
-#include "MainPage.h"
-#include "MainPage.g.cpp"
-#include "MyMusicModel.h"
 
+#include "MainPage.h"
+#include "Model.MyMusic.h"
+
+#if __has_include("MainPage.g.cpp")
+#include "MainPage.g.cpp"
+#endif
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
+using namespace Model;
 
 namespace winrt::OsuPlayer::implementation
 {
