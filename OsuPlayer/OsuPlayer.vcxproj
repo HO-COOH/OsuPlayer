@@ -117,6 +117,11 @@
     </ClInclude>
     <ClInclude Include="BackgroundAcrylic.h" />
     <ClInclude Include="Model.CollectionItem.h" />
+    <ClInclude Include="SettingContainer.h">
+      <DependentUpon>SettingContainer.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="Utils.PropertyChangeHelper.hpp" />
     <ClInclude Include="ViewModel.CollectionItem.h">
       <DependentUpon>ViewModel.CollectionItem.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -267,6 +272,10 @@
     </ClCompile>
     <ClCompile Include="BackgroundAcrylic.cpp" />
     <ClCompile Include="Model.CollectionItem.cpp" />
+    <ClCompile Include="SettingContainer.cpp">
+      <DependentUpon>SettingContainer.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="ViewModel.CollectionItem.cpp">
       <DependentUpon>ViewModel.CollectionItem.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -365,6 +374,9 @@
     <Midl Include="ArtistView.idl">
       <DependentUpon>ArtistView.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="SettingContainer.idl">
+      <SubType>Designer</SubType>
     </Midl>
     <Midl Include="ViewModel.CollectionItem.idl">
       <SubType>Designer</SubType>

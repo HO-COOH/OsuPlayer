@@ -45,4 +45,6 @@ Currently I am limited by the unresolved WinUI related bugs:
 - [CollectionViewSource ItemsPath binding not working with public fields](https://github.com/microsoft/microsoft-ui-xaml/issues/6619)
 - [Same control property name and binding name cause function template has already been defined compile error](https://github.com/microsoft/microsoft-ui-xaml/issues/7313)
 - [Renaming xaml file breaks everything in C++/WinRT](https://github.com/microsoft/microsoft-ui-xaml/issues/7365)
+- [Setting FlyoutPlacementMode to Auto crash](https://github.com/microsoft/microsoft-ui-xaml/issues/7384)
+
 Microsoft please FIX!

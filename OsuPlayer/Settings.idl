@@ -3,12 +3,14 @@ import "ViewModel.Settings.idl";
 namespace OsuPlayer
 {
     [default_interface]
-    runtimeclass Settings : Windows.UI.Xaml.Controls.Page
+    runtimeclass Settings : Windows.UI.Xaml.Controls.Page, Windows.UI.Xaml.Data.INotifyPropertyChanged
     {
         Settings();
         
         //The view-model
         OsuPlayer.ViewModel.SettingsViewModel ViewModel{ get; };
+        
+        String DefaultModString{ get; };
         
         //Resource
         Windows.UI.Xaml.Controls.ContentDialog ExperimentFeatureWarningDialog{ get; };

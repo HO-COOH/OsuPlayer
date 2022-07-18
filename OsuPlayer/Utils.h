@@ -78,4 +78,23 @@ namespace Utils
 	{
 		//skinFolder.GetFoldersAsync();
 	}
+
+	/**
+	 * @brief Split a path string that's separated by ;
+	*/
+	inline std::vector<winrt::hstring> SplitPathFromString(winrt::hstring pathString)
+	{
+		std::vector<winrt::hstring> result;
+		auto iter = pathString.begin();
+		auto start = iter;
+		while (iter != pathString.end())
+		{
+			if (*iter == L';')
+			{
+				result.emplace_back(&(*start), std::distance(start, iter));
+			}
+			++iter;
+		}
+		return result;
+	}
 }

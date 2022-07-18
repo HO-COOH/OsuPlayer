@@ -11,118 +11,371 @@
     >
 
     <Page.Resources>
-        <ContentDialog x:Name="ExperimentFeatureWarningDialog" Title="Be careful!"
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <Style x:Key="SecondaryTextBlockStyle" TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{ThemeResource SystemBaseMediumColor}" />
+                    </Style>
+                    <SolidColorBrush x:Key="SubgroupHeaderBrush" Color="{StaticResource SystemBaseMediumColor}" />
+                    <Color x:Key="CardStrokeColorDefault">#0F000000</Color>
+                    <SolidColorBrush x:Key="CardStrokeColorDefaultBrush" Color="{StaticResource CardStrokeColorDefault}" />
+                    <StaticResource x:Key="ExpanderHeaderBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="HighContrast">
+                    <Style x:Key="SecondaryTextBlockStyle" TargetType="TextBlock" />
+                    <!--  Do not mess with the foreground color for High Contrast. Let it ride as is.  -->
+                    <SolidColorBrush x:Key="SubgroupHeaderBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+                    <StaticResource x:Key="ExpanderHeaderBorderBrush" ResourceKey="SystemColorButtonTextColorBrush" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <Style x:Key="SecondaryTextBlockStyle" TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{ThemeResource SystemBaseMediumColor}" />
+                    </Style>
+                    <SolidColorBrush x:Key="SubgroupHeaderBrush" Color="{StaticResource SystemBaseMediumColor}" />
+                    <Color x:Key="CardStrokeColorDefault">#19000000</Color>
+                    <SolidColorBrush x:Key="CardStrokeColorDefaultBrush" Color="{StaticResource CardStrokeColorDefault}" />
+                    <StaticResource x:Key="ExpanderHeaderBorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+            <ContentDialog x:Name="ExperimentFeatureWarningDialog" Title="Be careful!"
                        PrimaryButtonText="I don't mean that!" SecondaryButtonText="I understand!"
-                       DefaultButton="Primary" Content="This is an expriment feature that will probably break your local osu! data! Are you sure you want to do that?">
-        </ContentDialog>
+                       DefaultButton="Primary" 
+                       Content="This is an expriment feature that will probably break your local osu! data! Are you sure you want to do that?">
+            </ContentDialog>
 
-        <Style x:Key="SettingTitleTextStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Margin" Value="20,0,0,0"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
+            <Style x:Key="StackPanelInExpanderStyle" TargetType="StackPanel">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Padding" Value="0,12,0,12" />
+                <Setter Property="Margin" Value="20,0,0,0"/>
+            </Style>
 
+            <Style x:Key="SettingContainerResetButtonStyle" TargetType="Button">
+                <Setter Property="Margin" Value="5,0,0,0" />
+                <Setter Property="Height" Value="19" />
+                <Setter Property="Width" Value="19" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+
+            <Style x:Key="SettingContainerFontIconStyle" TargetType="FontIcon">
+                <Setter Property="Foreground" Value="{StaticResource SystemAccentColor}" />
+                <Setter Property="FontSize" Value="11" />
+                <Setter Property="FontFamily" Value="{ThemeResource SymbolThemeFontFamily}" />
+            </Style>
+
+            <Style x:Key="NonExpanderGrid" TargetType="Grid">
+                <Setter Property="Background" Value="{ThemeResource ExpanderHeaderBackground}" />
+                <Setter Property="MinWidth" Value="{ThemeResource FlyoutThemeMinWidth}" />
+                <Setter Property="MinHeight" Value="64" />
+                <Setter Property="BorderThickness" Value="{ThemeResource ExpanderHeaderBorderThickness}" />
+                <Setter Property="BorderBrush" Value="{ThemeResource ExpanderHeaderBorderBrush}" />
+                <Setter Property="Padding" Value="16,0,8,0" />
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}" />
+            </Style>
+
+            <Style x:Key="SettingsPageItemHeaderStyle" BasedOn="{StaticResource BodyTextBlockStyle}" TargetType="TextBlock">
+                <Setter Property="LineHeight" Value="20" />
+                <Setter Property="TextWrapping" Value="WrapWholeWords" />
+            </Style>
+
+            <Style x:Key="SettingsPageItemDescriptionStyle" BasedOn="{StaticResource CaptionTextBlockStyle}" TargetType="TextBlock">
+                <Setter Property="Margin" Value="0,0,24,0" />
+                <Setter Property="LineHeight" Value="16" />
+                <Setter Property="Foreground" Value="{ThemeResource SubgroupHeaderBrush}" />
+                <Setter Property="TextWrapping" Value="WrapWholeWords" />
+            </Style>
+
+            <Style TargetType="local:SettingContainer">
+                <Setter Property="Margin" Value="0,4,0,0" />
+                <Setter Property="IsTabStop" Value="False" />
+                <Setter Property="MaxWidth" Value="1000" />
+                <Setter Property="ShowReset" Value="Collapsed"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="local:SettingContainer">
+                            <Grid Style="{StaticResource NonExpanderGrid}"
+                                  >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ContentControl Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="{TemplateBinding Symbol}"/>
+                                <StackPanel Grid.Column="1" Style="{StaticResource StackPanelInExpanderStyle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource SettingsPageItemHeaderStyle}"
+                                           Text="{TemplateBinding Title}" />
+                                        <Button x:Name="ResetButton"
+                                            Style="{StaticResource SettingContainerResetButtonStyle}"
+                                                Visibility="{TemplateBinding ShowReset}">
+                                            <FontIcon Glyph="&#xE845;"
+                                              Style="{StaticResource SettingContainerFontIconStyle}" />
+                                        </Button>
+                                    </StackPanel>
+                                    <TextBlock x:Name="HelpTextBlock"
+                                       Style="{StaticResource SettingsPageItemDescriptionStyle}"
+                                       Text="{TemplateBinding HelpText}" />
+                                </StackPanel>
+                                <ContentPresenter Grid.Column="2"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center"
+                                          Content="{TemplateBinding HeaderContent}" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
+
+            <Style x:Key="ExpanderSettingContainerStyle" TargetType="local:SettingContainer">
+                <Setter Property="MaxWidth" Value="1000" />
+                <Setter Property="IsTabStop" Value="False" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="local:SettingContainer">
+                            <muxc:Expander x:Name="Expander"
+                                   Margin="0,4,0,0"
+                                   HorizontalAlignment="Stretch"
+                                   HorizontalContentAlignment="Stretch"
+                                   Content="{TemplateBinding ExpanderContent}">
+                                <muxc:Expander.ContentTransitions>
+                                    <TransitionCollection>
+                                        <RepositionThemeTransition/>
+                                        <EntranceThemeTransition FromHorizontalOffset="-200" IsStaggeringEnabled="True"/>
+                                    </TransitionCollection>
+                                </muxc:Expander.ContentTransitions>
+                                <muxc:Expander.Header>
+                                    <Grid MinHeight="64" x:Name="ExpanderHeaderGrid">
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="3*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <ContentControl Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="{TemplateBinding Symbol}"/>
+                                        <StackPanel Grid.Column="1" Style="{StaticResource StackPanelInExpanderStyle}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Style="{StaticResource SettingsPageItemHeaderStyle}"
+                                                   Text="{TemplateBinding Title}" />
+                                                <Button x:Name="ResetButton"
+                                                        Style="{StaticResource SettingContainerResetButtonStyle}"
+                                                        Visibility="{TemplateBinding ShowReset}">
+                                                    <FontIcon Glyph="&#xE845;"
+                                                      Style="{StaticResource SettingContainerFontIconStyle}" />
+                                                </Button>
+                                            </StackPanel>
+                                            <TextBlock x:Name="HelpTextBlock"
+                                               Style="{StaticResource SettingsPageItemDescriptionStyle}"
+                                               Text="{TemplateBinding HelpText}" />
+                                        </StackPanel>
+                                        <ContentControl Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{TemplateBinding HeaderContent}">
+                                            <ContentControl.ContentTransitions>
+                                                <TransitionCollection>
+                                                    <RepositionThemeTransition/>
+                                                    <EntranceThemeTransition FromHorizontalOffset="-200" IsStaggeringEnabled="True"/>
+                                                </TransitionCollection>
+                                            </ContentControl.ContentTransitions>
+                                        </ContentControl>
+                                    </Grid>
+                                </muxc:Expander.Header>
+                            </muxc:Expander>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <x:String x:Key="NavigationFontIcon">&#xE76C;</x:String>
+
+            <Style x:Key="NavigationFontIconStyle" TargetType="FontIcon">
+                <Setter Property="Margin" Value="20,0,8,0"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="FontSize" Value="10"/>
+                <Setter Property="FontWeight" Value="Black"/>
+                <Setter Property="Glyph" Value="{StaticResource NavigationFontIcon}"/>
+            </Style>
+
+            <x:String x:Key="OsuPathSettingTitleText">osu! Paths</x:String>
+            <x:String x:Key="OsuPathSettingHelpText">Path to your osu! installation folder.</x:String>
+
+            <x:String x:Key="ThemeSettingTitleText">Theme</x:String>
+            <x:String x:Key="ThemeSettingHelpText">Sets the theme of this application.</x:String>
+
+            <x:String x:Key="DefaultModTitleText">Default play mod</x:String>
+            <x:String x:Key="DefaultModHelpText">Use a mod for default player sound effect.</x:String>
+
+            <x:String x:Key="DefaultSkinTitleText">Default hitsound</x:String>
+            <x:String x:Key="DefaultSkinHelpText">Use the hitsound from a skin.</x:String>
+
+            <x:String x:Key="JumpListTitleText">Jumplist settings</x:String>
+            <x:String x:Key="JumpListHelpText">Numbers of shortcuts showing in the jumplist for quick launching.</x:String>
+
+            <x:String x:Key="ExperimentalTitleText">Experimental features</x:String>
+            <x:String x:Key="ExperimentalHelpText">!You are on your own risk!</x:String>
+
+            <x:String x:Key="NoModShortName">None</x:String>
+            <x:String x:Key="NoModLongName">NoMod</x:String>
+            <x:String x:Key="DoubleTimeShortName">DT</x:String>
+            <x:String x:Key="DoubleTimeLongName">DoubleTime</x:String>
+            <x:String x:Key="NightCoreShortName">NC</x:String>
+            <x:String x:Key="NightCoreLongName">NightCore</x:String>
+            <x:String x:Key="HalfTimeShortName">HT</x:String>
+            <x:String x:Key="HalfTimeLongName">HalfTime</x:String>
+
+            <x:String x:Key="JumpListRecentDescription">Number of recent songs</x:String>
+            <x:String x:Key="JumpListCollectionDescription">Number of collections</x:String>
+
+            <x:String x:Key="ModifyOsuDataDescription">Allow modifying osu! data</x:String>
+
+            <x:String x:Key="OsuPathIconGlyph">&#xF12B;</x:String>
+            <x:String x:Key="NewFolderIconGlyph">&#xE8F4;</x:String>
+            <x:String x:Key="ThemeIconGlyph">&#xE790;</x:String>
+            <x:String x:Key="PlayModIconGlyph">&#xEC57;</x:String>
+            <x:String x:Key="HitsoundIconGlyph">&#xE7F6;</x:String>
+            <x:String x:Key="JumpListIconGlyph">&#xE728;</x:String>
+            <x:String x:Key="ExperimentalIconGlyph">&#xE7BA;</x:String>
+        </ResourceDictionary>
     </Page.Resources>
 
+
+
     <ScrollViewer>
-        <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="20, 40">
-            <TextBlock Text="Settings" FontSize="50"/>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="20, 40">
+            <StackPanel.ChildrenTransitions>
+                <TransitionCollection>
+                    <RepositionThemeTransition/>
+                </TransitionCollection>
+            </StackPanel.ChildrenTransitions>
+            
+            <!-- Title -->
+            <TextBlock Text="Settings" FontSize="50" MaxWidth="1000" VerticalAlignment="Center"/>
 
-            <muxc:Expander HorizontalAlignment="Stretch">
-                <muxc:Expander.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="MapDrive"/>
-                        <TextBlock x:Name="OsuPathTitle" Text="osu! Path" Style="{StaticResource SettingTitleTextStyle}"/>
-                    </StackPanel>
-                </muxc:Expander.Header>
-                <muxc:Expander.Content>
-                    <StackPanel Orientation="Vertical">
-                        <Button x:Name="AddOsuPathButton" Content="+" Click="AddOsuPathButton_Click"  Margin="20,7,0,0"/>
-                        <ListBox x:Name="OsuPathListBox" Width="300" ItemsSource="{x:Bind ViewModel.OsuPaths}" SelectionChanged="ListBox_SelectionChanged" Margin="0,0,20,0">
-                            --><!-- osu paths --><!--
-                        </ListBox>
-                    </StackPanel>
-                </muxc:Expander.Content>
-            </muxc:Expander>
-
-            <muxc:Expander HorizontalAlignment="Stretch" AllowDrop="False">
-                <muxc:Expander.Header>
-                    <ComboBox x:Name="ThemeComboBox" HorizontalAlignment="Right">
+            <!--                Osu paths settings                -->
+            <local:SettingContainer Title="{StaticResource OsuPathSettingTitleText}" HelpText="{StaticResource OsuPathSettingTitleText}"
+                                    Style="{StaticResource ExpanderSettingContainerStyle}">
+                <local:SettingContainer.Symbol>
+                    <FontIcon Glyph="{StaticResource OsuPathIconGlyph}"/>
+                </local:SettingContainer.Symbol>
+                <local:SettingContainer.HeaderContent>
+                    <Button x:Name="NewFolderButton" Click="NewFolderButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon Glyph="{StaticResource NewFolderIconGlyph}"/>
+                            <TextBlock Text="Add folder" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+                </local:SettingContainer.HeaderContent>
+                <local:SettingContainer.ExpanderContent>
+                    <ListView ItemsSource="{x:Bind ViewModel.OsuPaths}"/>
+                </local:SettingContainer.ExpanderContent>
+            </local:SettingContainer>
+            
+            
+            <!--                Theme                              -->
+            <local:SettingContainer Title="{StaticResource ThemeSettingTitleText}" HelpText="{StaticResource ThemeSettingHelpText}">
+                <local:SettingContainer.Symbol>
+                    <FontIcon Glyph="{StaticResource ThemeIconGlyph}"/>
+                </local:SettingContainer.Symbol>
+                <local:SettingContainer.HeaderContent>
+                    <ComboBox x:Name="ThemeComboBox" HorizontalAlignment="Right" Width="Auto" SelectedIndex="{x:Bind ViewModel.ThemeIndex, Mode=TwoWay}">
                         <ComboBox.Items>
                             <ComboBoxItem Content="Light" x:Name="LightButton"/>
                             <ComboBoxItem Content="Dark" x:Name="DarkButton"/>
                             <ComboBoxItem Content="Use system setting" x:Name="SystemThemeButton"/>
                         </ComboBox.Items>
                     </ComboBox>
-                </muxc:Expander.Header>
-            </muxc:Expander>
+                </local:SettingContainer.HeaderContent>
+            </local:SettingContainer>
+            
+            
+            <!--               Default mod                          -->
+            <local:SettingContainer Title="{StaticResource DefaultModTitleText}" HelpText="{StaticResource DefaultModHelpText}">
+                <local:SettingContainer.Symbol>
+                    <FontIcon Glyph="{StaticResource PlayModIconGlyph}"/>
+                </local:SettingContainer.Symbol>
+                <local:SettingContainer.HeaderContent>
+                    <muxc:ToggleSplitButton x:Name="DefaultModButton" IsChecked="{x:Bind ViewModel.IsModEnabled, Mode=TwoWay}">
+                        <TextBlock Text="{x:Bind DefaultModString, Mode=OneWay}"/>
+                        <muxc:ToggleSplitButton.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem x:Name="HalfTimeItem" Text="{StaticResource HalfTimeLongName}" Click="HalfTimeItem_Click"/>
+                                <MenuFlyoutItem x:Name="DoubleTimeItem" Text="{StaticResource DoubleTimeLongName}" Click="DoubleTimeItem_Click"/>
+                                <MenuFlyoutItem x:Name="NightCoreItem" Text="{StaticResource NightCoreLongName}" Click="NightCoreItem_Click"/>
+                            </MenuFlyout>
+                        </muxc:ToggleSplitButton.Flyout>
+                    </muxc:ToggleSplitButton>
+                </local:SettingContainer.HeaderContent>
+            </local:SettingContainer>
+            
+            
+            <!--              Skin                                 -->
+            <local:SettingContainer Title="{StaticResource DefaultSkinTitleText}" HelpText="{StaticResource DefaultSkinHelpText}">
+                <local:SettingContainer.Symbol>
+                    <FontIcon Glyph="{StaticResource HitsoundIconGlyph}"/>
+                </local:SettingContainer.Symbol>
+                <local:SettingContainer.HeaderContent>
+                    <muxc:ToggleSplitButton x:Name="SkinButton">
+                        <TextBlock Text="Default"/>
+                        <muxc:ToggleSplitButton.Flyout>
+                            <MenuFlyout></MenuFlyout>
+                        </muxc:ToggleSplitButton.Flyout>
+                    </muxc:ToggleSplitButton>
+                </local:SettingContainer.HeaderContent>
+            </local:SettingContainer>
+            
+            
+            <!--             JumpLists                            -->
+            <local:SettingContainer Title="{StaticResource JumpListTitleText}" HelpText="{StaticResource JumpListHelpText}"
+                                    Style="{StaticResource ExpanderSettingContainerStyle}">
+                <local:SettingContainer.Symbol>
+                    <FontIcon Glyph="{StaticResource JumpListIconGlyph}"/>
+                </local:SettingContainer.Symbol>
+                <local:SettingContainer.ExpanderContent>
+                    <Grid>
+                        <Grid.ChildrenTransitions>
+                            <TransitionCollection>
+                                <RepositionThemeTransition/>
+                                <EntranceThemeTransition FromHorizontalOffset="-200" IsStaggeringEnabled="True"/>
+                            </TransitionCollection>
+                        </Grid.ChildrenTransitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-            <ContentControl HorizontalAlignment="Stretch">
-                <ContentControl.Template>
-                    <ControlTemplate>
-                        
-                    </ControlTemplate>
-                </ContentControl.Template>
-                <ComboBox x:Name="ThemeComboBox2" HorizontalAlignment="Right">
-                    <ComboBox.Items>
-                        <ComboBoxItem Content="Light" x:Name="LightButton2"/>
-                        <ComboBoxItem Content="Dark" x:Name="DarkButton2"/>
-                        <ComboBoxItem Content="Use system setting" x:Name="SystemThemeButton2"/>
-                    </ComboBox.Items>
-                </ComboBox>
-            </ContentControl>
+                        <TextBlock Text="{StaticResource JumpListRecentDescription}" Grid.Row="0" Grid.Column="0"/>
+                        <muxc:NumberBox SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.JumpListRecentSongs, Mode=TwoWay}" Margin="10,0,0,10" Grid.Row="0" Grid.Column="1"/>
 
+                        <TextBlock Text="{StaticResource JumpListCollectionDescription}" Grid.Row="1" Grid.Column="0"/>
+                        <muxc:NumberBox SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.JumpListRecentCollections, Mode=TwoWay}" Margin="10,0,0,0" Grid.Row="1" Grid.Column="1"/>
+                    </Grid>
+                </local:SettingContainer.ExpanderContent>
+            </local:SettingContainer>
 
-            <TextBlock Text="Default Mods" FontSize="30"/>
-            <muxc:RadioButtons>
-                <RadioButton x:Name="HalfTimeButton" Content="HT" Checked="HalfTimeButton_Checked" Unchecked="HalfTimeButton_Unchecked"
-                             ToolTipService.ToolTip="Less Zoom"/>
-                <RadioButton x:Name="DoubleTimeButton" Content="DT" Checked="DoubleTimeButton_Checked" Unchecked="DoubleTimeButton_Unchecked"
-                             ToolTipService.ToolTip="Zoooooooooom..."/>
-                <RadioButton x:Name="NightCoreButton" Content="NC" Checked="NightCoreButton_Checked" Unchecked="NightCoreButton_Unchecked"
-                             ToolTipService.ToolTip="Uguuuuuuuuuu..."/>
-            </muxc:RadioButtons>
+            
+            <!--                   Experimental              -->
+            <local:SettingContainer Title="{StaticResource ExperimentalTitleText}" HelpText="{StaticResource ExperimentalHelpText}"
+                                    Style="{StaticResource ExpanderSettingContainerStyle}">
+                <local:SettingContainer.Symbol>
+                    <FontIcon Glyph="{StaticResource ExperimentalIconGlyph}"/>
+                </local:SettingContainer.Symbol>
+                <local:SettingContainer.ExpanderContent>
+                    <StackPanel Orientation="Vertical">
+                        <CheckBox x:Name="AllowModifyOsuDataCheckbox" Content="{StaticResource ModifyOsuDataDescription}" IsChecked="{x:Bind ViewModel.AllowModifyOsuData, Mode=TwoWay}"/>
+                    </StackPanel>
+                </local:SettingContainer.ExpanderContent>
+                
+            </local:SettingContainer>
 
-
-            <TextBlock Text="Default Hitsounds" FontSize="30"/>
-            <muxc:ToggleSplitButton x:Name="DefaultHitsoundButton" Click="DefaultHitsoundButton_Click">
-                Use skin hitsounds
-                <muxc:ToggleSplitButton.Flyout>
-                    <Flyout x:Name="SkinFlyout" Placement="Bottom">
-                        <ListView x:Name="SkinList" ItemsSource="{x:Bind ViewModel.Skins}">
-                            --><!-- osu skins --><!--
-                        </ListView>
-                    </Flyout>
-                </muxc:ToggleSplitButton.Flyout>
-            </muxc:ToggleSplitButton>
-
-            <TextBlock Text="Jumplist" FontSize="30"/>
-            <TextBlock Text="Recent items" FontSize="20"/>
-            <muxc:NumberBox x:Name="RecentSongItemValue"
-                            SpinButtonPlacementMode="Inline"
-                            Header="Number of songs:"
-                            />
-            <muxc:NumberBox x:Name="RecentCollectionItemValue"
-                            SpinButtonPlacementMode="Inline"
-                            Header="Number of collections:"
-                            />
-            <TextBlock Text="Frequent items" FontSize="20"/>
-            <muxc:NumberBox x:Name="FrequentSongItemValue"
-                            SpinButtonPlacementMode="Inline"
-                            Header="Number of songs:"
-                            />
-            <muxc:NumberBox x:Name="FrequentCollectionItemValue"
-                            SpinButtonPlacementMode="Inline"
-                            Header="Number of collections:"
-                            />
-
-
-            <TextBlock Text="Clear All" FontSize="30"/>
-            <ToggleButton x:Name="ClearAllButton" Content="Clear all" Click="ClearAllButton_Click"/>
-
-            <TextBlock Text="Experimental" FontSize="30" Foreground="Red"/>
-            <CheckBox x:Name="AllowModifyOsuDataCheckbox" Content="Allow modifying osu! data" ToolTipService.ToolTip="Modifying osu! data as you edit your play list"
-                      Checked="AllowModifyOsuDataCheckbox_Checked"/>
-        </StackPanel>-->
+        </StackPanel>
     </ScrollViewer>
 </Page>

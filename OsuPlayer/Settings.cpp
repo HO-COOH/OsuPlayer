@@ -6,8 +6,8 @@
 #include "Utils.ThemeHelper.h"
 #include "winrt/Windows.Storage.Pickers.h"
 #include "ViewModel.SettingsViewModel.g.h"
-#include "Model.Settings.h"
-#include "winrt/Windows.UI.ViewManagement.h"
+#include "ViewModelLocator.h"
+
 
 
 using namespace winrt;
@@ -23,73 +23,7 @@ namespace winrt::OsuPlayer::implementation
 
     OsuPlayer::ViewModel::SettingsViewModel Settings::ViewModel()
     {
-        return m_model;
-    }
-
-    void Settings::LightButton_Checked(
-        winrt::Windows::Foundation::IInspectable const& sender,
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        ThemeHelper::RootTheme(winrt::Windows::UI::Xaml::ElementTheme::Light);
-    }
-
-
-    void Settings::DarkButton_Checked(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        ThemeHelper::RootTheme(winrt::Windows::UI::Xaml::ElementTheme::Dark);
-    }
-
-
-    void Settings::SystemThemeButton_Checked(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        ThemeHelper::RootTheme(winrt::Windows::UI::Xaml::ElementTheme::Default);
-    }
-
-    void Settings::ListBox_SelectionChanged(
-        winrt::Windows::Foundation::IInspectable const& sender,
-        winrt::Windows::UI::Xaml::Controls::SelectionChangedEventArgs const& e)
-    {
-
-    }
-
-
-    winrt::Windows::Foundation::IAsyncAction Settings::AddOsuPathButton_Click(
-        winrt::Windows::Foundation::IInspectable const& sender,
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        bool hasException{};
-        do
-        {
-            try
-            {
-                co_await m_model.AddOsuPath();
-            }
-            catch (Model::InvalidOsuFolderException const& e)
-            {
-                hasException = true;
-            }
-            if (hasException)
-            {
-                winrt::Windows::UI::Xaml::Controls::ContentDialog invalidOsuFolderDialog{};
-                invalidOsuFolderDialog.Title(winrt::box_value(L"Invalid osu! folder!"));
-                invalidOsuFolderDialog.PrimaryButtonText(L"Retry");
-                invalidOsuFolderDialog.CloseButtonText(L"Cancel");
-                if (auto result = co_await invalidOsuFolderDialog.ShowAsync(); result != winrt::Windows::UI::Xaml::Controls::ContentDialogResult::Primary)
-                    hasException = false;
-            }
-        } while (hasException);
-    }
-
-
-    void Settings::ClearAllButton_Click(
-        winrt::Windows::Foundation::IInspectable const& sender,
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        m_model.ClearAll();
+        return ViewModelLocator::Current().SettingsViewModel();
     }
 
 
@@ -99,69 +33,63 @@ namespace winrt::OsuPlayer::implementation
     {
     }
 
-
-    void Settings::HalfTimeButton_Checked(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    winrt::hstring Settings::DefaultModString()
     {
-        m_model.DefaultMod(ViewModel::Mod::HalfTime);
-    }
-
-
-    void Settings::DoubleTimeButton_Checked(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        m_model.DefaultMod(ViewModel::Mod::DoubleTime);
-    }
-
-
-    void Settings::NightCoreButton_Checked(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        m_model.DefaultMod(ViewModel::Mod::NightCore);
-    }
-
-
-    void Settings::HalfTimeButton_Unchecked(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        m_model.DefaultMod(ViewModel::Mod::Normal);
-    }
-
-
-    void Settings::DoubleTimeButton_Unchecked(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        m_model.DefaultMod(ViewModel::Mod::Normal);
-    }
-
-
-    void Settings::NightCoreButton_Unchecked(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        m_model.DefaultMod(ViewModel::Mod::Normal);
-    }
-
-    winrt::Windows::Foundation::IAsyncAction Settings::AllowModifyOsuDataCheckbox_Checked(
-        winrt::Windows::Foundation::IInspectable const& sender,
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        auto result = co_await ExperimentFeatureWarningDialog().ShowAsync();
-        if (result != winrt::Windows::UI::Xaml::Controls::ContentDialogResult::Secondary)
+        switch (ViewModel().DefaultMod())
         {
-            //Do not allow modifying osu! data
-            //AllowModifyOsuDataCheckbox().IsChecked(false);
-        }
-        else
-        {
-            //Allow modifying osu! data
-
+            case ViewModel::Mod::DoubleTime:    return L"DoubleTime";
+            case ViewModel::Mod::HalfTime:      return L"HalfTime";
+            case ViewModel::Mod::NightCore:     return L"NightCore";
+            case ViewModel::Mod::Normal:        return L"Normal";
         }
     }
 
+}
+
+
+void winrt::OsuPlayer::implementation::Settings::HalfTimeItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+{
+    ViewModel().DefaultMod(ViewModel::Mod::HalfTime);
+    raisePropertyChange(L"DefaultModString");
+}
+
+
+void winrt::OsuPlayer::implementation::Settings::DoubleTimeItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+{
+    ViewModel().DefaultMod(ViewModel::Mod::DoubleTime);
+    raisePropertyChange(L"DefaultModString");
+}
+
+
+void winrt::OsuPlayer::implementation::Settings::NightCoreItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+{
+    ViewModel().DefaultMod(ViewModel::Mod::NightCore);
+    raisePropertyChange(L"DefaultModString");
+}
+
+
+winrt::Windows::Foundation::IAsyncAction winrt::OsuPlayer::implementation::Settings::NewFolderButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+{
+    while (true)
+    {
+        auto const result = co_await ViewModel().AddOsuPath();
+        if (result == ViewModel::AddOsuFolderResult::Success)
+            co_return;
+
+        constexpr auto InvalidPrompt = L"Invalid osu! folder!";
+        constexpr auto DuplicatePrompt = L"Duplicate osu! folder!";
+
+        winrt::Windows::UI::Xaml::Controls::ContentDialog invalidOsuFolderDialog{};
+
+        switch (result)
+        {
+            case ViewModel::AddOsuFolderResult::Duplicate:  invalidOsuFolderDialog.Title(winrt::box_value(DuplicatePrompt));
+            default:                                        invalidOsuFolderDialog.Title(winrt::box_value(InvalidPrompt));
+        }
+
+        invalidOsuFolderDialog.PrimaryButtonText(L"Retry");
+        invalidOsuFolderDialog.CloseButtonText(L"Cancel");
+        if (auto result = co_await invalidOsuFolderDialog.ShowAsync(); result != winrt::Windows::UI::Xaml::Controls::ContentDialogResult::Primary)
+            co_return;
+    }
 }

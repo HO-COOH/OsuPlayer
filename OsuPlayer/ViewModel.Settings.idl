@@ -10,6 +10,13 @@ namespace OsuPlayer.ViewModel
         NightCore
     };
 
+    enum AddOsuFolderResult
+    {
+        Success,
+        Invalid,
+        Duplicate
+    };
+
     [bindable]
     [default_interface]
     runtimeclass SettingsViewModel : Windows.UI.Xaml.Data.INotifyPropertyChanged
@@ -17,11 +24,16 @@ namespace OsuPlayer.ViewModel
         SettingsViewModel();
     
         //Methods
-        Windows.Foundation.IAsyncAction AddOsuPath();
-        void ClearAll();
+        Windows.Foundation.IAsyncOperation<AddOsuFolderResult> AddOsuPath();
 
         //Data
+        Int32 ThemeIndex{ get; set; };
+        Boolean IsModEnabled{ get; set; };
         Mod DefaultMod{ get; set; };
+
+        Int32 JumpListRecentSongs{ get; set; };
+        Int32 JumpListRecentCollections{ get; set; };
+        Boolean AllowModifyOsuData{ get; set; };
         Windows.Foundation.Collections.IObservableVector<OsuPlayer.OsuPathItem> OsuPaths{ get; };
         Windows.Foundation.Collections.IObservableVector<String> Skins{ get; };
     }

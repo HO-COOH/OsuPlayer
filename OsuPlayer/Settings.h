@@ -2,61 +2,27 @@
 
 #include "Settings.g.h"
 #include "ViewModel.SettingsViewModel.g.h"
+#include "Utils.PropertyChangeHelper.hpp"
 
 namespace winrt::OsuPlayer::implementation
 {
-    struct Settings : SettingsT<Settings>
+    struct Settings : SettingsT<Settings>, Utils::PropertyChangeHelper<Settings>
     {
         Settings();
 
         OsuPlayer::ViewModel::SettingsViewModel ViewModel();
 
-        void LightButton_Checked(
-            winrt::Windows::Foundation::IInspectable const& sender,
-            winrt::Windows::UI::Xaml::RoutedEventArgs const& e
-        );
-        
-        void DarkButton_Checked(
-            winrt::Windows::Foundation::IInspectable const& sender,
-            winrt::Windows::UI::Xaml::RoutedEventArgs const& e
-        );
-
-        void SystemThemeButton_Checked(
-            winrt::Windows::Foundation::IInspectable const& sender, 
-            winrt::Windows::UI::Xaml::RoutedEventArgs const& e
-        );
-
-        void ListBox_SelectionChanged(
-            winrt::Windows::Foundation::IInspectable const& sender,
-            winrt::Windows::UI::Xaml::Controls::SelectionChangedEventArgs const& e
-        );
-
-        winrt::Windows::Foundation::IAsyncAction AddOsuPathButton_Click(
-            winrt::Windows::Foundation::IInspectable const& sender, 
-            winrt::Windows::UI::Xaml::RoutedEventArgs const& e
-        );
-        
-        void ClearAllButton_Click(
-            winrt::Windows::Foundation::IInspectable const& sender,
-            winrt::Windows::UI::Xaml::RoutedEventArgs const& e
-        );
 
         void DefaultHitsoundButton_Click(
             winrt::Microsoft::UI::Xaml::Controls::SplitButton const& sender, 
             winrt::Microsoft::UI::Xaml::Controls::SplitButtonClickEventArgs const& args
         );
 
-
-    private:
-        OsuPlayer::ViewModel::SettingsViewModel m_model;
-    public:
-        void HalfTimeButton_Checked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
-        void DoubleTimeButton_Checked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
-        void NightCoreButton_Checked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
-        void HalfTimeButton_Unchecked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
-        void DoubleTimeButton_Unchecked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
-        void NightCoreButton_Unchecked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
-        winrt::Windows::Foundation::IAsyncAction AllowModifyOsuDataCheckbox_Checked(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        winrt::hstring DefaultModString();
+        void HalfTimeItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void DoubleTimeItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void NightCoreItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        winrt::Windows::Foundation::IAsyncAction NewFolderButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
     };
 }
 

@@ -1,0 +1,27 @@
+namespace OsuPlayer
+{
+    [bindable]
+    [default_interface]
+    runtimeclass SettingContainer : Windows.UI.Xaml.Controls.Control
+    {
+        SettingContainer();
+
+        IInspectable Symbol;
+        static Windows.UI.Xaml.DependencyProperty SymbolProperty{ get; };
+
+        String Title;
+        static Windows.UI.Xaml.DependencyProperty TitleProperty{ get; };
+
+        String HelpText;
+        static Windows.UI.Xaml.DependencyProperty HelpTextProperty{ get; };
+
+        Windows.UI.Xaml.Visibility ShowReset;
+        static Windows.UI.Xaml.DependencyProperty ShowResetProperty{ get; };
+
+        IInspectable HeaderContent;
+        static Windows.UI.Xaml.DependencyProperty HeaderContentProperty{ get; };
+
+        IInspectable ExpanderContent;
+        static Windows.UI.Xaml.DependencyProperty ExpanderContentProperty{ get; };
+    }
+}

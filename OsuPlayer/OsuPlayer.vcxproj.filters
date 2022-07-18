@@ -13,13 +13,7 @@
     <Page Include="Settings.xaml">
       <Filter>Views</Filter>
     </Page>
-    <Page Include="OsuPathItem.xaml">
-      <Filter>Views</Filter>
-    </Page>
     <Page Include="SearchPage.xaml">
-      <Filter>Views</Filter>
-    </Page>
-    <Page Include="SongItem.xaml">
       <Filter>Views</Filter>
     </Page>
     <Page Include="MainPage.xaml">
@@ -33,6 +27,12 @@
     </Page>
     <Page Include="CollectionView.xaml">
       <Filter>Views</Filter>
+    </Page>
+    <Page Include="OsuPathItem.xaml">
+      <Filter>Views\Controls</Filter>
+    </Page>
+    <Page Include="SongItem.xaml">
+      <Filter>Views\Controls</Filter>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +66,9 @@
     </Midl>
     <Midl Include="ViewModel.Recent.idl">
       <Filter>ViewModels</Filter>
+    </Midl>
+    <Midl Include="SettingContainer.idl">
+      <Filter>Views\Controls</Filter>
     </Midl>
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +148,9 @@
       <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="ViewModelLocator.h" />
+    <ClInclude Include="Utils.PropertyChangeHelper.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -193,6 +199,9 @@
     </Filter>
     <Filter Include="Strings">
       <UniqueIdentifier>{86d7e711-26e6-4232-9cb1-4455d3ca3d44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views\Controls">
+      <UniqueIdentifier>{1aebe429-de1d-47ab-b009-cb9920bcd227}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
