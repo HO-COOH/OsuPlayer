@@ -87,7 +87,7 @@ namespace Model
 		);
 	}
 
-	std::string SongItemModel::Tags(int versionIndex) const
+	std::string SongItemModel::Tags(int versionIndex)
 	{
 		if (m_versionFiles.empty())
 			return "";
@@ -95,18 +95,8 @@ namespace Model
 		if (versionIndex < 0 || versionIndex >= m_versionFiles.size())
 			return "";
 
-		//auto file = m_versionFiles[versionIndex].CopyAsync(
-		//	winrt::Windows::Storage::ApplicationData::Current().LocalFolder(), 
-		//	L"temp.txt", 
-		//	winrt::Windows::Storage::NameCollisionOption::ReplaceExisting
-		//).get();
-		//You got file access except when it's not, so you can't directly construct std::ifstream from StorageFile::Path()
-		//Metadata meta{std::ifstream{std::wstring{m_versionFiles[versionIndex].Path()}}};
-		Utils::StreambufAdaptor buf{ m_versionFiles[versionIndex] };
-
-		Metadata meta{ std::istream{&buf} };
 		std::string s;
-		for (auto const& tag : meta.tags)
+		for (auto const& tag : getMetadata(versionIndex).tags)
 			(s += tag) += " ";
 		return s;
 	}
@@ -136,7 +126,7 @@ namespace Model
 
 		//versions
 		m_versionFiles.emplace_back(std::move(file));
-
+		m_metadata.emplace_back();
 		//OutputDebugString((m_songName + L" " + m_singer + L" " + m_mapper + L'\n').c_str());
 	}
 
@@ -149,6 +139,16 @@ namespace Model
 	void SongItemModel::handleImageFile(winrt::Windows::Storage::StorageFile&& file)
 	{
 
+	}
+
+	Metadata& SongItemModel::getMetadata(int index)
+	{
+		if (m_metadata[index].has_value())
+			return *m_metadata[index];
+		assert(m_versionFiles.size() == m_metadata.size());
+		Utils::StreambufAdaptor buf{ m_versionFiles[index] };
+		m_metadata[index].emplace(Metadata{ std::istream{&buf} });
+		return *m_metadata[index];
 	}
 
 }

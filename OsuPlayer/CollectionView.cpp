@@ -17,7 +17,7 @@ namespace winrt::OsuPlayer::implementation
        
         m_collectionItems = winrt::single_threaded_observable_vector<OsuPlayer::ViewModel::CollectionItem>();
 
-        for (auto const& collectionItemModel : Model::MyMusicModel::m_collections)
+        for (auto const& collectionItemModel : Model::MyMusicModel::GetInstance().m_collections)
         {
             ViewModel::CollectionItem collectionItemViewModel;
             collectionItemViewModel.Name(winrt::to_hstring(collectionItemModel.m_name));

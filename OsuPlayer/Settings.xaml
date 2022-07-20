@@ -247,6 +247,9 @@
 
     <ScrollViewer>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="20, 40">
+            <StackPanel.BackgroundTransition>
+                <BrushTransition/>
+            </StackPanel.BackgroundTransition>
             <StackPanel.ChildrenTransitions>
                 <TransitionCollection>
                     <RepositionThemeTransition/>
@@ -271,7 +274,7 @@
                     </Button>
                 </local:SettingContainer.HeaderContent>
                 <local:SettingContainer.ExpanderContent>
-                    <ListView ItemsSource="{x:Bind ViewModel.OsuPaths}"/>
+                    <ListView ItemsSource="{x:Bind ViewModel.OsuPaths, Mode=OneWay}"/>
                 </local:SettingContainer.ExpanderContent>
             </local:SettingContainer>
             

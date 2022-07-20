@@ -5,10 +5,13 @@
 #endif
 
 #include <winrt/Windows.UI.Xaml.Controls.h>
+#include <winrt/Windows.Storage.Pickers.h>
 #include "PlayMods.h"
 #include "Model.MyMusic.h"
 #include "Utils.h"
-
+#include "Utils.ThemeHelper.h"
+#include <ppltasks.h>
+#include <pplawait.h>
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
 	winrt::Windows::Storage::ApplicationDataContainer SettingsViewModel::m_localSettings = winrt::Windows::Storage::ApplicationData::Current().LocalSettings();
@@ -20,15 +23,59 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		m_jumplistRecentCollections(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"RecentCollections"), 0)),
 		m_allowModifyOsuData(winrt::unbox_value_or<bool>(m_localSettings.Values().TryLookup(L"AllowModifyOsuData"), false))
 	{
+		if (m_theme != 2)
+			setTheme();
+		loadOsuPaths();
 	}
 
 	winrt::Windows::Foundation::IAsyncOperation<AddOsuFolderResult> SettingsViewModel::AddOsuPath()
 	{
-		throw std::exception{ "Not implemented" };
-		//co_await m_model.doPickOsuFolder();
-		//raisePropertyChange(L"OsuPaths");
-		//co_await Model::MyMusicModel::StartIndexing();
-		co_return AddOsuFolderResult::Success;
+		winrt::Windows::Storage::Pickers::FolderPicker picker;
+		picker.ViewMode(winrt::Windows::Storage::Pickers::PickerViewMode::List);
+
+		auto folder = co_await picker.PickSingleFolderAsync();
+		
+		if (!folder)
+			co_return AddOsuFolderResult::Invalid;
+
+		if (!GetFolderData().isFolderUnique(folder))
+			co_return AddOsuFolderResult::Duplicate;
+
+		if (co_await GetFolderData().addOsuFolder(folder))
+		{
+			OsuPathItemViewModel model;
+			model.Path(folder.Path());
+			OsuPathItem newPath{ model };
+			OsuPaths().Append(newPath);
+			co_await concurrency::create_task([] { Model::MyMusicModel::GetInstance().startIndexing(); });
+			co_return AddOsuFolderResult::Success;
+		}
+		co_return AddOsuFolderResult::Invalid;
+	}
+
+	void implementation::SettingsViewModel::setTheme()
+	{
+		switch (m_theme)
+		{
+			case 0: Utils::ThemeHelper::RootTheme(winrt::Windows::UI::Xaml::ElementTheme::Light); break;
+			case 1: Utils::ThemeHelper::RootTheme(winrt::Windows::UI::Xaml::ElementTheme::Dark); break;
+			default:
+				break;
+		}
+	}
+
+	void implementation::SettingsViewModel::loadOsuPaths()
+	{
+		auto pathsValue = m_localSettings.Values().TryLookup(L"Paths");
+		if (pathsValue)
+		{
+			for (auto path : Utils::SplitPathFromString(pathsValue.as<winrt::hstring>()))
+			{
+				winrt::OsuPlayer::ViewModel::OsuPathItemViewModel pathItem;
+				pathItem.Path(path);
+				OsuPaths().Append(winrt::OsuPlayer::OsuPathItem{pathItem});
+			}
+		}
 	}
 
 
@@ -43,6 +90,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		{
 			m_theme = theme;
 			m_localSettings.Values().Insert(L"Theme", winrt::box_value(theme));
+			setTheme();
 		}
 	}
 
@@ -65,18 +113,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
 	winrt::Windows::Foundation::Collections::IObservableVector<winrt::OsuPlayer::OsuPathItem> SettingsViewModel::OsuPaths()
 	{
-		auto paths = winrt::single_threaded_observable_vector<winrt::OsuPlayer::OsuPathItem>();
-		auto pathsValue = m_localSettings.Values().TryLookup(L"Paths");
-		if (pathsValue)
-		{
-			for (auto path : Utils::SplitPathFromString(pathsValue.as<winrt::hstring>()))
-			{
-				winrt::OsuPlayer::ViewModel::OsuPathItemViewModel pathItem;
-				pathItem.Path(path);
-				paths.Append(winrt::OsuPlayer::OsuPathItem{ pathItem });
-			}
-		}
-		return paths;
+		return m_osuPathItems;
 	}
 
 	Mod SettingsViewModel::DefaultMod() const

@@ -97,4 +97,12 @@ namespace Utils
 		}
 		return result;
 	}
+
+
+	template<typename T>
+	void PushIfNotNull(std::vector<std::remove_cv_t<T>>& vec, T&& object)
+	{
+		if (object)
+			vec.push_back(std::forward<T>(object));
+	}
 }

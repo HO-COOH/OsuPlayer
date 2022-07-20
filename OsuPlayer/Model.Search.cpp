@@ -4,7 +4,7 @@
 
 namespace Model
 {
-	SearchModel::SearchModel() : m_songs{ Model::MyMusicModel::m_songs }
+	SearchModel::SearchModel() : m_songs{ Model::MyMusicModel::GetInstance().m_songs }
 	{
 	}
 

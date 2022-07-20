@@ -45,18 +45,38 @@ namespace winrt::OsuPlayer::implementation
         InitializeComponent();
     }
 
-    ViewModel::SongPropertyViewModel SongItemDialog::ViewModel()
+
+    void SongItemDialog::Title(winrt::hstring title)
     {
-        return m_model;
+        TitleText().Blocks().Append(HandleTitleRichText(title));
     }
 
-    void SongItemDialog::ViewModel(ViewModel::SongPropertyViewModel viewModel)
+    void SongItemDialog::Singer(winrt::hstring singer)
     {
-        m_model = viewModel;
-
-        TitleText().Blocks().Append(HandleTitleRichText(m_model.Title()));
-        TagsText().Blocks().Append(HandleTagsRichText(m_model.Tags()));
+        ArtistText().Blocks().Append(HandleTagsRichText(singer));
     }
+
+    void SongItemDialog::Tags(winrt::hstring tags)
+    {
+        TagsText().Blocks().Append(HandleTagsRichText(tags));
+    }
+
+    void SongItemDialog::Bitrate(winrt::hstring bitrate)
+    {
+        BitrateText().Text(bitrate);
+    }
+
+
+    void SongItemDialog::Length(winrt::hstring length)
+    {
+        LengthText().Text(length);
+    }
+
+    void SongItemDialog::SongPath(winrt::hstring songPath)
+    {
+        SongPathText().Text(songPath);
+    }
+
 
     constexpr auto SearchPrefix = L"https://osu.ppy.sh/beatmapsets?q=";
     winrt::Windows::UI::Xaml::Documents::Paragraph SongItemDialog::HandleTagsRichText(winrt::hstring const& str)
@@ -99,7 +119,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender,
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        auto file = co_await winrt::Windows::Storage::StorageFile::GetFileFromPathAsync(m_model.SongPath());
+        auto file = co_await winrt::Windows::Storage::StorageFile::GetFileFromPathAsync(SongPathText().Text());
         auto folder = co_await file.GetParentAsync();
         co_await winrt::Windows::System::Launcher::LaunchFolderAsync(folder);
     }

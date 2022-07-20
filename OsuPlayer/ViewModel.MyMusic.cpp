@@ -6,14 +6,20 @@
 
 #include "Model.MyMusic.h"
 #include "ViewModel.SettingsViewModel.g.h"
+#include "SongItemDialog.g.h"
 #include <winrt/Windows.ApplicationModel.Core.h>
 #include <Generated Files/winrt/Windows.UI.Core.h>
+#include <winrt/Windows.UI.Xaml.Media.Animation.h>
+#include <ppltasks.h>
+#include <pplawait.h>
+#include "Utils.h"
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
     MyMusicViewModel::MyMusicViewModel()
     {
-        Model::MyMusicModel::OnIndexingFinished(
+        //After finished indexing, transform the song items to Views
+        GetModel().onIndexingFinished(
             [this](std::vector<Model::SongItemModel> const& songs)
             {
                 s_songItems.Clear();
@@ -40,12 +46,29 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
     int MyMusicViewModel::SortByIndex()
     {
-        return static_cast<int>(Model::MyMusicModel::m_sortOrder);
+        return static_cast<int>(GetModel().getSortOrder());
     }
 
-    void MyMusicViewModel::SortByIndex(int index)
+    winrt::Windows::Foundation::IAsyncAction MyMusicViewModel::SortByIndex(int index)
     {
-        Model::MyMusicModel::m_sortBy = Model::MyMusicModel::SortByMethodIndex[index];
+        co_await concurrency::create_task([index] {GetModel().setSortby(Model::MyMusicModel::SortByMethodIndex[index]); });
+        s_songItems.Clear();
+        int i = 0;
+        for (auto const& song : GetModel().m_songs)
+        {
+            SongItemViewModel viewModel;
+            viewModel.SongName(song.SongName());
+            viewModel.Singer(song.Singer());
+            viewModel.Length(song.Length());
+            viewModel.Mapper(song.Mapper());
+            auto versions = viewModel.Versions();
+            for (auto const& path : song.VersionFiles())
+            {
+                versions.Append(path.Path());
+            }
+            viewModel.Index(i++);
+            s_songItems.Append(SongItem{ viewModel });
+        }
     }
 
     winrt::Windows::Foundation::Collections::IObservableVector<OsuPlayer::SongItem> MyMusicViewModel::Songs()
@@ -56,26 +79,30 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
     winrt::Windows::Foundation::IAsyncAction MyMusicViewModel::ShowPropertyOf(int index, int versionIndex)
     {
-        auto const& songItem = Model::MyMusicModel::get(index);
+        auto& songItem = Model::MyMusicModel::GetInstance().get(index);
 
         
        
         OsuPlayer::SongItemDialog content;
-        OsuPlayer::ViewModel::SongPropertyViewModel model;
 
+        auto tagTask = concurrency::create_task([&songItem, versionIndex] {return songItem.Tags(versionIndex); });
+        auto bitrateTask = concurrency::create_task([&songItem] {return songItem.BitRate(); });
 
-        model.Tags(winrt::to_hstring(songItem.Tags(versionIndex)));
-        model.Bitrate(winrt::to_hstring(songItem.BitRate()) + L" kbps");
-        model.SongPath(songItem.VersionFiles()[versionIndex].Path());
-        model.Title(songItem.SongName());
+        content.Tags(winrt::to_hstring(co_await tagTask));
+        content.Bitrate(winrt::to_hstring(co_await bitrateTask) + L" kbps");
+        content.SongPath(songItem.VersionFiles()[versionIndex].Path());
+        content.Title(songItem.SongName());
+        content.Singer(songItem.Singer());
+        content.Length(Utils::GetDurationString(Utils::GetDuration(songItem.Length())));
 
 
         winrt::Windows::UI::Xaml::Controls::ContentDialog propertyDialog;
-        
-        content.ViewModel(model);
-       
         propertyDialog.Content(content);
         propertyDialog.CloseButtonText(L"Close");
+        //Add some animations
+        winrt::Windows::UI::Xaml::Media::Animation::TransitionCollection transitions;
+        transitions.Append(winrt::Windows::UI::Xaml::Media::Animation::EntranceThemeTransition{});
+        propertyDialog.Transitions(transitions);
         co_await propertyDialog.ShowAsync();
     }
 }

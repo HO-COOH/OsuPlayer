@@ -121,6 +121,7 @@
       <DependentUpon>SettingContainer.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="Utils.Lazy.hpp" />
     <ClInclude Include="Utils.PropertyChangeHelper.hpp" />
     <ClInclude Include="ViewModel.CollectionItem.h">
       <DependentUpon>ViewModel.CollectionItem.idl</DependentUpon>
@@ -190,7 +191,7 @@
       <DependentUpon>Settings.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="Model.Settings.h" />
+    <ClInclude Include="Model.Folders.h" />
     <ClInclude Include="ViewModel.Settings.h">
       <DependentUpon>ViewModel.Settings.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -206,10 +207,6 @@
     <ClInclude Include="Model.SongItem.h" />
     <ClInclude Include="ViewModel.SongItem.h">
       <DependentUpon>ViewModel.SongItem.idl</DependentUpon>
-      <SubType>Code</SubType>
-    </ClInclude>
-    <ClInclude Include="ViewModel.SongProperty.h">
-      <DependentUpon>ViewModel.SongProperty.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="Utils.ThemeHelper.h" />
@@ -342,7 +339,7 @@
       <DependentUpon>Settings.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="Model.Settings.cpp" />
+    <ClCompile Include="Model.Folders.cpp" />
     <ClCompile Include="ViewModel.Settings.cpp">
       <DependentUpon>ViewModel.Settings.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -358,10 +355,6 @@
     <ClCompile Include="Model.SongItem.cpp" />
     <ClCompile Include="ViewModel.SongItem.cpp">
       <DependentUpon>ViewModel.SongItem.idl</DependentUpon>
-      <SubType>Code</SubType>
-    </ClCompile>
-    <ClCompile Include="ViewModel.SongProperty.cpp">
-      <DependentUpon>ViewModel.SongProperty.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="Utils.ThemeHelper.cpp" />
@@ -438,9 +431,6 @@
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="ViewModel.SongItem.idl">
-      <SubType>Designer</SubType>
-    </Midl>
-    <Midl Include="ViewModel.SongProperty.idl">
       <SubType>Designer</SubType>
     </Midl>
   </ItemGroup>

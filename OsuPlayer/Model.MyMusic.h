@@ -4,7 +4,6 @@
 #include <winrt/Windows.Storage.h>
 #include "Model.SongItem.h"
 #include <future>
-#include "Model.Settings.h"
 #include <functional>
 #include <array>
 #include "Model.CollectionItem.h"
@@ -44,29 +43,31 @@ namespace Model
 			Descend
 		};
 
-		MyMusicModel();
-
-		void doSort(SortBy sortMethod);
+		
 
 		void setSortOrder(SortOrder order);
 		[[nodiscard]] SortOrder getSortOrder() const;
 
-		static winrt::Windows::Foundation::IAsyncAction StartIndexing();
+		void setSortby(SortBy method);
+		[[nodiscard]] SortBy getSortBy();
 
-		static void OnIndexingFinished(std::function<void(std::vector<SongItemModel> const&)> handler);
+		winrt::Windows::Foundation::IAsyncAction startIndexing();
 
-		static SongItemModel& get(int index);
+		void onIndexingFinished(std::function<void(std::vector<SongItemModel> const&)> handler);
 
-		[[nodiscard]] static bool HasFinishedIndexing();
+		 SongItemModel& get(int index);
 
-		inline static SortOrder m_sortOrder;
-		inline static SortBy m_sortBy;
+		[[nodiscard]] bool hasFinishedIndexing();
 
-		inline static std::vector<CollectionItemModel> m_collections;
+
+		std::vector<SongItemModel> m_songs;
+		std::vector<CollectionItemModel> m_collections;
+
+		static MyMusicModel& GetInstance();
 
 	private:
-
-
+		SortOrder m_sortOrder;
+		SortBy m_sortBy;
 
 		void sortByArtist();
 		void sortByBPM();
@@ -77,16 +78,9 @@ namespace Model
 		void sortByRank();
 		void sortByTitle();
 
-		inline static std::vector<SongItemModel> m_songs;
-
-
-		inline static std::vector<std::future<void>> m_indexingFutures;
-
-		inline static std::vector<std::function<void(std::vector<SongItemModel> const&)>> s_handlers;
-
-		std::vector<winrt::Windows::Storage::StorageFolder> const& m_osuFolders;
-
-		friend class SearchModel;
+		void doSort(SortBy sortMethod);
+		std::vector<std::future<void>> m_indexingFutures;
+		std::vector<std::function<void(std::vector<SongItemModel> const&)>> s_handlers;
 	};
 
 }

@@ -16,11 +16,11 @@ namespace winrt::OsuPlayer::implementation
     MainPage::MainPage()
     {
         InitializeComponent();
-        MyMusicModel::OnIndexingFinished(
+        MyMusicModel::GetInstance().onIndexingFinished(
             [this](std::vector<SongItemModel> const& songs)
             {
                 MyMusicInfoBadge().Value(songs.size());
-                CollectionsInfoBadge().Value(MyMusicModel::m_collections.size());
+                CollectionsInfoBadge().Value(MyMusicModel::GetInstance().m_collections.size());
             }
         );
     }

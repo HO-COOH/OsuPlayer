@@ -7,16 +7,13 @@
 #include <winrt/Windows.ApplicationModel.Core.h>
 #include <pplawait.h>
 #include <ppltasks.h>
+#include "Model.Folders.h"
 
 namespace Model
 {
-	MyMusicModel::MyMusicModel() : m_osuFolders{ SettingsModel::m_osuFolders }
-	{
-	}
 
 	void MyMusicModel::doSort(SortBy sortMethod)
 	{
-		m_sortBy = sortMethod;
 		switch (sortMethod)
 		{
 			case MyMusicModel::SortBy::Artist: sortByArtist(); break;
@@ -33,6 +30,8 @@ namespace Model
 
 	void MyMusicModel::setSortOrder(SortOrder order)
 	{
+		if (order == m_sortOrder)
+			return;
 		m_sortOrder = order;
 		doSort(m_sortBy);
 	}
@@ -42,7 +41,21 @@ namespace Model
 		return m_sortOrder;
 	}
 
-	bool MyMusicModel::HasFinishedIndexing()
+	void MyMusicModel::setSortby(SortBy method)
+	{
+		if (m_sortBy == method)
+			return;
+
+		m_sortBy = method;
+		doSort(m_sortBy);
+	}
+
+	Model::MyMusicModel::SortBy MyMusicModel::getSortBy()
+	{
+		return m_sortBy;
+	}
+
+	bool MyMusicModel::hasFinishedIndexing()
 	{
 		return std::all_of(
 			m_indexingFutures.cbegin(),
@@ -54,13 +67,19 @@ namespace Model
 		);
 	}
 
+	MyMusicModel& MyMusicModel::GetInstance()
+	{
+		static MyMusicModel myMusicModel;
+		return myMusicModel;
+	}
+
 	void MyMusicModel::sortByArtist()
 	{
 		std::sort(
 			std::execution::par_unseq,
 			m_songs.begin(),
 			m_songs.end(),
-			[](SongItemModel const& lhs, SongItemModel const& rhs)
+			[this](SongItemModel const& lhs, SongItemModel const& rhs)
 			{
 				return m_sortOrder == SortOrder::Ascend ?
 					(lhs.Singer() < rhs.Singer()) :
@@ -80,7 +99,7 @@ namespace Model
 			std::execution::par_unseq,
 			m_songs.begin(),
 			m_songs.end(),
-			[](SongItemModel const& lhs, SongItemModel const& rhs)
+			[this](SongItemModel const& lhs, SongItemModel const& rhs)
 			{
 				return m_sortOrder == SortOrder::Ascend ?
 					(lhs.Mapper() < rhs.Mapper()) :
@@ -103,7 +122,7 @@ namespace Model
 			std::execution::par_unseq,
 			m_songs.begin(),
 			m_songs.end(),
-			[](SongItemModel const& lhs, SongItemModel const& rhs)
+			[this](SongItemModel const& lhs, SongItemModel const& rhs)
 			{
 				return m_sortOrder == SortOrder::Ascend ?
 					(lhs.Length() < rhs.Length()) :
@@ -122,7 +141,7 @@ namespace Model
 			std::execution::par_unseq,
 			m_songs.begin(),
 			m_songs.end(),
-			[](SongItemModel const& lhs, SongItemModel const& rhs)
+			[this](SongItemModel const& lhs, SongItemModel const& rhs)
 			{
 				return m_sortOrder == SortOrder::Ascend ?
 					(lhs.SongName() < rhs.SongName()) :
@@ -131,14 +150,14 @@ namespace Model
 		);
 	}
 
-	winrt::Windows::Foundation::IAsyncAction MyMusicModel::StartIndexing()
+	winrt::Windows::Foundation::IAsyncAction MyMusicModel::startIndexing()
 	{
 		//Indexing every osu folder if necessary
-		for (auto const& osuFolder : SettingsModel::OsuFolders())
+		for (auto const& osuFolder : Folders::GetInstance().m_songFolders)
 		{
 			auto songFolders = co_await osuFolder.GetFoldersAsync();
 			co_await concurrency::create_task(
-				[&songFolders]
+				[&songFolders, this]
 				{
 					std::transform(
 						songFolders.begin(),
@@ -155,15 +174,15 @@ namespace Model
 
 		//handle collections
 		{
-			auto const& collectionFile = SettingsModel::GetLocalData<SettingsModel::LocalDataType::CollectionDB>();
-			auto const& osuDbFile = SettingsModel::GetLocalData<SettingsModel::LocalDataType::OsuDB>();
+			auto const& collectionFile = Folders::GetInstance().m_collectionDbs;
+			auto const& osuDbFile = Folders::GetInstance().m_osuDbs;
 
 			assert(collectionFile.size() == osuDbFile.size());
 			for (auto i = 0; i < osuDbFile.size(); ++i)
 			{
 				Utils::StreambufAdaptor osuDbBuf{ osuDbFile[i] };
-				auto collectionItemModel = GetCollectionItemModel(Db::Osu{ osuDbBuf.getBuffer() }.getBeatmapSet(), collectionFile[i]);
-				std::move(collectionItemModel.begin(), collectionItemModel.end(), std::back_inserter(m_collections));
+				auto collections = GetCollectionItemModel(Db::Osu{ osuDbBuf.getBuffer() }.getBeatmapSet(), collectionFile[i]);
+				std::move(collections.begin(), collections.end(), std::back_inserter(m_collections));
 			}
 		}
 
@@ -177,9 +196,9 @@ namespace Model
 
 	}
 
-	void MyMusicModel::OnIndexingFinished(std::function<void(std::vector<SongItemModel>const&)> handler)
+	void MyMusicModel::onIndexingFinished(std::function<void(std::vector<SongItemModel>const&)> handler)
 	{
-		if (HasFinishedIndexing())
+		if (hasFinishedIndexing())
 			handler(m_songs);
 		s_handlers.emplace_back(std::move(handler));
 	}

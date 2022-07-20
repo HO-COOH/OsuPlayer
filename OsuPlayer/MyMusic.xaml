@@ -234,8 +234,7 @@
                     Height="Auto"
                     Header="Sorted by:"
                     x:Name="SortOrderSelectionCombobox"
-                    SelectionChanged="SortOrderSelectionCombobox_SelectionChanged"
-                    SelectedIndex="{x:Bind ViewModel.SortByIndex}"
+                    SelectedIndex="{x:Bind ViewModel.SortByIndex, Mode=TwoWay}"
                 >
                     <ComboBox.Items>
                         <ComboBoxItem Content="Artist"/>

@@ -26,7 +26,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	}
 	void PlayerViewModel::Play(SongItem item)
 	{
-		auto const& songItemModel = MyMusicModel::get(item.ViewModel().Index());
+		auto const& songItemModel = MyMusicModel::GetInstance().get(item.ViewModel().Index());
 		m_model.Source(songItemModel.Source());
 		m_currentItemToPlay = item;
 		m_propertyChanged(*this, winrt::Windows::UI::Xaml::Data::PropertyChangedEventArgs{ L"SongLength" });

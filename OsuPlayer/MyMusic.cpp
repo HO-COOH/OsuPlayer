@@ -30,12 +30,6 @@ namespace winrt::OsuPlayer::implementation
     }
 
 
-    void MyMusic::SortOrderSelectionCombobox_SelectionChanged(
-        winrt::Windows::Foundation::IInspectable const& sender,
-        winrt::Windows::UI::Xaml::Controls::SelectionChangedEventArgs const& e)
-    {
-    }
-
     void MyMusic::Category_SelectionChanged(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender, winrt::Microsoft::UI::Xaml::Controls::NavigationViewSelectionChangedEventArgs const& args)
     {
         auto&& invokedItem = args.SelectedItemContainer();
@@ -54,20 +48,6 @@ namespace winrt::OsuPlayer::implementation
     {
         return ViewModelLocator::Current().MyMusicViewModel();
     }
-
-
-    //void MyMusic::Category_ItemInvoked(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender, winrt::Microsoft::UI::Xaml::Controls::NavigationViewItemInvokedEventArgs const& args)
-    //{
-    //    auto&& invokedItem = args.InvokedItemContainer();
-    //    if (invokedItem.IsSelected())
-    //        return;
-
-    //    if (invokedItem.Name() == L"ArtistsCategoryItem")
-    //    {
-    //        MusicListFrame().Navigate(::xaml_typename<OsuPlayer::ArtistView>());
-    //    }
-
-    //}
 
 
 

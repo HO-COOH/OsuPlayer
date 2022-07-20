@@ -58,9 +58,6 @@
     <Midl Include="ViewModel.Player.idl">
       <Filter>ViewModels</Filter>
     </Midl>
-    <Midl Include="ViewModel.SongProperty.idl">
-      <Filter>ViewModels</Filter>
-    </Midl>
     <Midl Include="ViewModel.CollectionItem.idl">
       <Filter>ViewModels</Filter>
     </Midl>
@@ -75,7 +72,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="Model.Settings.cpp">
+    <ClCompile Include="Model.Folders.cpp">
       <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="BackgroundAcrylic.cpp">
@@ -110,7 +107,7 @@
     <ClInclude Include="PlayMods.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="Model.Settings.h">
+    <ClInclude Include="Model.Folders.h">
       <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="BackgroundAcrylic.h">
@@ -149,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="ViewModelLocator.h" />
     <ClInclude Include="Utils.PropertyChangeHelper.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.Lazy.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>

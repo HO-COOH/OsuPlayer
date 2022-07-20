@@ -8,9 +8,11 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}">
-
+    
     <Grid>
-
+        <Grid.BackgroundTransition>
+            <BrushTransition/>
+        </Grid.BackgroundTransition>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="100"/>

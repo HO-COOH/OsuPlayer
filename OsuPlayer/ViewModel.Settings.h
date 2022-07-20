@@ -2,9 +2,8 @@
 
 #include "ViewModel.SettingsViewModel.g.h"
 #include <winrt/Windows.Foundation.h>
-#include "Model.Settings.h"
 #include "Utils.PropertyChangeHelper.hpp"
-#include <winrt/Windows.Storage.h>
+#include "Model.Folders.h"
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
@@ -41,6 +40,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         //Methods
         winrt::Windows::Foundation::IAsyncOperation<AddOsuFolderResult> AddOsuPath();
 
+        
     private:
         int m_theme;
         Mod m_mod;
@@ -48,8 +48,11 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         int m_jumplistRecentCollections;
         bool m_allowModifyOsuData;
         static winrt::Windows::Storage::ApplicationDataContainer m_localSettings;
-        winrt::Windows::Foundation::Collections::IObservableVector<winrt::OsuPlayer::OsuPathItem> m_osuPathItems;
+        winrt::Windows::Foundation::Collections::IObservableVector<winrt::OsuPlayer::OsuPathItem> m_osuPathItems = winrt::single_threaded_observable_vector<winrt::OsuPlayer::OsuPathItem>();
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> m_skinItems;
+        void setTheme();
+        void loadOsuPaths();
+        static Model::Folders& GetFolderData() { return Model::Folders::GetInstance(); }
     };
 }
 

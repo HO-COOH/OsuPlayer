@@ -1,5 +1,3 @@
-import "ViewModel.SongProperty.idl";
-
 namespace OsuPlayer
 {
     [default_interface]
@@ -7,6 +5,11 @@ namespace OsuPlayer
     {
         SongItemDialog();
 
-        OsuPlayer.ViewModel.SongPropertyViewModel ViewModel{ get; set; };
+        String Title{ get; set; };
+        String Singer{ get; set; };
+        String Tags{ get; set; };
+        String Bitrate{ get; set; };
+        String Length{ get; set; };
+        String SongPath{ get; set; };
     }
 }

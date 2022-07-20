@@ -5,7 +5,9 @@
 #include <vector>
 #include <unordered_map>
 #include <winrt/Windows.Media.Core.h>
-
+#include "Utils.FileStreamAdaptor.hpp"
+#include "OsuParser.hpp"
+#include <optional>
 namespace Model
 {
 	class SongItemModel
@@ -13,15 +15,15 @@ namespace Model
 	public:
 		SongItemModel() = default;
 		explicit SongItemModel(::winrt::Windows::Storage::StorageFolder folder);
-		::winrt::hstring SongName() const;
-		::winrt::hstring Singer() const;
-		::winrt::hstring Mapper() const;
+		winrt::hstring SongName() const;
+		winrt::hstring Singer() const;
+		winrt::hstring Mapper() const;
 		int Length() const;
 		std::vector<::winrt::Windows::Storage::StorageFile> const& VersionFiles() const;
-		::winrt::Windows::Media::Core::MediaSource Source() const;
-		::winrt::Windows::Foundation::DateTime DateModified() const;
-		::winrt::Windows::Foundation::DateTime DateCreated() const;
-		std::string Tags(int versionIndex) const;
+		winrt::Windows::Media::Core::MediaSource Source() const;
+		winrt::Windows::Foundation::DateTime DateModified() const;
+		winrt::Windows::Foundation::DateTime DateCreated() const;
+		std::string Tags(int versionIndex);
 		int BitRate() const;
 	private:
 		void handleOsuFile(winrt::Windows::Storage::StorageFile&& file);
@@ -44,6 +46,8 @@ namespace Model
 		winrt::Windows::Media::Core::MediaSource m_songSource{ nullptr };
 		winrt::Windows::Storage::StorageFolder m_folder{ nullptr };
 		std::vector<winrt::Windows::Storage::StorageFile> m_versionFiles;
+		std::vector<std::optional<Metadata>> m_metadata;
+		Metadata& getMetadata(int index);
 	};
 
 }
