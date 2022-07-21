@@ -12,11 +12,6 @@ winrt::OsuPlayer::ViewModel::PlayerViewModel ViewModelLocator::PlayerViewModel()
     return m_playerViewModel;
 }
 
-winrt::OsuPlayer::ViewModel::MainViewModel ViewModelLocator::MainViewModel() const
-{
-    return m_mainViewModel;
-}
-
 winrt::OsuPlayer::ViewModel::MyMusicViewModel ViewModelLocator::MyMusicViewModel() const
 {
     return m_myMusicViewModel;

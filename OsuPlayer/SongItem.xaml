@@ -29,7 +29,7 @@
             <TextBlock x:Name="SongNameText" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{x:Bind ViewModel.SongName}" TextTrimming="CharacterEllipsis" Grid.Column="1" />
             <TextBlock x:Name="SingerText" Text="{x:Bind ViewModel.Singer}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="2"/>
             <TextBlock x:Name="MapperText" Text="{x:Bind ViewModel.Mapper}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="3"/>
-            <TextBlock x:Name="LengthText" Text="{x:Bind ViewModel.Length}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="4" />
+            <TextBlock x:Name="LengthText" Text="{x:Bind ViewModel.Length, Converter={StaticResource Converter2}}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="4" />
             <ComboBox x:Name="VersionSelectionBox" ItemsSource="{x:Bind ViewModel.Versions}" SelectedIndex="{x:Bind ViewModel.SelectedVersionIndex}" Grid.Column="5" Margin="10,0,0,0"/>
         </Grid>
 
@@ -55,16 +55,10 @@
                 </MenuFlyoutItem>
 
                 <MenuFlyoutSeparator/>
-                
-                <MenuFlyoutItem Text="Move up">
-                    <MenuFlyoutItem.Icon>
-                        <SymbolIcon Symbol="Up"/>
-                    </MenuFlyoutItem.Icon>
-                </MenuFlyoutItem>
 
-                <MenuFlyoutItem Text="Move down">
+                <MenuFlyoutItem x:Name="MoveToMenuItem" Text="Move to">
                     <MenuFlyoutItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74B;"/>
+                        <FontIcon Glyph="&#xE8DE;"/>
                     </MenuFlyoutItem.Icon>
                 </MenuFlyoutItem>
 

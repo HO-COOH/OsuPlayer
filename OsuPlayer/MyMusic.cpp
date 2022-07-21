@@ -6,6 +6,9 @@
 #include "Utils.h"
 #include "ViewModelLocator.h"
 
+
+#include <winrt/Windows.ApplicationModel.DataTransfer.h>
+
 using namespace winrt;
 using namespace Windows::UI::Xaml;
 
@@ -56,5 +59,6 @@ namespace winrt::OsuPlayer::implementation
 
     }
 }
+
 
 

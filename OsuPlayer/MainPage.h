@@ -4,6 +4,8 @@
 #include "Player.g.h"
 #include <winrt/Windows.UI.Xaml.Input.h>
 
+#include <winrt/Windows.UI.Xaml.Media.Animation.h>
+
 namespace winrt::OsuPlayer::implementation
 {
     struct MainPage : MainPageT<MainPage>

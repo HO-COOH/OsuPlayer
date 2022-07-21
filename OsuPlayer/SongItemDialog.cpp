@@ -125,5 +125,3 @@ namespace winrt::OsuPlayer::implementation
     }
 
 }
-
-

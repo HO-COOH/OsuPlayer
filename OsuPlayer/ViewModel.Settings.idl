@@ -31,6 +31,8 @@ namespace OsuPlayer.ViewModel
         Boolean IsModEnabled{ get; set; };
         Mod DefaultMod{ get; set; };
 
+        Int32 LinkActionIndex{ get; set; };
+        Windows.UI.Xaml.Visibility CustomSearchTextBoxVisibility{ get; };
         Int32 JumpListRecentSongs{ get; set; };
         Int32 JumpListRecentCollections{ get; set; };
         Boolean AllowModifyOsuData{ get; set; };

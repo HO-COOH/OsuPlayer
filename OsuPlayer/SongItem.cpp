@@ -7,6 +7,7 @@
 #include "SongItemDialog.g.h"
 #include "MyMusic.g.h"
 #include "Utils.h"
+#include "ViewModelLocator.h"
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -56,8 +57,11 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        auto myMusicView = Utils::FindParent<OsuPlayer::MyMusic>(*this);
-        co_await myMusicView.ViewModel().ShowPropertyOf(m_model.Index(), m_model.SelectedVersionIndex());
+        //auto myMusicView = Utils::FindParent<OsuPlayer::MyMusic>(*this);
+        //co_await myMusicView.ViewModel().ShowPropertyOf(m_model.Index(), m_model.SelectedVersionIndex());
+
+        auto myMusicViewModel = ViewModelLocator::Current().MyMusicViewModel();
+        co_await myMusicViewModel.ShowPropertyOf(ViewModel());
     }
 
 }

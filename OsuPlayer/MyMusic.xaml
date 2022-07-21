@@ -292,9 +292,11 @@
                         <muxc:ProgressBar HorizontalAlignment="Stretch" IsIndeterminate="True" Grid.Row="0"/>
                         <ListView x:Name="MusicList" 
                                   HorizontalAlignment="Stretch"
-                                  ItemsSource="{x:Bind ViewModel.Songs}"
+                                  ItemsSource="{x:Bind ViewModel.Songs, Mode=TwoWay}"
                                   Grid.Row="1"
-                              
+                                  CanDragItems="True"
+                                  CanReorderItems="True"
+                                  AllowDrop="True"
                         >
                             <!--songs--> 
                         </ListView>

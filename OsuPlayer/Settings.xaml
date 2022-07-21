@@ -216,6 +216,12 @@
             <x:String x:Key="JumpListTitleText">Jumplist settings</x:String>
             <x:String x:Key="JumpListHelpText">Numbers of shortcuts showing in the jumplist for quick launching.</x:String>
 
+            <x:String x:Key="LinkClickBehaviorTitleText">Behaviors of clicking on links</x:String>
+            <x:String x:Key="LinkClickBehaviorHelpText">Choose different behaviors when clicking on a link</x:String>
+
+            <x:String x:Key="LinkClickActionDescription">Actions when clicking on a link:</x:String>
+            <x:String x:Key="CustomSearchHint">Custom search address</x:String>
+
             <x:String x:Key="ExperimentalTitleText">Experimental features</x:String>
             <x:String x:Key="ExperimentalHelpText">!You are on your own risk!</x:String>
 
@@ -238,8 +244,11 @@
             <x:String x:Key="ThemeIconGlyph">&#xE790;</x:String>
             <x:String x:Key="PlayModIconGlyph">&#xEC57;</x:String>
             <x:String x:Key="HitsoundIconGlyph">&#xE7F6;</x:String>
+            <x:String x:Key="LinkIconGlyph">&#xE71B;</x:String>
             <x:String x:Key="JumpListIconGlyph">&#xE728;</x:String>
             <x:String x:Key="ExperimentalIconGlyph">&#xE7BA;</x:String>
+
+            <local:ComboBoxToStringConverter x:Key="ComboBoxToStringConverter"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -331,6 +340,40 @@
                 </local:SettingContainer.HeaderContent>
             </local:SettingContainer>
             
+            
+            <!--                 Link behaviors                   -->
+            <local:SettingContainer Title="{StaticResource LinkClickBehaviorTitleText}" HelpText="{StaticResource LinkClickBehaviorHelpText}"
+                                    Style="{StaticResource ExpanderSettingContainerStyle}">
+                <local:SettingContainer.Symbol>
+                    <FontIcon Glyph="{StaticResource LinkIconGlyph}"/>
+                </local:SettingContainer.Symbol>
+                <local:SettingContainer.HeaderContent>
+                    <TextBlock Text="{x:Bind LinkClickBehaviorBox.SelectedItem, Mode=OneWay, Converter={StaticResource ComboBoxToStringConverter}}">
+                    </TextBlock>
+                </local:SettingContainer.HeaderContent>
+                <local:SettingContainer.ExpanderContent>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{StaticResource LinkClickActionDescription}" Grid.Row="0" Grid.Column="0"/>
+                        <ComboBox x:Name="LinkClickBehaviorBox" Grid.Row="0" Grid.Column="1" Margin="10,0,0,0" SelectedIndex="{x:Bind ViewModel.LinkActionIndex, Mode=TwoWay}">
+                            <ComboBoxItem Content="None"/>
+                            <ComboBoxItem Content="Copy"/>
+                            <ComboBoxItem Content="Search on osu!"/>
+                            <ComboBoxItem Content="Custom search"/>
+                        </ComboBox>
+                        <TextBox Visibility="{x:Bind ViewModel.CustomSearchTextBoxVisibility, Mode=OneWay}" PlaceholderText="{StaticResource CustomSearchHint}" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0"/>
+                    </Grid>
+
+                </local:SettingContainer.ExpanderContent>
+            </local:SettingContainer>
             
             <!--             JumpLists                            -->
             <local:SettingContainer Title="{StaticResource JumpListTitleText}" HelpText="{StaticResource JumpListHelpText}"

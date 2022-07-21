@@ -7,7 +7,7 @@
 #include "winrt/Windows.Storage.Pickers.h"
 #include "ViewModel.SettingsViewModel.g.h"
 #include "ViewModelLocator.h"
-
+#include <winrt/Windows.UI.ViewManagement.h>
 
 
 using namespace winrt;

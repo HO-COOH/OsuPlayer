@@ -36,12 +36,29 @@ namespace winrt::OsuPlayer::ViewModel::implementation
                     {
                         versions.Append(path.Path());
                     }
-                    viewModel.Index(i++);
+                    viewModel.Index(i);
+                    viewModel.ModelPointer(winrt::box_value<size_t>(reinterpret_cast<size_t>(&GetModel().m_songs[i])));
                     s_songItems.Append(SongItem{ viewModel });
+                    ++i;
                 }
 
             }
         );
+
+        s_songItems.VectorChanged([](winrt::Windows::Foundation::Collections::IObservableVector<SongItem> v, winrt::Windows::Foundation::Collections::IVectorChangedEventArgs const& args)
+            {
+                //A move in the list view is an item delete + item add
+                static int movedItem = -1;
+                auto const type = args.CollectionChange();
+                if (type == winrt::Windows::Foundation::Collections::CollectionChange::ItemRemoved)
+                {
+                    movedItem = args.Index();
+                }
+                else if (type == winrt::Windows::Foundation::Collections::CollectionChange::ItemInserted && movedItem != -1)
+                {
+                    //reset the indicator
+                }
+            });
     }
 
     int MyMusicViewModel::SortByIndex()
@@ -66,8 +83,10 @@ namespace winrt::OsuPlayer::ViewModel::implementation
             {
                 versions.Append(path.Path());
             }
-            viewModel.Index(i++);
+            viewModel.Index(i);
+            viewModel.ModelPointer(winrt::box_value<size_t>(reinterpret_cast<size_t>(&GetModel().m_songs[i])));
             s_songItems.Append(SongItem{ viewModel });
+            ++i;
         }
     }
 
@@ -77,12 +96,17 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         
     }
 
-    winrt::Windows::Foundation::IAsyncAction MyMusicViewModel::ShowPropertyOf(int index, int versionIndex)
+    void implementation::MyMusicViewModel::Songs(winrt::Windows::Foundation::Collections::IObservableVector<OsuPlayer::SongItem> songs)
     {
-        auto& songItem = Model::MyMusicModel::GetInstance().get(index);
+        s_songItems = songs;
+    }
 
-        
-       
+    winrt::Windows::Foundation::IAsyncAction implementation::MyMusicViewModel::ShowPropertyOf(ViewModel::SongItemViewModel songItemViewModel)
+    {
+        auto& songItem = *reinterpret_cast<Model::SongItemModel*>(winrt::unbox_value<size_t>(songItemViewModel.ModelPointer()));
+        int versionIndex = songItemViewModel.SelectedVersionIndex();
+
+
         OsuPlayer::SongItemDialog content;
 
         auto tagTask = concurrency::create_task([&songItem, versionIndex] {return songItem.Tags(versionIndex); });

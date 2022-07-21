@@ -15,6 +15,8 @@ namespace OsuPlayer.ViewModel
 
         Int32 Index{ get; set; };
 
+        IInspectable ModelPointer{ get; set; };
+
         //Windows.Media.Core.MediaSource SongFile{ get; };
         //Windows.UI.Xaml.Media.Imaging.BitmapImage Image{ get; };
         Windows.Foundation.Collections.IObservableVector<String> Versions{ get; };

@@ -28,6 +28,11 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         Mod DefaultMod() const;
         void DefaultMod(Mod mod);
 
+        int LinkActionIndex();
+        void LinkActionIndex(int linkAction);
+
+        winrt::Windows::UI::Xaml::Visibility CustomSearchTextBoxVisibility();
+
         int JumpListRecentSongs();
         void JumpListRecentSongs(int numSongs);
 
@@ -43,6 +48,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         
     private:
         int m_theme;
+        int m_linkAction;
         Mod m_mod;
         int m_jumplistRecentSongs;
         int m_jumplistRecentCollections;

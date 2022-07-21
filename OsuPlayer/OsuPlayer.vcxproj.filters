@@ -46,9 +46,6 @@
     <Midl Include="ViewModel.SongItem.idl">
       <Filter>ViewModels</Filter>
     </Midl>
-    <Midl Include="ViewModel.Main.idl">
-      <Filter>ViewModels</Filter>
-    </Midl>
     <Midl Include="ViewModel.MyMusic.idl">
       <Filter>ViewModels</Filter>
     </Midl>
@@ -66,6 +63,12 @@
     </Midl>
     <Midl Include="SettingContainer.idl">
       <Filter>Views\Controls</Filter>
+    </Midl>
+    <Midl Include="ComboBoxToStringConverter.idl">
+      <Filter>Converter</Filter>
+    </Midl>
+    <Midl Include="LengthToStringConverter.idl">
+      <Filter>Converter</Filter>
     </Midl>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +205,9 @@
     </Filter>
     <Filter Include="Views\Controls">
       <UniqueIdentifier>{1aebe429-de1d-47ab-b009-cb9920bcd227}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Converter">
+      <UniqueIdentifier>{59270dd9-77dd-48aa-8386-89f43f5c7153}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

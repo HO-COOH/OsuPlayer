@@ -130,6 +130,25 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 			raisePropertyChange(L"IsModEnabled");
 		}
 	}
+	int implementation::SettingsViewModel::LinkActionIndex()
+	{
+		return m_linkAction;
+	}
+	void implementation::SettingsViewModel::LinkActionIndex(int linkAction)
+	{
+		if (linkAction != m_linkAction)
+		{
+			m_linkAction = linkAction;
+			m_localSettings.Values().Insert(L"LinkAction", winrt::box_value(m_linkAction));
+			raisePropertyChange(L"CustomSearchTextBoxVisibility");
+		}
+	}
+	winrt::Windows::UI::Xaml::Visibility implementation::SettingsViewModel::CustomSearchTextBoxVisibility()
+	{
+		return m_linkAction == 3 ?
+			winrt::Windows::UI::Xaml::Visibility::Visible :
+			winrt::Windows::UI::Xaml::Visibility::Collapsed;
+	}
 	int implementation::SettingsViewModel::JumpListRecentSongs()
 	{
 		return m_jumplistRecentSongs;

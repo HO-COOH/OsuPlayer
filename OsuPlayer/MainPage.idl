@@ -8,5 +8,6 @@ namespace OsuPlayer
         MainPage();
 
         Player player{ get; };
+        
     }
 }

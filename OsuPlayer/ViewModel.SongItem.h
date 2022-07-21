@@ -28,6 +28,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         void Length(int length);
         void Index(int index);
         void SelectedVersionIndex(int index);
+
+        void ModelPointer(winrt::Windows::Foundation::IInspectable modelPointer) { m_modelPointer = modelPointer; }
+        winrt::Windows::Foundation::IInspectable ModelPointer() { return m_modelPointer; }
         
 
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> Versions();
@@ -52,6 +55,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         int m_length;
         int m_index;
         int m_versionIndex = 0;
+        winrt::Windows::Foundation::IInspectable m_modelPointer;
         
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> m_versions = winrt::single_threaded_observable_vector<winrt::hstring>();
         //SongItemModel m_model;

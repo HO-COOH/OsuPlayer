@@ -1,9 +1,0 @@
-namespace OsuPlayer.ViewModel
-{
-    [bindable]
-    [default_interface]
-    runtimeclass MainViewModel 
-    {
-        MainViewModel();
-    }
-}

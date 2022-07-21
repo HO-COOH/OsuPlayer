@@ -1,0 +1,8 @@
+namespace OsuPlayer
+{
+    [default_interface]
+    runtimeclass LengthToStringConverter : Windows.UI.Xaml.Data.IValueConverter
+    {
+        LengthToStringConverter();
+    }
+}

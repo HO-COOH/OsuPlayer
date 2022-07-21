@@ -3,6 +3,7 @@
 #include "ViewModel.MyMusicViewModel.g.h"
 #include "Utils.PropertyChangeHelper.hpp"
 #include "Model.MyMusic.h"
+#include "ViewModel.SongItemViewModel.g.h"
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
@@ -14,8 +15,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         winrt::Windows::Foundation::IAsyncAction SortByIndex(int index);
 
         winrt::Windows::Foundation::Collections::IObservableVector<OsuPlayer::SongItem> Songs();
+        void Songs(winrt::Windows::Foundation::Collections::IObservableVector<OsuPlayer::SongItem> songs);
 
-        winrt::Windows::Foundation::IAsyncAction ShowPropertyOf(int index, int versionIndex);
+        winrt::Windows::Foundation::IAsyncAction ShowPropertyOf(ViewModel::SongItemViewModel songItem);
     private:
         inline static winrt::Windows::Foundation::Collections::IObservableVector<OsuPlayer::SongItem> s_songItems = winrt::single_threaded_observable_vector<OsuPlayer::SongItem>();
         static Model::MyMusicModel& GetModel() { return Model::MyMusicModel().GetInstance(); }
