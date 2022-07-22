@@ -22,26 +22,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         GetModel().onIndexingFinished(
             [this](std::vector<Model::SongItemModel> const& songs)
             {
-                s_songItems.Clear();
-                int i = 0;
-                for (auto const& song : songs)
-                {
-                    SongItemViewModel viewModel;
-                    viewModel.SongName(song.SongName());
-                    viewModel.Singer(song.Singer());
-                    viewModel.Length(song.Length());
-                    viewModel.Mapper(song.Mapper());
-                    auto versions = viewModel.Versions();
-                    for (auto const& path : song.VersionFiles())
-                    {
-                        versions.Append(path.Path());
-                    }
-                    viewModel.Index(i);
-                    viewModel.ModelPointer(winrt::box_value<size_t>(reinterpret_cast<size_t>(&GetModel().m_songs[i])));
-                    s_songItems.Append(SongItem{ viewModel });
-                    ++i;
-                }
-
+                updateList();
             }
         );
 
@@ -69,25 +50,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
     winrt::Windows::Foundation::IAsyncAction MyMusicViewModel::SortByIndex(int index)
     {
         co_await concurrency::create_task([index] {GetModel().setSortby(Model::MyMusicModel::SortByMethodIndex[index]); });
-        s_songItems.Clear();
-        int i = 0;
-        for (auto const& song : GetModel().m_songs)
-        {
-            SongItemViewModel viewModel;
-            viewModel.SongName(song.SongName());
-            viewModel.Singer(song.Singer());
-            viewModel.Length(song.Length());
-            viewModel.Mapper(song.Mapper());
-            auto versions = viewModel.Versions();
-            for (auto const& path : song.VersionFiles())
-            {
-                versions.Append(path.Path());
-            }
-            viewModel.Index(i);
-            viewModel.ModelPointer(winrt::box_value<size_t>(reinterpret_cast<size_t>(&GetModel().m_songs[i])));
-            s_songItems.Append(SongItem{ viewModel });
-            ++i;
-        }
+        updateList();
     }
 
     winrt::Windows::Foundation::Collections::IObservableVector<OsuPlayer::SongItem> MyMusicViewModel::Songs()
@@ -114,7 +77,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         content.Tags(winrt::to_hstring(co_await tagTask));
         content.Bitrate(winrt::to_hstring(co_await bitrateTask) + L" kbps");
-        content.SongPath(songItem.VersionFiles()[versionIndex].Path());
+        content.SongPath(songItem.Difficulties()[versionIndex]);
         content.Title(songItem.SongName());
         content.Singer(songItem.Singer());
         content.Length(Utils::GetDurationString(Utils::GetDuration(songItem.Length())));
@@ -128,5 +91,26 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         transitions.Append(winrt::Windows::UI::Xaml::Media::Animation::EntranceThemeTransition{});
         propertyDialog.Transitions(transitions);
         co_await propertyDialog.ShowAsync();
+    }
+
+    void implementation::MyMusicViewModel::updateList()
+    {
+        s_songItems.Clear();
+        int i = 0;
+        for (auto const& song : GetModel().m_songs)
+        {
+            SongItemViewModel viewModel;
+            viewModel.SongName(song.SongName());
+            viewModel.Singer(song.Singer());
+            viewModel.Length(song.Length());
+            viewModel.Mapper(song.Mapper());
+            auto versions = viewModel.Versions();
+            for (auto const& difficulty : song.Difficulties())
+            {
+                versions.Append(difficulty);
+            }
+            viewModel.ModelPointer(winrt::box_value<size_t>(reinterpret_cast<size_t>(&GetModel().m_songs[i++])));
+            s_songItems.Append(SongItem{ viewModel });
+        }
     }
 }

@@ -83,8 +83,8 @@ winrt::Windows::Foundation::IAsyncAction winrt::OsuPlayer::implementation::Setti
 
         switch (result)
         {
-            case ViewModel::AddOsuFolderResult::Duplicate:  invalidOsuFolderDialog.Title(winrt::box_value(DuplicatePrompt));
-            default:                                        invalidOsuFolderDialog.Title(winrt::box_value(InvalidPrompt));
+            case ViewModel::AddOsuFolderResult::Duplicate:  invalidOsuFolderDialog.Title(winrt::box_value(DuplicatePrompt));    break;
+            default:                                        invalidOsuFolderDialog.Title(winrt::box_value(InvalidPrompt));      break;
         }
 
         invalidOsuFolderDialog.PrimaryButtonText(L"Retry");

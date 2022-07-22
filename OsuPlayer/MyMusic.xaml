@@ -9,6 +9,7 @@
     mc:Ignorable="d"
     >
     <Page.Resources>
+        <SolidColorBrush x:Key="ListHeaderTextBrush" Color="{ThemeResource SystemColorGrayTextColor}"/>
         <Style x:Key="SortOrderToggleButtonTemplate" TargetType="ToggleButton">
             <Setter Property="Background" Value="Green"/>
             <Setter Property="Content" Value="↓"/>
@@ -298,6 +299,30 @@
                                   CanReorderItems="True"
                                   AllowDrop="True"
                         >
+                            <ListView.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="67"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                
+                                    <Grid Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Title" Grid.Column="0" Foreground="{StaticResource ListHeaderTextBrush}"/>
+                                        <TextBlock Text="Singer" Grid.Column="1" Foreground="{StaticResource ListHeaderTextBrush}"/>
+                                        <TextBlock Text="Mapper" Grid.Column="2" Foreground="{StaticResource ListHeaderTextBrush}"/>
+                                        <TextBlock Text="Length" Grid.Column="3" Foreground="{StaticResource ListHeaderTextBrush}"/>
+                                        <TextBlock Text="Difficulty" Grid.Column="4" Foreground="{StaticResource ListHeaderTextBrush}"/>
+                                    </Grid>
+                                </Grid>
+                            </ListView.Header>
                             <!--songs--> 
                         </ListView>
                     </Grid>

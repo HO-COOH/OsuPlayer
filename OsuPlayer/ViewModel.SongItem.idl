@@ -13,8 +13,6 @@ namespace OsuPlayer.ViewModel
         Int32 Length{ get; set; };
         String LengthString{ get; };
 
-        Int32 Index{ get; set; };
-
         IInspectable ModelPointer{ get; set; };
 
         //Windows.Media.Core.MediaSource SongFile{ get; };

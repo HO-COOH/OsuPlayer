@@ -59,13 +59,17 @@ namespace Model
 
 		[[nodiscard]] bool hasFinishedIndexing();
 
+		winrt::Windows::Storage::StorageFolder getCurrentIndexingFolder();
+
 
 		std::vector<SongItemModel> m_songs;
-		std::vector<CollectionItemModel> m_collections;
-
+		//std::vector<CollectionItemModel> m_collections;
+		std::vector<Test::CollectionItemModel> m_collections;
+		std::vector<Db::Osu> m_osuDbs;
 		static MyMusicModel& GetInstance();
 
 	private:
+		int m_currentIndexing{};
 		SortOrder m_sortOrder;
 		SortBy m_sortBy;
 

@@ -35,11 +35,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         return m_length;
     }
 
-    int SongItemViewModel::Index()
-    {
-        return m_index;
-    }
-
     int SongItemViewModel::SelectedVersionIndex()
     {
         return m_versionIndex;
@@ -65,11 +60,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         m_length = length;
     }
 
-    void SongItemViewModel::Index(int index)
-    {
-        m_index = index;
-    }
-
     void SongItemViewModel::SelectedVersionIndex(int index)
     {
         m_versionIndex = index;
@@ -78,7 +68,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
     winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> SongItemViewModel::Versions()
     {
         //auto versionNames = winrt::single_threaded_observable_vector<winrt::hstring>();
-        //for (auto const& versionFile : m_model.VersionFiles())
+        //for (auto const& versionFile : m_model.Difficulties())
         //{
         //    versionNames.Append(
         //        winrt::to_hstring(OsuFile::ParseVersionFrom(std::string_view{ winrt::to_string(versionFile.Name()) }))
@@ -86,11 +76,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         //}
         return m_versions;
     }
-
-    //winrt::Windows::Media::Core::MediaSource SongItemViewModel::SongFile()
-    //{
-    //    return m_model.Source();
-    //}
 
 
     //winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage SongItemViewModel::Image()

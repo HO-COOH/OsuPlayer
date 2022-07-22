@@ -7,6 +7,8 @@
 #include <optional>
 #include <memory> //for std::unique_ptr
 #include <unordered_set>
+#include <algorithm>
+#include <unordered_map>
 #include <numeric>
 
 namespace Db
@@ -780,6 +782,21 @@ namespace Db
         auto getBeatmapSet() const
         {
             return std::unordered_set(beatmaps.cbegin(), beatmaps.cend());
+        }
+
+        auto getBeatmapMd5Map() const
+        {
+            std::unordered_map<std::string_view, Beatmap const*> map;
+            std::transform(
+                beatmaps.cbegin(),
+                beatmaps.cend(),
+                std::inserter(map, map.end()),
+                [](Beatmap const& beatmap)
+                {
+                    return std::pair{ std::string_view{beatmap.md5}, &beatmap };
+                }
+            );
+            return map;
         }
     };
 

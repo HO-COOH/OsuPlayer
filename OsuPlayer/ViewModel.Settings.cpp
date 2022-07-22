@@ -45,8 +45,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		{
 			OsuPathItemViewModel model;
 			model.Path(folder.Path());
-			OsuPathItem newPath{ model };
-			OsuPaths().Append(newPath);
+			OsuPaths().Append(model);
 			co_await concurrency::create_task([] { Model::MyMusicModel::GetInstance().startIndexing(); });
 			co_return AddOsuFolderResult::Success;
 		}
@@ -73,7 +72,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 			{
 				winrt::OsuPlayer::ViewModel::OsuPathItemViewModel pathItem;
 				pathItem.Path(path);
-				OsuPaths().Append(winrt::OsuPlayer::OsuPathItem{pathItem});
+				OsuPaths().Append(pathItem);
 			}
 		}
 	}
@@ -111,7 +110,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		return winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring>();
 	}
 
-	winrt::Windows::Foundation::Collections::IObservableVector<winrt::OsuPlayer::OsuPathItem> SettingsViewModel::OsuPaths()
+	winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::OsuPathItemViewModel> SettingsViewModel::OsuPaths()
 	{
 		return m_osuPathItems;
 	}

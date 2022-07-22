@@ -12,7 +12,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         SettingsViewModel();
 
         //Properties
-        winrt::Windows::Foundation::Collections::IObservableVector<OsuPlayer::OsuPathItem> OsuPaths();
+        winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::OsuPathItemViewModel> OsuPaths();
 
 
         int ThemeIndex();
@@ -54,7 +54,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         int m_jumplistRecentCollections;
         bool m_allowModifyOsuData;
         static winrt::Windows::Storage::ApplicationDataContainer m_localSettings;
-        winrt::Windows::Foundation::Collections::IObservableVector<winrt::OsuPlayer::OsuPathItem> m_osuPathItems = winrt::single_threaded_observable_vector<winrt::OsuPlayer::OsuPathItem>();
+        winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::OsuPathItemViewModel> m_osuPathItems = winrt::single_threaded_observable_vector<ViewModel::OsuPathItemViewModel>();
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> m_skinItems;
         void setTheme();
         void loadOsuPaths();

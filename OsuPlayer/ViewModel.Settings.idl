@@ -1,5 +1,4 @@
-import "OsuPathItem.idl";
-
+import "ViewModel.OsuPathItem.idl";
 namespace OsuPlayer.ViewModel
 {
     enum Mod
@@ -36,7 +35,7 @@ namespace OsuPlayer.ViewModel
         Int32 JumpListRecentSongs{ get; set; };
         Int32 JumpListRecentCollections{ get; set; };
         Boolean AllowModifyOsuData{ get; set; };
-        Windows.Foundation.Collections.IObservableVector<OsuPlayer.OsuPathItem> OsuPaths{ get; };
+        Windows.Foundation.Collections.IObservableVector<OsuPlayer.ViewModel.OsuPathItemViewModel> OsuPaths{ get; };
         Windows.Foundation.Collections.IObservableVector<String> Skins{ get; };
     }
 }

@@ -18,7 +18,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         winrt::hstring Mapper();
         winrt::hstring LengthString();
         int Length();
-        int Index();
         int SelectedVersionIndex();
 
 
@@ -26,7 +25,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         void Singer(winrt::hstring singer);
         void Mapper(winrt::hstring mapper);
         void Length(int length);
-        void Index(int index);
         void SelectedVersionIndex(int index);
 
         void ModelPointer(winrt::Windows::Foundation::IInspectable modelPointer) { m_modelPointer = modelPointer; }

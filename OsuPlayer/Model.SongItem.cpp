@@ -9,49 +9,34 @@
 
 #include <winrt/Windows.Media.Playback.h>
 #include <winrt/Windows.Media.MediaProperties.h>
+#include "Model.Folders.h"
+#include "Model.MyMusic.h"
+#include "Utils.Log.hpp"
 
 namespace Model
 {
-	std::unordered_map<winrt::hstring, SongItemModel::FileHandlerFunction> SongItemModel::fileHandlers
-	{
-		{L".osu", &SongItemModel::handleOsuFile},
-		{L".mp3", &SongItemModel::handleSongFile},
-		{L".png", &SongItemModel::handleImageFile}
-	};
-
-	SongItemModel::SongItemModel(winrt::Windows::Storage::StorageFolder folder) : m_folder{ std::move(folder) }
-	{
-		for (auto file : m_folder.GetFilesAsync().get())
-		{
-			auto const fileType = file.FileType();
-			if (auto const iter = fileHandlers.find(fileType); iter != fileHandlers.end())
-				std::invoke(iter->second, *this, std::move(file));
-		}
-	}
 
 	winrt::hstring SongItemModel::SongName() const
 	{
-		return m_songName;
+		auto iter = std::ranges::find_if(m_beatmaps, [](BeatmapInfo const& beatmap) {return !beatmap.beatmapPtr->songTitle.empty(); });
+		return iter == m_beatmaps.end() ? L"" : winrt::to_hstring(iter->beatmapPtr->songTitle);
 	}
 
 	winrt::hstring SongItemModel::Singer() const
 	{
-		return m_singer;
+		auto iter = std::ranges::find_if(m_beatmaps, [](BeatmapInfo const& beatmap) {return !beatmap.beatmapPtr->artistName.empty(); });
+		return iter == m_beatmaps.end() ? L"" : winrt::to_hstring(iter->beatmapPtr->artistName);
 	}
 
 	winrt::hstring SongItemModel::Mapper() const
 	{
-		return m_mapper;
+		auto iter = std::ranges::find_if(m_beatmaps, [](BeatmapInfo const& beatmap) {return !beatmap.beatmapPtr->creator.empty(); });
+		return iter == m_beatmaps.end() ? L"" : winrt::to_hstring(iter->beatmapPtr->creator);
 	}
 
 	int SongItemModel::Length() const
 	{
 		return m_length;
-	}
-
-	std::vector<winrt::Windows::Storage::StorageFile> const& SongItemModel::VersionFiles() const
-	{
-		return m_versionFiles;
 	}
 
 	winrt::Windows::Media::Core::MediaSource SongItemModel::Source() const
@@ -61,40 +46,30 @@ namespace Model
 
 	winrt::Windows::Foundation::DateTime SongItemModel::DateModified() const
 	{
-		return std::transform_reduce(
-			m_versionFiles.cbegin(),
-			m_versionFiles.cend(),
-			winrt::Windows::Foundation::DateTime{},
-			[](winrt::Windows::Foundation::DateTime time1, winrt::Windows::Foundation::DateTime time2) { return (std::max)(time1, time2); },
-			[](winrt::Windows::Storage::StorageFile const& osuFile)
+		return std::max_element(
+			m_beatmaps.cbegin(),
+			m_beatmaps.cend(),
+			[](BeatmapInfo const& lhs, BeatmapInfo const& rhs)
 			{
-				return osuFile.GetBasicPropertiesAsync().get().DateModified();
+				return lhs.dateModified < rhs.dateModified;
 			}
-		);
+		)->dateModified;
 	}
 
 	winrt::Windows::Foundation::DateTime SongItemModel::DateCreated() const
 	{
-		return std::transform_reduce(
-			m_versionFiles.cbegin(),
-			m_versionFiles.cend(),
-			winrt::Windows::Foundation::DateTime{},
-			[](winrt::Windows::Foundation::DateTime time1, winrt::Windows::Foundation::DateTime time2) { return (std::max)(time1, time2); },
-			[](winrt::Windows::Storage::StorageFile const& osuFile)
+		return std::min_element(
+			m_beatmaps.cbegin(),
+			m_beatmaps.cend(),
+			[](BeatmapInfo const& lhs, BeatmapInfo const& rhs)
 			{
-				return osuFile.DateCreated();
+				return lhs.dateCreated < rhs.dateCreated;
 			}
-		);
+		)->dateCreated;
 	}
 
 	std::string SongItemModel::Tags(int versionIndex)
 	{
-		if (m_versionFiles.empty())
-			return "";
-
-		if (versionIndex < 0 || versionIndex >= m_versionFiles.size())
-			return "";
-
 		std::string s;
 		for (auto const& tag : getMetadata(versionIndex).tags)
 			(s += tag) += " ";
@@ -103,38 +78,9 @@ namespace Model
 
 	int SongItemModel::BitRate() const
 	{
-		if (!m_songSource)
-			return {};
-
-		m_songSource.OpenAsync().get();
-		winrt::Windows::Media::Playback::MediaPlaybackItem item{ m_songSource };
-
-		return item.AudioTracks().GetAt(0).GetEncodingProperties().Bitrate();
-		//m_songSource.OpenAsync().get();
-		//return m_songSource.MediaStreamSource().MusicProperties().Bitrate();
+		return m_bitrate;
 	}
 
-	void SongItemModel::handleOsuFile(winrt::Windows::Storage::StorageFile&& file)
-	{
-		//Basic informations
-		if (m_songName.empty())
-			m_songName = winrt::to_hstring(OsuFile::ParseTitleFrom(std::string_view{ winrt::to_string(file.Name()) }));
-		if (m_singer.empty())
-			m_singer = winrt::to_hstring(OsuFile::ParseCreatorFrom(std::string_view{ winrt::to_string(file.Name()) }));
-		if (m_mapper.empty())
-			m_mapper = winrt::to_hstring(OsuFile::ParseArtistFrom(std::string_view{ winrt::to_string(file.Name()) }));
-
-		//versions
-		m_versionFiles.emplace_back(std::move(file));
-		m_metadata.emplace_back();
-		//OutputDebugString((m_songName + L" " + m_singer + L" " + m_mapper + L'\n').c_str());
-	}
-
-	void SongItemModel::handleSongFile(winrt::Windows::Storage::StorageFile&& file)
-	{
-		m_songSource = winrt::Windows::Media::Core::MediaSource::CreateFromStorageFile(file);
-		m_length = (std::chrono::duration_cast<std::chrono::milliseconds>(file.Properties().GetMusicPropertiesAsync().get().Duration())).count();
-	}
 
 	void SongItemModel::handleImageFile(winrt::Windows::Storage::StorageFile&& file)
 	{
@@ -143,12 +89,76 @@ namespace Model
 
 	Metadata& SongItemModel::getMetadata(int index)
 	{
-		if (m_metadata[index].has_value())
-			return *m_metadata[index];
-		assert(m_versionFiles.size() == m_metadata.size());
-		Utils::StreambufAdaptor buf{ m_versionFiles[index] };
-		m_metadata[index].emplace(Metadata{ std::istream{&buf} });
-		return *m_metadata[index];
+		if (auto& originalFile = m_beatmaps[index].originalFile; originalFile.has_value())
+			return originalFile->metaData;
+
+
+		Utils::StreambufAdaptor buf{ getFileOf(m_beatmaps[index]).get()};
+		m_beatmaps[index].originalFile.emplace(std::istream{ &buf });
+		return m_beatmaps[index].originalFile->metaData;
+	}
+
+
+	winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile> SongItemModel::getFileOf(BeatmapInfo const& info)
+	{
+		if (m_folder)
+		{
+			auto file = co_await m_folder.GetFileAsync(winrt::to_hstring(info.beatmapPtr->osuFileName));
+			co_return file;
+		}
+		co_return winrt::Windows::Storage::StorageFile{nullptr};
+	}
+
+	winrt::Windows::Foundation::IAsyncAction SongItemModel::fillDataAsync()
+	{
+			for (auto const& beatmap : m_beatmaps)
+			{
+				try
+				{
+					if (m_bitrate != 0 && m_length != 0)
+						break;
+
+					if (beatmap.beatmapPtr->folderName.empty())
+						continue;
+					winrt::Windows::Storage::StorageFolder osuSongFolder = MyMusicModel::GetInstance().getCurrentIndexingFolder();
+					auto thisFolder = co_await osuSongFolder.GetFolderAsync(winrt::to_hstring(beatmap.beatmapPtr->folderName.data()));
+					if (thisFolder)
+					{
+						m_folder = thisFolder;
+					}
+
+					if (!m_songSource)
+					{
+						auto sourceFile = co_await m_folder.GetFileAsync(winrt::to_hstring(beatmap.beatmapPtr->audioFileName));
+						if (!sourceFile)
+						{
+							Utils::ConsoleLogger{} << beatmap.beatmapPtr->osuFileName.data() << " (X)\n";
+							continue;
+						}
+						m_songSource = winrt::Windows::Media::Core::MediaSource::CreateFromStorageFile(sourceFile);
+					}
+
+					co_await m_songSource.OpenAsync();
+					if (m_songSource.IsOpen())
+					{
+						winrt::Windows::Media::Playback::MediaPlaybackItem item{ m_songSource };
+
+						if (m_bitrate == 0)
+						{
+							m_bitrate = item.AudioTracks().GetAt(0).GetEncodingProperties().Bitrate();
+						}
+
+						if (m_length == 0)
+						{
+							m_length = (std::chrono::duration_cast<std::chrono::milliseconds>(m_songSource.Duration().Value())).count();
+						}
+						m_songSource.Close();
+					}
+				}
+				catch (...)
+				{
+				}
+			}
 	}
 
 }
