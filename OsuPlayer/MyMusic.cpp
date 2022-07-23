@@ -19,11 +19,11 @@ namespace winrt::OsuPlayer::implementation
         InitializeComponent();            
     }
 
-    void MyMusic::OnSongItemEvent(SongItem item)
+    void MyMusic::OnSongItemEvent(ViewModel::SongItemViewModel item)
     {
         auto mainPage = Utils::FindParent<MainPage>(*this);
         
-        mainPage.player().ViewModel().Play(item);
+        //mainPage.player().ViewModel().Play(item);
     }
 
     void MyMusic::OrderToggleButton_Click(

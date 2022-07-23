@@ -7,7 +7,7 @@ namespace OsuPlayer
         MyMusic();
 
         //void OnSongItemEvent(Windows.Storage.StorageFile file);
-        void OnSongItemEvent(SongItem item);
+        void OnSongItemEvent(OsuPlayer.ViewModel.SongItemViewModel item);
 
         OsuPlayer.ViewModel.MyMusicViewModel ViewModel{ get; };
 

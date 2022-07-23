@@ -1,4 +1,3 @@
-import "SongItem.idl";
 import "ViewModel.SongItem.idl";
 namespace OsuPlayer.ViewModel
 {
@@ -11,6 +10,6 @@ namespace OsuPlayer.ViewModel
         Int32 SortByIndex{ get; set; };
 
         Windows.Foundation.IAsyncAction ShowPropertyOf(OsuPlayer.ViewModel.SongItemViewModel songItem);
-        Windows.Foundation.Collections.IObservableVector<OsuPlayer.SongItem> Songs{ get; set; };
+        Windows.Foundation.Collections.IObservableVector<OsuPlayer.ViewModel.SongItemViewModel> Songs{ get; set; };
     }
 }

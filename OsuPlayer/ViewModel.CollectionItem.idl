@@ -1,4 +1,4 @@
-import "SongItem.idl";
+import "ViewModel.SongItem.idl";
 
 namespace OsuPlayer.ViewModel
 {
@@ -9,7 +9,7 @@ namespace OsuPlayer.ViewModel
         CollectionItem();
         
         String Name{ get; set; };
-        Windows.Foundation.Collections.IObservableVector<OsuPlayer.SongItem> SongItems{ get; };
+        Windows.Foundation.Collections.IObservableVector<OsuPlayer.ViewModel.SongItemViewModel> SongItems{ get; };
 
         Int32 Count{ get; };
     }

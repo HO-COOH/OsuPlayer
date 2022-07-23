@@ -28,9 +28,6 @@
     <Page Include="CollectionView.xaml">
       <Filter>Views</Filter>
     </Page>
-    <Page Include="SongItem.xaml">
-      <Filter>Views\Controls</Filter>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />

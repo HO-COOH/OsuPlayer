@@ -21,10 +21,10 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         return std::wstring{ L"Results for \"" } + m_keyword + L"\"";
     }
 
-    winrt::Windows::Foundation::Collections::IObservableVector<SongItem> SearchPageViewModel::SearchResult()
+    winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> SearchPageViewModel::SearchResult()
     {
         //auto result = co_await m_model.doSearch(m_keyword);
-        return winrt::single_threaded_observable_vector<SongItem>();
+        return winrt::single_threaded_observable_vector<ViewModel::SongItemViewModel>();
     }
 
 }

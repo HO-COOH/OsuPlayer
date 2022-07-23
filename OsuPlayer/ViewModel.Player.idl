@@ -1,4 +1,4 @@
-import "SongItem.idl";
+import "ViewModel.SongItem.idl";
 
 namespace OsuPlayer.ViewModel
 {
@@ -17,7 +17,7 @@ namespace OsuPlayer.ViewModel
     {
         PlayerViewModel();
 
-        void Play(OsuPlayer.SongItem item);
+        void Play(OsuPlayer.ViewModel.SongItemViewModel item);
         void Play();
         void PlayPrevious();
         void PlayNext();

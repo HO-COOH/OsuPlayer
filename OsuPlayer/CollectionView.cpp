@@ -35,7 +35,7 @@ namespace winrt::OsuPlayer::implementation
                 itemViewModel.Mapper(winrt::to_hstring(songItem->creator));
                 itemViewModel.Length(songItem->totalTime);
 
-                collectionItemViewModel.SongItems().Append(SongItem{ itemViewModel });
+                collectionItemViewModel.SongItems().Append(itemViewModel);
             }
 
             m_collectionItems.Append(collectionItemViewModel);

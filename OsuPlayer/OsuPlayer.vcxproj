@@ -196,10 +196,6 @@
       <DependentUpon>ViewModel.Settings.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="SongItem.h">
-      <DependentUpon>SongItem.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </ClInclude>
     <ClInclude Include="SongItemDialog.h">
       <DependentUpon>SongItemDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -236,9 +232,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Settings.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SongItem.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SongItemDialog.xaml">
@@ -341,10 +334,6 @@
       <DependentUpon>ViewModel.Settings.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="SongItem.cpp">
-      <DependentUpon>SongItem.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </ClCompile>
     <ClCompile Include="SongItemDialog.cpp">
       <DependentUpon>SongItemDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -417,10 +406,6 @@
     </Midl>
     <Midl Include="ViewModel.Settings.idl">
       <SubType>Designer</SubType>
-    </Midl>
-    <Midl Include="SongItem.idl">
-      <DependentUpon>SongItem.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Midl>
     <Midl Include="SongItemDialog.idl">
       <DependentUpon>SongItemDialog.xaml</DependentUpon>

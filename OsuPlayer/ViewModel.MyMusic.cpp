@@ -26,20 +26,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
             }
         );
 
-        s_songItems.VectorChanged([](winrt::Windows::Foundation::Collections::IObservableVector<SongItem> v, winrt::Windows::Foundation::Collections::IVectorChangedEventArgs const& args)
-            {
-                //A move in the list view is an item delete + item add
-                static int movedItem = -1;
-                auto const type = args.CollectionChange();
-                if (type == winrt::Windows::Foundation::Collections::CollectionChange::ItemRemoved)
-                {
-                    movedItem = args.Index();
-                }
-                else if (type == winrt::Windows::Foundation::Collections::CollectionChange::ItemInserted && movedItem != -1)
-                {
-                    //reset the indicator
-                }
-            });
+        s_songItems.VectorChanged([](winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> v, winrt::Windows::Foundation::Collections::IVectorChangedEventArgs const& args)
+        {
+        });
     }
 
     int MyMusicViewModel::SortByIndex()
@@ -53,13 +42,13 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         updateList();
     }
 
-    winrt::Windows::Foundation::Collections::IObservableVector<OsuPlayer::SongItem> MyMusicViewModel::Songs()
+    winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> MyMusicViewModel::Songs()
     {
         return s_songItems;
         
     }
 
-    void implementation::MyMusicViewModel::Songs(winrt::Windows::Foundation::Collections::IObservableVector<OsuPlayer::SongItem> songs)
+    void implementation::MyMusicViewModel::Songs(winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> songs)
     {
         s_songItems = songs;
     }
@@ -110,7 +99,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
                 versions.Append(difficulty);
             }
             viewModel.ModelPointer(winrt::box_value<size_t>(reinterpret_cast<size_t>(&GetModel().m_songs[i++])));
-            s_songItems.Append(SongItem{ viewModel });
+            s_songItems.Append(viewModel);
         }
     }
 }

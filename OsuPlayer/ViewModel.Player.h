@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "SongItem.g.h"
 #include "ViewModel.PlayerViewModel.g.h"
 #include <winrt/Windows.UI.Xaml.Media.h>
 #include "Model.Player.h"
@@ -11,7 +10,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
     {
         PlayerViewModel();
         
-        void Play(SongItem item);
+        void Play(ViewModel::SongItemViewModel item);
         void Play();
         void PlayPrevious();
         void PlayNext();
@@ -38,7 +37,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         void PropertyChanged(winrt::event_token const& token) noexcept;
 
     private:
-        SongItem m_currentItemToPlay;
+        ViewModel::SongItemViewModel m_currentItemToPlay;
         Model::PlayerModel m_model;
         int m_progress{};
         int m_length{};

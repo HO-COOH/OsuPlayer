@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:viewModel="using:OsuPlayer.ViewModel"
     mc:Ignorable="d"
     >
     <Page.Resources>
@@ -297,8 +298,7 @@
                                   Grid.Row="1"
                                   CanDragItems="True"
                                   CanReorderItems="True"
-                                  AllowDrop="True"
-                        >
+                                  AllowDrop="True">
                             <ListView.Header>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -323,6 +323,74 @@
                                     </Grid>
                                 </Grid>
                             </ListView.Header>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:Name="SongItemTemplate" x:DataType="viewModel:SongItemViewModel">
+                                    <Grid Height="30" IsDoubleTapEnabled="True" HorizontalAlignment="Stretch">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox x:Name="CheckBox" Grid.Column="0"/>
+
+                                        <Grid Grid.Column="1" Height="30" VerticalAlignment="Top">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0"/>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock x:Name="SongNameText" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{x:Bind SongName}" TextTrimming="CharacterEllipsis" Grid.Column="1" />
+                                            <TextBlock x:Name="SingerText" Text="{x:Bind Singer}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="2"/>
+                                            <TextBlock x:Name="MapperText" Text="{x:Bind Mapper}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="3"/>
+                                            <TextBlock x:Name="LengthText" Text="{x:Bind Length, Converter={StaticResource Converter2}}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="4" />
+                                            <ComboBox x:Name="VersionSelectionBox" ItemsSource="{x:Bind Versions}" SelectedIndex="{x:Bind SelectedVersionIndex, Mode=TwoWay}" Grid.Column="5" Margin="10,0,0,0"/>
+                                        </Grid>
+
+                                        <Grid.ContextFlyout>
+                                            <MenuFlyout>
+
+                                                <MenuFlyoutItem Text="Play">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <SymbolIcon Symbol="Play"/>
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+
+                                                <MenuFlyoutItem Text="Remove from list">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <SymbolIcon Symbol="Clear"/>
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+
+                                                <MenuFlyoutItem Text="Delete this beatmap">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <SymbolIcon Symbol="Delete"/>
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+
+                                                <MenuFlyoutSeparator/>
+
+                                                <MenuFlyoutItem x:Name="MoveToMenuItem" Text="Move to">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <FontIcon Glyph="&#xE8DE;"/>
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+
+                                                <MenuFlyoutSeparator/>
+
+                                                <MenuFlyoutItem x:Name="PropertyMenuItem" Text="Properties">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <SymbolIcon Symbol="MusicInfo"/>
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                            </MenuFlyout>
+                                        </Grid.ContextFlyout>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
                             <!--songs--> 
                         </ListView>
                     </Grid>

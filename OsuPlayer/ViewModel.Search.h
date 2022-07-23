@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include <winrt/Windows.Foundation.Collections.h>
 #include "ViewModel.SearchPageViewModel.g.h"
-#include "SongItem.g.h"
 #include "Model.Search.h"
 #include <functional>
 
@@ -17,7 +16,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         winrt::hstring SearchInfo();
 
-        winrt::Windows::Foundation::Collections::IObservableVector<SongItem> SearchResult();
+        winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> SearchResult();
     private:
         winrt::hstring m_keyword;
         Model::SearchModel m_model;

@@ -14,7 +14,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	{
 		m_name = name;
 	}
-	Windows::Foundation::Collections::IObservableVector<SongItem> CollectionItem::SongItems()
+	Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> CollectionItem::SongItems()
 	{
 		return m_songItems;
 	}

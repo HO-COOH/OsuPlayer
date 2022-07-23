@@ -24,9 +24,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		);
 
 	}
-	void PlayerViewModel::Play(SongItem item)
+	void PlayerViewModel::Play(ViewModel::SongItemViewModel item)
 	{
-		auto const& songItemModel = *reinterpret_cast<SongItemModel*>(winrt::unbox_value<size_t>(item.ViewModel().ModelPointer()));
+		auto const& songItemModel = *reinterpret_cast<SongItemModel*>(winrt::unbox_value<size_t>(item.ModelPointer()));
 		m_model.Source(songItemModel.Source());
 		m_currentItemToPlay = item;
 		m_propertyChanged(*this, winrt::Windows::UI::Xaml::Data::PropertyChangedEventArgs{ L"SongLength" });
@@ -62,7 +62,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	winrt::hstring PlayerViewModel::SongLengthString()
 	{
 		if (m_currentItemToPlay)
-			return m_currentItemToPlay.ViewModel().LengthString();
+			return m_currentItemToPlay.LengthString();
 		else
 			return L"0:00";
 	}
@@ -72,7 +72,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	}
 	int PlayerViewModel::SongLength()
 	{
-		return m_currentItemToPlay.ViewModel().Length();
+		return m_currentItemToPlay.Length();
 	}
 	int PlayerViewModel::Volume()
 	{

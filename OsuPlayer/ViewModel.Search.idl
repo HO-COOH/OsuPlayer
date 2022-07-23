@@ -1,4 +1,4 @@
-import "SongItem.idl";
+import "ViewModel.SongItem.idl";
 namespace OsuPlayer.ViewModel
 {
     [bindable]
@@ -9,6 +9,6 @@ namespace OsuPlayer.ViewModel
         
         String Keyword{ get; set; };
         String SearchInfo{ get; };
-        Windows.Foundation.Collections.IObservableVector<OsuPlayer.SongItem> SearchResult{ get; };
+        Windows.Foundation.Collections.IObservableVector<OsuPlayer.ViewModel.SongItemViewModel> SearchResult{ get; };
     }
 }

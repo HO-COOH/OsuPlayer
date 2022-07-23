@@ -14,13 +14,13 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         int SortByIndex();
         winrt::Windows::Foundation::IAsyncAction SortByIndex(int index);
 
-        winrt::Windows::Foundation::Collections::IObservableVector<OsuPlayer::SongItem> Songs();
-        void Songs(winrt::Windows::Foundation::Collections::IObservableVector<OsuPlayer::SongItem> songs);
+        winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> Songs();
+        void Songs(winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> songs);
 
         winrt::Windows::Foundation::IAsyncAction ShowPropertyOf(ViewModel::SongItemViewModel songItem);
     private:
         void updateList();
-        inline static winrt::Windows::Foundation::Collections::IObservableVector<OsuPlayer::SongItem> s_songItems = winrt::single_threaded_observable_vector<OsuPlayer::SongItem>();
+        inline static winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> s_songItems = winrt::single_threaded_observable_vector<ViewModel::SongItemViewModel>();
         static Model::MyMusicModel& GetModel() { return Model::MyMusicModel().GetInstance(); }
     };
 }
