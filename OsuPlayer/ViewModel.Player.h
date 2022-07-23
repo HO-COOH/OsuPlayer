@@ -3,10 +3,11 @@
 #include "ViewModel.PlayerViewModel.g.h"
 #include <winrt/Windows.UI.Xaml.Media.h>
 #include "Model.Player.h"
+#include "Utils.PropertyChangeHelper.hpp"
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
-    struct PlayerViewModel : PlayerViewModelT<PlayerViewModel>
+    struct PlayerViewModel : PlayerViewModelT<PlayerViewModel>, Utils::PropertyChangeHelper<PlayerViewModel>
     {
         PlayerViewModel();
         
@@ -32,17 +33,12 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         winrt::Windows::UI::Xaml::Media::ImageSource ImageSource();
 
-        //These following 2 methods are for supporting property change events
-        winrt::event_token PropertyChanged(winrt::Windows::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
-        void PropertyChanged(winrt::event_token const& token) noexcept;
 
     private:
-        ViewModel::SongItemViewModel m_currentItemToPlay;
+        ViewModel::SongItemViewModel m_currentItemToPlay{ nullptr };
         Model::PlayerModel m_model;
         int m_progress{};
         int m_length{};
-        //This is for supporting property change events
-        winrt::event<winrt::Windows::UI::Xaml::Data::PropertyChangedEventHandler> m_propertyChanged;
     };
 }
 

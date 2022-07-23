@@ -23,8 +23,8 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		m_jumplistRecentCollections(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"RecentCollections"), 0)),
 		m_allowModifyOsuData(winrt::unbox_value_or<bool>(m_localSettings.Values().TryLookup(L"AllowModifyOsuData"), false))
 	{
-		if (m_theme != 2)
-			setTheme();
+		//if (m_theme != 2)
+		//	setTheme();
 		loadOsuPaths();
 	}
 

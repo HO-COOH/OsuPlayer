@@ -21,10 +21,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         int SelectedVersionIndex();
 
 
-        void SongName(winrt::hstring songName);
-        void Singer(winrt::hstring singer);
-        void Mapper(winrt::hstring mapper);
-        void Length(int length);
         void SelectedVersionIndex(int index);
 
         void ModelPointer(winrt::Windows::Foundation::IInspectable modelPointer) { m_modelPointer = modelPointer; }
@@ -42,21 +38,19 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         void PlayCurrent();
 
+        winrt::Windows::Foundation::IAsyncAction ShowProperty();
+
         //These following 2 methods are for supporting property change events
         winrt::event_token PropertyChanged(winrt::Windows::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
         void PropertyChanged(winrt::event_token const& token) noexcept;
 
     private:
-        winrt::hstring m_songName;
-        winrt::hstring m_singer;
-        winrt::hstring m_mapper;
-        int m_length;
-        int m_index;
+        int m_index{};
         int m_versionIndex = 0;
         winrt::Windows::Foundation::IInspectable m_modelPointer;
         
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> m_versions = winrt::single_threaded_observable_vector<winrt::hstring>();
-        //SongItemModel m_model;
+        Model::SongItemModel& getModel();
 
         //This is for supporting property change events
         winrt::event<winrt::Windows::UI::Xaml::Data::PropertyChangedEventHandler> m_propertyChanged;

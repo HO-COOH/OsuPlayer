@@ -25,15 +25,6 @@ namespace winrt::OsuPlayer::implementation
             for (auto const& songItem : collectionItemModel.m_beatmapPtr)
             {
                 ViewModel::SongItemViewModel itemViewModel;
-                //itemViewModel.SongName(winrt::to_hstring(songItem.songTitle));
-                //itemViewModel.Singer(winrt::to_hstring(songItem.artistName));
-                //itemViewModel.Mapper(winrt::to_hstring(songItem.creator));
-                //itemViewModel.Length(songItem.totalTime);
-
-                itemViewModel.SongName(winrt::to_hstring(songItem->songTitle));
-                itemViewModel.Singer(winrt::to_hstring(songItem->artistName));
-                itemViewModel.Mapper(winrt::to_hstring(songItem->creator));
-                itemViewModel.Length(songItem->totalTime);
 
                 collectionItemViewModel.SongItems().Append(itemViewModel);
             }

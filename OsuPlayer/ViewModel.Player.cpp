@@ -18,8 +18,8 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 			{
 				m_progress = session.Position().count() / 10'000ll;
 				co_await winrt::resume_foreground(winrt::Windows::ApplicationModel::Core::CoreApplication::MainView().CoreWindow().Dispatcher());
-				m_propertyChanged(*this, winrt::Windows::UI::Xaml::Data::PropertyChangedEventArgs{ L"Progress" });
-				m_propertyChanged(*this, winrt::Windows::UI::Xaml::Data::PropertyChangedEventArgs{ L"ProgressString" });
+				raisePropertyChange(L"Progress");
+				raisePropertyChange(L"ProgressString");
 			}
 		);
 
@@ -27,10 +27,11 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	void PlayerViewModel::Play(ViewModel::SongItemViewModel item)
 	{
 		auto const& songItemModel = *reinterpret_cast<SongItemModel*>(winrt::unbox_value<size_t>(item.ModelPointer()));
+		songItemModel.Source().OpenAsync();
 		m_model.Source(songItemModel.Source());
 		m_currentItemToPlay = item;
-		m_propertyChanged(*this, winrt::Windows::UI::Xaml::Data::PropertyChangedEventArgs{ L"SongLength" });
-		m_propertyChanged(*this, winrt::Windows::UI::Xaml::Data::PropertyChangedEventArgs{ L"SongLengthString" });
+		raisePropertyChange(L"SongLength");
+		raisePropertyChange(L"SongLengthString");
 	}
 	void PlayerViewModel::Play()
 	{
@@ -72,7 +73,10 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	}
 	int PlayerViewModel::SongLength()
 	{
-		return m_currentItemToPlay.Length();
+		if (m_currentItemToPlay)
+			return m_currentItemToPlay.Length();
+		else
+			return 0;
 	}
 	int PlayerViewModel::Volume()
 	{
@@ -86,13 +90,5 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	winrt::Windows::UI::Xaml::Media::ImageSource PlayerViewModel::ImageSource()
 	{
 		return winrt::Windows::UI::Xaml::Media::ImageSource{ nullptr };
-	}
-	winrt::event_token PlayerViewModel::PropertyChanged(winrt::Windows::UI::Xaml::Data::PropertyChangedEventHandler const& handler)
-	{
-		return m_propertyChanged.add(handler);
-	}
-	void PlayerViewModel::PropertyChanged(winrt::event_token const& token) noexcept
-	{
-		m_propertyChanged.remove(token);
 	}
 }

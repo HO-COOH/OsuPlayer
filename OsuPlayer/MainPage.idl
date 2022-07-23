@@ -1,5 +1,4 @@
 import "Player.idl";
-
 namespace OsuPlayer
 {
     [default_interface]
@@ -8,6 +7,5 @@ namespace OsuPlayer
         MainPage();
 
         Player player{ get; };
-        
     }
 }

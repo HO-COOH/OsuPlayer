@@ -326,7 +326,7 @@
 
                             <ListView.ItemTemplate>
                                 <DataTemplate x:Name="SongItemTemplate" x:DataType="viewModel:SongItemViewModel">
-                                    <Grid Height="30" IsDoubleTapEnabled="True" HorizontalAlignment="Stretch">
+                                    <Grid Height="30" IsDoubleTapEnabled="True" HorizontalAlignment="Stretch" DoubleTapped="{x:Bind PlayCurrent}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="50"/>
                                             <ColumnDefinition Width="*"/>
@@ -353,7 +353,7 @@
                                         <Grid.ContextFlyout>
                                             <MenuFlyout>
 
-                                                <MenuFlyoutItem Text="Play">
+                                                <MenuFlyoutItem Text="Play" Click="{x:Bind PlayCurrent}">
                                                     <MenuFlyoutItem.Icon>
                                                         <SymbolIcon Symbol="Play"/>
                                                     </MenuFlyoutItem.Icon>
@@ -377,11 +377,12 @@
                                                     <MenuFlyoutItem.Icon>
                                                         <FontIcon Glyph="&#xE8DE;"/>
                                                     </MenuFlyoutItem.Icon>
+                                                   
                                                 </MenuFlyoutItem>
 
                                                 <MenuFlyoutSeparator/>
 
-                                                <MenuFlyoutItem x:Name="PropertyMenuItem" Text="Properties">
+                                                <MenuFlyoutItem x:Name="PropertyMenuItem" Text="Properties" Click="{x:Bind ShowProperty}">
                                                     <MenuFlyoutItem.Icon>
                                                         <SymbolIcon Symbol="MusicInfo"/>
                                                     </MenuFlyoutItem.Icon>

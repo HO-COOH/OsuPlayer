@@ -8,6 +8,7 @@
 #include "ViewModel.SettingsViewModel.g.h"
 #include "ViewModelLocator.h"
 #include <winrt/Windows.UI.ViewManagement.h>
+#include "Model.MyMusic.h"
 
 
 using namespace winrt;

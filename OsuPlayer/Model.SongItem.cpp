@@ -111,54 +111,35 @@ namespace Model
 
 	winrt::Windows::Foundation::IAsyncAction SongItemModel::fillDataAsync()
 	{
-			for (auto const& beatmap : m_beatmaps)
+		for (auto const& beatmap : m_beatmaps)
+		{
+			if (m_bitrate != 0 && m_length != 0)
+				break;
+
+			if (beatmap.beatmapPtr->folderName.empty())
+				continue;
+			winrt::Windows::Storage::StorageFolder osuSongFolder = MyMusicModel::GetInstance().getCurrentIndexingFolder();
+			auto thisFolder = co_await osuSongFolder.GetFolderAsync(winrt::to_hstring(beatmap.beatmapPtr->folderName.data()));
+			if (thisFolder)
 			{
-				try
-				{
-					if (m_bitrate != 0 && m_length != 0)
-						break;
+				m_folder = thisFolder;
+			}
 
-					if (beatmap.beatmapPtr->folderName.empty())
-						continue;
-					winrt::Windows::Storage::StorageFolder osuSongFolder = MyMusicModel::GetInstance().getCurrentIndexingFolder();
-					auto thisFolder = co_await osuSongFolder.GetFolderAsync(winrt::to_hstring(beatmap.beatmapPtr->folderName.data()));
-					if (thisFolder)
-					{
-						m_folder = thisFolder;
-					}
-
-					if (!m_songSource)
-					{
-						auto sourceFile = co_await m_folder.GetFileAsync(winrt::to_hstring(beatmap.beatmapPtr->audioFileName));
-						if (!sourceFile)
-						{
-							Utils::ConsoleLogger{} << beatmap.beatmapPtr->osuFileName.data() << " (X)\n";
-							continue;
-						}
-						m_songSource = winrt::Windows::Media::Core::MediaSource::CreateFromStorageFile(sourceFile);
-					}
-
-					co_await m_songSource.OpenAsync();
-					if (m_songSource.IsOpen())
-					{
-						winrt::Windows::Media::Playback::MediaPlaybackItem item{ m_songSource };
-
-						if (m_bitrate == 0)
-						{
-							m_bitrate = item.AudioTracks().GetAt(0).GetEncodingProperties().Bitrate();
-						}
-
-						if (m_length == 0)
-						{
-							m_length = (std::chrono::duration_cast<std::chrono::milliseconds>(m_songSource.Duration().Value())).count();
-						}
-						m_songSource.Close();
-					}
+			if (!m_songSource)
+			{
+				try {
+					auto sourceFile = co_await m_folder.GetFileAsync(winrt::to_hstring(beatmap.beatmapPtr->audioFileName));
+					auto property = co_await sourceFile.Properties().GetMusicPropertiesAsync();
+					m_bitrate = property.Bitrate();
+					m_length = (std::chrono::duration_cast<std::chrono::milliseconds>(property.Duration())).count();
+					m_songSource = winrt::Windows::Media::Core::MediaSource::CreateFromStorageFile(sourceFile);
 				}
 				catch (...)
 				{
+					Utils::ConsoleLogger{} << beatmap.beatmapPtr->audioFileName.data() << " not found\n";
+					continue;
 				}
 			}
+		}
 	}
-
 }

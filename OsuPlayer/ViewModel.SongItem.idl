@@ -7,21 +7,19 @@ namespace OsuPlayer.ViewModel
         SongItemViewModel();
 
 
-        String SongName{ get; set; };
-        String Singer{ get; set; };
-        String Mapper{ get; set; };
-        Int32 Length{ get; set; };
+        String SongName{ get; };
+        String Singer{ get; };
+        String Mapper{ get; };
+        Int32 Length{ get; };
         String LengthString{ get; };
 
         IInspectable ModelPointer{ get; set; };
 
-        //Windows.Media.Core.MediaSource SongFile{ get; };
-        //Windows.UI.Xaml.Media.Imaging.BitmapImage Image{ get; };
         Windows.Foundation.Collections.IObservableVector<String> Versions{ get; };
 
         Int32 SelectedVersionIndex{ get; set; };
 
-        //Windows.Foundation.IAsyncAction ShowProporty();
+        Windows.Foundation.IAsyncAction ShowProperty();
 
         void PlayCurrent();
     }

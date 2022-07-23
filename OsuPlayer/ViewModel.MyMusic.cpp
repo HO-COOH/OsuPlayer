@@ -53,34 +53,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         s_songItems = songs;
     }
 
-    winrt::Windows::Foundation::IAsyncAction implementation::MyMusicViewModel::ShowPropertyOf(ViewModel::SongItemViewModel songItemViewModel)
-    {
-        auto& songItem = *reinterpret_cast<Model::SongItemModel*>(winrt::unbox_value<size_t>(songItemViewModel.ModelPointer()));
-        int versionIndex = songItemViewModel.SelectedVersionIndex();
-
-
-        OsuPlayer::SongItemDialog content;
-
-        auto tagTask = concurrency::create_task([&songItem, versionIndex] {return songItem.Tags(versionIndex); });
-        auto bitrateTask = concurrency::create_task([&songItem] {return songItem.BitRate(); });
-
-        content.Tags(winrt::to_hstring(co_await tagTask));
-        content.Bitrate(winrt::to_hstring(co_await bitrateTask) + L" kbps");
-        content.SongPath(songItem.Difficulties()[versionIndex]);
-        content.Title(songItem.SongName());
-        content.Singer(songItem.Singer());
-        content.Length(Utils::GetDurationString(Utils::GetDuration(songItem.Length())));
-
-
-        winrt::Windows::UI::Xaml::Controls::ContentDialog propertyDialog;
-        propertyDialog.Content(content);
-        propertyDialog.CloseButtonText(L"Close");
-        //Add some animations
-        winrt::Windows::UI::Xaml::Media::Animation::TransitionCollection transitions;
-        transitions.Append(winrt::Windows::UI::Xaml::Media::Animation::EntranceThemeTransition{});
-        propertyDialog.Transitions(transitions);
-        co_await propertyDialog.ShowAsync();
-    }
 
     void implementation::MyMusicViewModel::updateList()
     {
@@ -89,10 +61,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         for (auto const& song : GetModel().m_songs)
         {
             SongItemViewModel viewModel;
-            viewModel.SongName(song.SongName());
-            viewModel.Singer(song.Singer());
-            viewModel.Length(song.Length());
-            viewModel.Mapper(song.Mapper());
             auto versions = viewModel.Versions();
             for (auto const& difficulty : song.Difficulties())
             {

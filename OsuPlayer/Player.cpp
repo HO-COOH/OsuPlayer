@@ -3,6 +3,7 @@
 #if __has_include("Player.g.cpp")
 #include "Player.g.cpp"
 #endif
+#include "ViewModelLocator.h"
 
 
 using namespace winrt;
@@ -32,7 +33,7 @@ namespace winrt::OsuPlayer::implementation
         //    co_await songPlayer.Play(LR"(D:\osu\Songs\609057 love solfege - Vanity Clock\love solfege - Vanity Clock.mp3)");
         //}
         //isPlaying = !isPlaying;
-        m_model.Play();
+        ViewModel().Play();
     }
 
 
@@ -40,7 +41,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        m_model.PlayNext();
+        ViewModel().PlayNext();
     }
 
 
@@ -48,7 +49,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        m_model.PlayPrevious();
+        ViewModel().PlayPrevious();
     }
 
 
@@ -80,19 +81,19 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        m_model.UseSkinHitsound(true);
+        ViewModel().UseSkinHitsound(true);
     }
 
     void Player::MuteButton_Click(
         winrt::Microsoft::UI::Xaml::Controls::SplitButton const& sender, 
         winrt::Microsoft::UI::Xaml::Controls::SplitButtonClickEventArgs const& args)
     {
-        m_model.Volume(0);
+        ViewModel().Volume(0);
     }
 
     void Player::handlePlayMod(ViewModel::PlayMod newPlayMod)
     {
-        if (newPlayMod == m_model.Mod())
+        if (newPlayMod == ViewModel().Mod())
             return;
 
         switch (newPlayMod)
@@ -118,7 +119,7 @@ namespace winrt::OsuPlayer::implementation
                 NightCoreCheckbox().IsChecked(false);
                 break;
         }
-        m_model.Mod(newPlayMod);
+        ViewModel().Mod(newPlayMod);
     }
 
 
@@ -149,7 +150,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        m_model.UseSkinHitsound(false);
+        ViewModel().UseSkinHitsound(false);
     }
 
     //void Player::Play(winrt::Windows::Storage::StorageFile song)
@@ -174,7 +175,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::Foundation::IInspectable const& sender, 
         winrt::Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e)
     {
-        m_model.Volume(e.NewValue());
+        ViewModel().Volume(e.NewValue());
         if (e.NewValue() <= 0)
         {
             MuteButtonSymbol().Symbol(winrt::Windows::UI::Xaml::Controls::Symbol::Mute);
@@ -185,6 +186,6 @@ namespace winrt::OsuPlayer::implementation
 
     OsuPlayer::ViewModel::PlayerViewModel Player::ViewModel()
     {
-        return m_model;
+        return ViewModelLocator::Current().PlayerViewModel();
     }
 }

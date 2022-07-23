@@ -68,7 +68,6 @@ namespace winrt::OsuPlayer::implementation
         OsuPlayer::ViewModel::PlayerViewModel ViewModel();
     private:
         void handlePlayMod(ViewModel::PlayMod newPlayMod);
-        OsuPlayer::ViewModel::PlayerViewModel m_model;
     };
 }
 

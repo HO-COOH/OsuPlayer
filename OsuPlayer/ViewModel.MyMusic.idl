@@ -9,7 +9,6 @@ namespace OsuPlayer.ViewModel
         
         Int32 SortByIndex{ get; set; };
 
-        Windows.Foundation.IAsyncAction ShowPropertyOf(OsuPlayer.ViewModel.SongItemViewModel songItem);
         Windows.Foundation.Collections.IObservableVector<OsuPlayer.ViewModel.SongItemViewModel> Songs{ get; set; };
     }
 }
