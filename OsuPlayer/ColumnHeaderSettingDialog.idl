@@ -1,0 +1,11 @@
+import "ViewModel.ColumnSetting.idl";
+namespace OsuPlayer
+{
+    [default_interface]
+    runtimeclass ColumnHeaderSettingDialog : Windows.UI.Xaml.Controls.UserControl
+    {
+        ColumnHeaderSettingDialog();
+        
+        OsuPlayer.ViewModel.ColumnSettings ViewModel{ get; };
+    }
+}

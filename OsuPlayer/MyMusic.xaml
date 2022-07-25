@@ -289,40 +289,45 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <muxc:ProgressBar HorizontalAlignment="Stretch" IsIndeterminate="True" Grid.Row="0"/>
+                        
+                        <Grid Grid.Row="1" IsRightTapEnabled="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="67"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem x:Name="ColumnHeaderSetting" Text="Column settings" Click="ColumnHeaderSetting_Click"/>
+                                </MenuFlyout>
+                            </Grid.ContextFlyout>
+
+                            <Grid Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Title" Grid.Column="0" Foreground="{StaticResource ListHeaderTextBrush}"/>
+                                <TextBlock Text="Singer" Grid.Column="1" Foreground="{StaticResource ListHeaderTextBrush}"/>
+                                <TextBlock Text="Mapper" Grid.Column="2" Foreground="{StaticResource ListHeaderTextBrush}"/>
+                                <TextBlock Text="Length" Grid.Column="3" Foreground="{StaticResource ListHeaderTextBrush}"/>
+                                <TextBlock Text="Difficulty" Grid.Column="4" Foreground="{StaticResource ListHeaderTextBrush}"/>
+                            </Grid>
+                        </Grid>
                         <ListView x:Name="MusicList" 
                                   HorizontalAlignment="Stretch"
                                   ItemsSource="{x:Bind ViewModel.Songs, Mode=TwoWay}"
-                                  Grid.Row="1"
+                                  Grid.Row="2"
                                   CanDragItems="True"
                                   CanReorderItems="True"
                                   AllowDrop="True">
-                            <ListView.Header>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="67"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    
-                                
-                                    <Grid Grid.Column="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Title" Grid.Column="0" Foreground="{StaticResource ListHeaderTextBrush}"/>
-                                        <TextBlock Text="Singer" Grid.Column="1" Foreground="{StaticResource ListHeaderTextBrush}"/>
-                                        <TextBlock Text="Mapper" Grid.Column="2" Foreground="{StaticResource ListHeaderTextBrush}"/>
-                                        <TextBlock Text="Length" Grid.Column="3" Foreground="{StaticResource ListHeaderTextBrush}"/>
-                                        <TextBlock Text="Difficulty" Grid.Column="4" Foreground="{StaticResource ListHeaderTextBrush}"/>
-                                    </Grid>
-                                </Grid>
-                            </ListView.Header>
 
                             <ListView.ItemTemplate>
                                 <DataTemplate x:Name="SongItemTemplate" x:DataType="viewModel:SongItemViewModel">
@@ -347,7 +352,7 @@
                                             <TextBlock x:Name="SingerText" Text="{x:Bind Singer}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="2"/>
                                             <TextBlock x:Name="MapperText" Text="{x:Bind Mapper}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="3"/>
                                             <TextBlock x:Name="LengthText" Text="{x:Bind Length, Converter={StaticResource Converter2}}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="4" />
-                                            <ComboBox x:Name="VersionSelectionBox" ItemsSource="{x:Bind Versions}" SelectedIndex="{x:Bind SelectedVersionIndex, Mode=TwoWay}" Grid.Column="5" Margin="10,0,0,0"/>
+                                            <ComboBox x:Name="VersionSelectionBox" ItemsSource="{x:Bind Versions, Mode=OneWay}" SelectedIndex="{x:Bind SelectedVersionIndex, Mode=TwoWay}" Grid.Column="5" Margin="10,0,0,0"/>
                                         </Grid>
 
                                         <Grid.ContextFlyout>

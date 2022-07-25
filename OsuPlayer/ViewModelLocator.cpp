@@ -21,3 +21,8 @@ winrt::OsuPlayer::ViewModel::SettingsViewModel ViewModelLocator::SettingsViewMod
 {
     return m_settingsViewModel;
 }
+
+winrt::OsuPlayer::ViewModel::ColumnSettings ViewModelLocator::ColumnSettings() const
+{
+    return m_columnSettingsViewModel;
+}

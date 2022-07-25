@@ -28,6 +28,9 @@
     <Page Include="CollectionView.xaml">
       <Filter>Views</Filter>
     </Page>
+    <Page Include="ColumnHeaderSettingDialog.xaml">
+      <Filter>Views\Controls</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -64,6 +67,9 @@
     <Midl Include="LengthToStringConverter.idl">
       <Filter>Converter</Filter>
     </Midl>
+    <Midl Include="ViewModel.ColumnSetting.idl">
+      <Filter>ViewModels</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -88,9 +94,6 @@
       <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="Model.Search.cpp">
-      <Filter>Models</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.Player.cpp">
       <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="Model.CollectionItem.cpp">
@@ -130,9 +133,6 @@
     </ClInclude>
     <ClInclude Include="Utils.Log.hpp">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.Player.h">
-      <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="Utils.FileStreamAdaptor.hpp">
       <Filter>Utility</Filter>

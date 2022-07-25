@@ -5,10 +5,11 @@
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Media.Core.h>
 #include <winrt/Windows.UI.Xaml.Media.Imaging.h>
+#include "Utils.PropertyChangeHelper.hpp"
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
-    struct SongItemViewModel : SongItemViewModelT<SongItemViewModel>
+    struct SongItemViewModel : SongItemViewModelT<SongItemViewModel>, Utils::PropertyChangeHelper<SongItemViewModel>
     {
         SongItemViewModel() = default;
 
@@ -40,20 +41,13 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         winrt::Windows::Foundation::IAsyncAction ShowProperty();
 
-        //These following 2 methods are for supporting property change events
-        winrt::event_token PropertyChanged(winrt::Windows::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
-        void PropertyChanged(winrt::event_token const& token) noexcept;
-
     private:
         int m_index{};
-        int m_versionIndex = 0;
+        int m_versionIndex{};
         winrt::Windows::Foundation::IInspectable m_modelPointer;
         
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> m_versions = winrt::single_threaded_observable_vector<winrt::hstring>();
         Model::SongItemModel& getModel();
-
-        //This is for supporting property change events
-        winrt::event<winrt::Windows::UI::Xaml::Data::PropertyChangedEventHandler> m_propertyChanged;
     };
 }
 

@@ -1,0 +1,36 @@
+namespace OsuPlayer.ViewModel
+{
+    [bindable]
+    runtimeclass ColumnSettingItem : Windows.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        ColumnSettingItem();
+        ColumnSettingItem(Boolean show, String name);
+        Boolean Show{get; set; };
+        String Name{ get; set; };
+    }
+
+    [bindable]
+    [default_interface]
+    runtimeclass ColumnSettings : Windows.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        ColumnSettings();
+        Windows.Foundation.Collections.IObservableVector<ColumnSettingItem> Items{ get; };
+
+        //Properties for the buttons
+        Int32 SelectedIndex{ get; set; };
+        Boolean IsMoveUpEnabled{ get; };
+        Boolean IsMoveDownEnabled{ get; };
+        Boolean IsShowEnabled{ get; };
+        Boolean IsHideEnabled{ get; };
+
+        //Methods for the buttons
+        void MoveUpItem();
+        void MoveDownItem();
+        void ShowItem();
+        void HideItem();
+        void UpdateVisibilityButtonStatus();
+
+        //Save
+        void Save();
+    }
+}

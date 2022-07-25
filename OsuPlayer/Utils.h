@@ -92,6 +92,7 @@ namespace Utils
 			if (*iter == L';')
 			{
 				result.emplace_back(&(*start), std::distance(start, iter));
+				start = iter + 1;
 			}
 			++iter;
 		}

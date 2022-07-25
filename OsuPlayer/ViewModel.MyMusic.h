@@ -16,8 +16,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> Songs();
         void Songs(winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> songs);
-
-        winrt::Windows::Foundation::IAsyncAction ShowPropertyOf(ViewModel::SongItemViewModel songItem);
     private:
         void updateList();
         inline static winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> s_songItems = winrt::single_threaded_observable_vector<ViewModel::SongItemViewModel>();

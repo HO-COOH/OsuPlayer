@@ -36,7 +36,14 @@ namespace Model
 
 	int SongItemModel::Length() const
 	{
-		return m_length;
+		if (isDataFilled())
+			return m_length;
+		else
+		{
+			if (auto iter = std::ranges::find_if(m_beatmaps, [](BeatmapInfo const& beatmap) { return beatmap.beatmapPtr->totalTime; }); iter != m_beatmaps.end())
+				return iter->beatmapPtr->totalTime;
+			return {};
+		}
 	}
 
 	winrt::Windows::Media::Core::MediaSource SongItemModel::Source() const
@@ -81,6 +88,11 @@ namespace Model
 		return m_bitrate;
 	}
 
+	bool SongItemModel::isDataFilled() const
+	{
+		return m_bitrate != 0;
+	}
+
 
 	void SongItemModel::handleImageFile(winrt::Windows::Storage::StorageFile&& file)
 	{
@@ -116,7 +128,7 @@ namespace Model
 			if (m_bitrate != 0 && m_length != 0)
 				break;
 
-			if (beatmap.beatmapPtr->folderName.empty())
+			if (beatmap.beatmapPtr->folderName.empty() || beatmap.beatmapPtr->audioFileName.empty())
 				continue;
 			winrt::Windows::Storage::StorageFolder osuSongFolder = MyMusicModel::GetInstance().getCurrentIndexingFolder();
 			auto thisFolder = co_await osuSongFolder.GetFolderAsync(winrt::to_hstring(beatmap.beatmapPtr->folderName.data()));

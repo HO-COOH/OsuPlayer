@@ -17,7 +17,7 @@ namespace OsuPlayer.ViewModel
     {
         PlayerViewModel();
 
-        void Play(OsuPlayer.ViewModel.SongItemViewModel item);
+        Windows.Foundation.IAsyncAction Play(OsuPlayer.ViewModel.SongItemViewModel item);
         void Play();
         void PlayPrevious();
         void PlayNext();

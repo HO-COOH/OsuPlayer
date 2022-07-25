@@ -214,8 +214,8 @@ namespace Model
             }
         }
 
-        for (auto& song : m_songs)
-            co_await song.fillDataAsync();
+        //for (auto& song : m_songs)
+        //    co_await song.fillDataAsync();
 
         //Call event handlers
         for (auto& handler : s_handlers)

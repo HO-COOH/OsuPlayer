@@ -2,7 +2,7 @@
 
 #include "ViewModel.PlayerViewModel.g.h"
 #include <winrt/Windows.UI.Xaml.Media.h>
-#include "Model.Player.h"
+#include <winrt/Windows.Media.Playback.h>
 #include "Utils.PropertyChangeHelper.hpp"
 
 namespace winrt::OsuPlayer::ViewModel::implementation
@@ -11,7 +11,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
     {
         PlayerViewModel();
         
-        void Play(ViewModel::SongItemViewModel item);
+        winrt::Windows::Foundation::IAsyncAction Play(ViewModel::SongItemViewModel item);
         void Play();
         void PlayPrevious();
         void PlayNext();
@@ -35,8 +35,10 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
 
     private:
+        winrt::Windows::Media::Playback::MediaPlayer m_songPlayer;
+        winrt::Windows::Media::Playback::MediaPlayer m_hitSoundPlayer;
+
         ViewModel::SongItemViewModel m_currentItemToPlay{ nullptr };
-        Model::PlayerModel m_model;
         int m_progress{};
         int m_length{};
     };

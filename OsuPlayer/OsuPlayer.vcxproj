@@ -104,6 +104,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -116,6 +117,10 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="BackgroundAcrylic.h" />
+    <ClInclude Include="ColumnHeaderSettingDialog.h">
+      <DependentUpon>ColumnHeaderSettingDialog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="ComboBoxToStringConverter.h">
       <DependentUpon>ComboBoxToStringConverter.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -147,6 +152,10 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="Model.MyMusic.h" />
+    <ClInclude Include="ViewModel.ColumnSetting.h">
+      <DependentUpon>ViewModel.ColumnSetting.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="ViewModel.MyMusic.h">
       <DependentUpon>ViewModel.MyMusic.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -168,7 +177,6 @@
       <DependentUpon>Player.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="Model.Player.h" />
     <ClInclude Include="ViewModel.Player.h">
       <DependentUpon>ViewModel.Player.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -219,6 +227,9 @@
     <Page Include="CollectionView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ColumnHeaderSettingDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -258,6 +269,10 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="BackgroundAcrylic.cpp" />
+    <ClCompile Include="ColumnHeaderSettingDialog.cpp">
+      <DependentUpon>ColumnHeaderSettingDialog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="ComboBoxToStringConverter.cpp">
       <DependentUpon>ComboBoxToStringConverter.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -285,6 +300,10 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="Model.MyMusic.cpp" />
+    <ClCompile Include="ViewModel.ColumnSetting.cpp">
+      <DependentUpon>ViewModel.ColumnSetting.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="ViewModel.MyMusic.cpp">
       <DependentUpon>ViewModel.MyMusic.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -307,7 +326,6 @@
       <DependentUpon>Player.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="Model.Player.cpp" />
     <ClCompile Include="ViewModel.Player.cpp">
       <DependentUpon>ViewModel.Player.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -354,6 +372,10 @@
       <DependentUpon>ArtistView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
+    <Midl Include="ColumnHeaderSettingDialog.idl">
+      <DependentUpon>ColumnHeaderSettingDialog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
     <Midl Include="ComboBoxToStringConverter.idl">
       <SubType>Designer</SubType>
     </Midl>
@@ -376,6 +398,9 @@
     <Midl Include="MyMusic.idl">
       <DependentUpon>MyMusic.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="ViewModel.ColumnSetting.idl">
+      <SubType>Designer</SubType>
     </Midl>
     <Midl Include="ViewModel.MyMusic.idl">
       <SubType>Designer</SubType>

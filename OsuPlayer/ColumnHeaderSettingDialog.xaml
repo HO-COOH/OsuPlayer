@@ -1,0 +1,58 @@
+﻿<UserControl
+    x:Class="OsuPlayer.ColumnHeaderSettingDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OsuPlayer"
+    xmlns:viewModel="using:OsuPlayer.ViewModel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <x:String x:Key="TitleText">Select the columns you want to display in the song list.</x:String>
+        <x:String x:Key="UpIcon">&#xE70E;</x:String>
+        <x:String x:Key="DownIcon">&#xE70D;</x:String>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="0,20,0,0"/>
+            <Setter Property="Width" Value="60"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+        <TextBlock Text="{StaticResource TitleText}"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Option list area -->
+            <ListView CanReorderItems="True" CanDragItems="True" AllowDrop="True" 
+                      ItemsSource="{x:Bind ViewModel.Items}" Margin="0,20,0,0" SelectedIndex="{x:Bind ViewModel.SelectedIndex, Mode=TwoWay}"
+                  BorderBrush="{ThemeResource AppBarBorderThemeBrush}" BorderThickness="1" Background="{ThemeResource SystemControlBackgroundListLowBrush}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:Name="ColumnSettingItemTemplate" x:DataType="viewModel:ColumnSettingItem">
+                        <CheckBox IsChecked="{x:Bind Show, Mode=TwoWay}" Content="{x:Bind Name}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!-- Buttons area -->
+            <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,0,0,0">
+                <Button x:Name="ButtonMoveUp" IsEnabled="{x:Bind ViewModel.IsMoveUpEnabled, Mode=OneWay}" Click="{x:Bind ViewModel.MoveUpItem}">
+                    <FontIcon Glyph="{StaticResource UpIcon}"/>
+                </Button>
+
+                <Button x:Name="ButtonMoveDown" IsEnabled="{x:Bind ViewModel.IsMoveDownEnabled, Mode=OneWay}" Click="{x:Bind ViewModel.MoveDownItem}">
+                    <FontIcon Glyph="{StaticResource DownIcon}"/>
+                </Button>
+
+                <Button Content="Show" IsEnabled="{x:Bind ViewModel.IsShowEnabled, Mode=OneWay}" Click="{x:Bind ViewModel.ShowItem}"/>
+                <Button Content="Hide" IsEnabled="{x:Bind ViewModel.IsHideEnabled, Mode=OneWay}" Click="{x:Bind ViewModel.HideItem}"/>
+            </StackPanel>
+        </Grid>
+
+    </StackPanel>
+</UserControl>

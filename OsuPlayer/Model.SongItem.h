@@ -43,7 +43,7 @@ namespace Model
 		winrt::Windows::Foundation::DateTime DateCreated() const;
 		std::string Tags(int versionIndex);
 		int BitRate() const;
-		
+		bool isDataFilled() const;
 		std::vector<BeatmapInfo> m_beatmaps;
 
 		winrt::Windows::Foundation::IAsyncAction fillDataAsync();

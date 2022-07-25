@@ -13,7 +13,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 {
 	PlayerViewModel::PlayerViewModel()
 	{
-		m_model.m_songPlayer.PlaybackSession().PositionChanged(
+		m_songPlayer.PlaybackSession().PositionChanged(
 			[this](winrt::Windows::Media::Playback::MediaPlaybackSession session, winrt::Windows::Foundation::IInspectable _)->winrt::Windows::Foundation::IAsyncAction
 			{
 				m_progress = session.Position().count() / 10'000ll;
@@ -24,11 +24,14 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		);
 
 	}
-	void PlayerViewModel::Play(ViewModel::SongItemViewModel item)
+	winrt::Windows::Foundation::IAsyncAction PlayerViewModel::Play(ViewModel::SongItemViewModel item)
 	{
-		auto const& songItemModel = *reinterpret_cast<SongItemModel*>(winrt::unbox_value<size_t>(item.ModelPointer()));
-		songItemModel.Source().OpenAsync();
-		m_model.Source(songItemModel.Source());
+		auto& songItemModel = *reinterpret_cast<SongItemModel*>(winrt::unbox_value<size_t>(item.ModelPointer()));
+		co_await songItemModel.fillDataAsync();
+		co_await songItemModel.Source().OpenAsync();
+		m_songPlayer.Pause();
+		m_songPlayer.Source(songItemModel.Source());
+		m_songPlayer.Play();
 		m_currentItemToPlay = item;
 		raisePropertyChange(L"SongLength");
 		raisePropertyChange(L"SongLengthString");
@@ -80,12 +83,12 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	}
 	int PlayerViewModel::Volume()
 	{
-		return m_model.m_songPlayer.Volume() * 100.0;
+		return m_songPlayer.Volume() * 100.0;
 	}
 	void PlayerViewModel::Volume(int volume)
 	{
-		m_model.m_songPlayer.Volume(static_cast<double>(volume) / 100.0);
-		m_model.m_hitSoundPlayer.Volume(static_cast<double>(volume) / 100.0);
+		m_songPlayer.Volume(static_cast<double>(volume) / 100.0);
+		m_hitSoundPlayer.Volume(static_cast<double>(volume) / 100.0);
 	}
 	winrt::Windows::UI::Xaml::Media::ImageSource PlayerViewModel::ImageSource()
 	{

@@ -44,18 +44,12 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
     void SongItemViewModel::SelectedVersionIndex(int index)
     {
-        m_versionIndex = index;
+        //https://github.com/microsoft/microsoft-ui-xaml/issues/7521
+        m_versionIndex = std::clamp(index, 0, static_cast<int>(getModel().m_beatmaps.size() - 1));
     }
 
     winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> SongItemViewModel::Versions()
     {
-        //auto versionNames = winrt::single_threaded_observable_vector<winrt::hstring>();
-        //for (auto const& versionFile : m_model.Difficulties())
-        //{
-        //    versionNames.Append(
-        //        winrt::to_hstring(OsuFile::ParseVersionFrom(std::string_view{ winrt::to_string(versionFile.Name()) }))
-        //    );
-        //}
         return m_versions;
     }
 
@@ -71,6 +65,10 @@ namespace winrt::OsuPlayer::ViewModel::implementation
     winrt::Windows::Foundation::IAsyncAction implementation::SongItemViewModel::ShowProperty()
     {
         auto& songItem = getModel();
+
+        if(!songItem.isDataFilled())
+            co_await songItem.fillDataAsync();
+
         int versionIndex = SelectedVersionIndex();
 
 
@@ -92,14 +90,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         propertyDialog.CloseButtonText(L"Close");
 
         co_await propertyDialog.ShowAsync();
-    }
-    winrt::event_token SongItemViewModel::PropertyChanged(winrt::Windows::UI::Xaml::Data::PropertyChangedEventHandler const& handler)
-    {
-        return m_propertyChanged.add(handler);
-    }
-    void SongItemViewModel::PropertyChanged(winrt::event_token const& token) noexcept
-    {
-        m_propertyChanged.remove(token);
     }
 
     Model::SongItemModel& implementation::SongItemViewModel::getModel()

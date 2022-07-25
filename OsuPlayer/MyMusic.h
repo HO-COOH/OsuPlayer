@@ -22,6 +22,7 @@ namespace winrt::OsuPlayer::implementation
         void Category_SelectionChanged(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender, winrt::Microsoft::UI::Xaml::Controls::NavigationViewSelectionChangedEventArgs const& args);
         
         ViewModel::MyMusicViewModel ViewModel();
+        winrt::Windows::Foundation::IAsyncAction ColumnHeaderSetting_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
     };
 }
 
