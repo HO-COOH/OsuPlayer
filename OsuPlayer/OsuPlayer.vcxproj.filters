@@ -70,6 +70,9 @@
     <Midl Include="ViewModel.ColumnSetting.idl">
       <Filter>ViewModels</Filter>
     </Midl>
+    <Midl Include="VolumeToIconConverter.idl">
+      <Filter>Converter</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -169,6 +172,9 @@
       <Filter>Assets</Filter>
     </Image>
     <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\osuLogo.png">
       <Filter>Assets</Filter>
     </Image>
   </ItemGroup>

@@ -12,7 +12,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         PlayerViewModel();
         
         winrt::Windows::Foundation::IAsyncAction Play(ViewModel::SongItemViewModel item);
-        void Play();
+        void PlayCurrent();
         void PlayPrevious();
         void PlayNext();
 
@@ -22,22 +22,26 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         bool UseSkinHitsound();
         void UseSkinHitsound(bool useSkinHitsound);
 
-        winrt::hstring ProgressString();
-        winrt::hstring SongLengthString();
-
         int Progress();
         int SongLength();
 
+        //Volumes
         int Volume();
         void Volume(int volume);
+        int SongVolume();
+        void SongVolume(int songVolume);
+        int HitsoundVolume();
+        void HitsoundVolume(int hitsoundVolume);
+        void Mute();
+
+        void Save();
 
         winrt::Windows::UI::Xaml::Media::ImageSource ImageSource();
 
-
+        ~PlayerViewModel();
     private:
         winrt::Windows::Media::Playback::MediaPlayer m_songPlayer;
         winrt::Windows::Media::Playback::MediaPlayer m_hitSoundPlayer;
-
         ViewModel::SongItemViewModel m_currentItemToPlay{ nullptr };
         int m_progress{};
         int m_length{};

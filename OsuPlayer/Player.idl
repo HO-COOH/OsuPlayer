@@ -7,6 +7,9 @@ namespace OsuPlayer
     {
         Player();
         
+        Windows.UI.Xaml.Controls.Slider VolumeSlider{ get; };
+        Windows.UI.Xaml.Controls.Slider SongVolumeSlider{ get; };
+        Windows.UI.Xaml.Controls.Slider HitsoundVolumeSlider{ get; };
         //The view-model
         OsuPlayer.ViewModel.PlayerViewModel ViewModel{ get; };
     }

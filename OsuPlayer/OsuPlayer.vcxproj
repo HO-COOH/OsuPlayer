@@ -216,6 +216,10 @@
     <ClInclude Include="Utils.ThemeHelper.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="ViewModelLocator.h" />
+    <ClInclude Include="VolumeToIconConverter.h">
+      <DependentUpon>VolumeToIconConverter.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -256,6 +260,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LockScreenLogo.scale-200.png" />
+    <Image Include="Assets\osuLogo.png" />
     <Image Include="Assets\SplashScreen.scale-200.png" />
     <Image Include="Assets\Square150x150Logo.scale-200.png" />
     <Image Include="Assets\Square44x44Logo.scale-200.png" />
@@ -363,6 +368,10 @@
     </ClCompile>
     <ClCompile Include="Utils.ThemeHelper.cpp" />
     <ClCompile Include="ViewModelLocator.cpp" />
+    <ClCompile Include="VolumeToIconConverter.cpp">
+      <DependentUpon>VolumeToIconConverter.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl">
@@ -437,6 +446,9 @@
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="ViewModel.SongItem.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="VolumeToIconConverter.idl">
       <SubType>Designer</SubType>
     </Midl>
   </ItemGroup>

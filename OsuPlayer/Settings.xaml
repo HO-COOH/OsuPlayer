@@ -209,8 +209,13 @@
             <x:String x:Key="DefaultModTitleText">Default play mod</x:String>
             <x:String x:Key="DefaultModHelpText">Use a mod for default player sound effect.</x:String>
 
-            <x:String x:Key="DefaultSkinTitleText">Default hitsound</x:String>
-            <x:String x:Key="DefaultSkinHelpText">Use the hitsound from a skin.</x:String>
+            <x:String x:Key="DefaultSkinTitleText">Skin hitsound</x:String>
+            <x:String x:Key="DefaultSkinHelpText">Use the hitsound from this skin:</x:String>
+
+            <x:String x:Key="HitsoundSettingsTitleText">Hitsound settings</x:String>
+            <x:String x:Key="HitsoundSettingsHelpText">Controls how hitsounds are played.</x:String>
+            <x:String x:Key="HitsoundOnText">Turn on hitsound</x:String>
+            <x:String x:Key="HitsoundOffText">Turn off hitsound</x:String>
 
             <x:String x:Key="JumpListTitleText">Jumplist settings</x:String>
             <x:String x:Key="JumpListHelpText">Numbers of shortcuts showing in the jumplist for quick launching.</x:String>
@@ -242,7 +247,8 @@
             <x:String x:Key="NewFolderIconGlyph">&#xE8F4;</x:String>
             <x:String x:Key="ThemeIconGlyph">&#xE790;</x:String>
             <x:String x:Key="PlayModIconGlyph">&#xEC57;</x:String>
-            <x:String x:Key="HitsoundIconGlyph">&#xE7F6;</x:String>
+            <x:String x:Key="SkinIconGlyph">&#xE7F6;</x:String>
+            <x:String x:Key="HitsoundIconGlyph">&#xE8D6;</x:String>
             <x:String x:Key="LinkIconGlyph">&#xE71B;</x:String>
             <x:String x:Key="JumpListIconGlyph">&#xE728;</x:String>
             <x:String x:Key="ExperimentalIconGlyph">&#xE7BA;</x:String>
@@ -353,18 +359,42 @@
             
             
             <!--              Skin                                 -->
-            <local:SettingContainer Title="{StaticResource DefaultSkinTitleText}" HelpText="{StaticResource DefaultSkinHelpText}">
+            <local:SettingContainer Title="{StaticResource HitsoundSettingsTitleText}" HelpText="{StaticResource HitsoundSettingsHelpText}"
+                                    Style="{StaticResource ExpanderSettingContainerStyle}">
                 <local:SettingContainer.Symbol>
-                    <FontIcon Glyph="{StaticResource HitsoundIconGlyph}"/>
+                    <FontIcon Glyph="{StaticResource SkinIconGlyph}"/>
                 </local:SettingContainer.Symbol>
                 <local:SettingContainer.HeaderContent>
-                    <muxc:ToggleSplitButton x:Name="SkinButton">
-                        <TextBlock Text="Default"/>
-                        <muxc:ToggleSplitButton.Flyout>
-                            <MenuFlyout></MenuFlyout>
-                        </muxc:ToggleSplitButton.Flyout>
-                    </muxc:ToggleSplitButton>
+                    <StackPanel Orientation="Horizontal">
+                        <ToggleSwitch OnContent="{StaticResource HitsoundOnText}" OffContent="{StaticResource HitsoundOffText}"/>
+                    </StackPanel>
                 </local:SettingContainer.HeaderContent>
+                
+                <local:SettingContainer.ExpanderContent>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="{StaticResource DefaultSkinHelpText}" Grid.Row="0" Grid.Column="0"/>
+                        <muxc:ToggleSplitButton x:Name="SkinButton" Grid.Row="0" Grid.Column="1" Margin="0,-3,0,3" HorizontalAlignment="Right">
+                            <TextBlock Text="Default"/>
+                            <muxc:ToggleSplitButton.Flyout>
+                                <MenuFlyout></MenuFlyout>
+                            </muxc:ToggleSplitButton.Flyout>
+                        </muxc:ToggleSplitButton>
+
+                        
+
+                    </Grid>
+                </local:SettingContainer.ExpanderContent>
             </local:SettingContainer>
             
             

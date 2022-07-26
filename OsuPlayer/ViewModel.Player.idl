@@ -18,17 +18,26 @@ namespace OsuPlayer.ViewModel
         PlayerViewModel();
 
         Windows.Foundation.IAsyncAction Play(OsuPlayer.ViewModel.SongItemViewModel item);
-        void Play();
+
+        //Control buttons
+        void PlayCurrent();
         void PlayPrevious();
         void PlayNext();
+
+        void Mute();
+
+
+        //Volumes
+        Int32 Volume{ get; set; };
+        Int32 SongVolume{ get; set; };
+        Int32 HitsoundVolume{ get; set; };
+        void Save();
         
         PlayMod Mod{ get; set; };
         Boolean UseSkinHitsound{ get; set; };
-        Int32 Volume{ get; set; };
+
         Windows.UI.Xaml.Media.ImageSource ImageSource{ get; };
 
-        String ProgressString{ get; };
-        String SongLengthString{ get; };
 
         Int32 SongLength{ get; };
         Int32 Progress{ get; };

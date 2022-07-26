@@ -209,6 +209,10 @@
                 <Setter Property="Foreground" Value="Black"/>
             </Style.Setters>
         </Style>
+
+        <x:String x:Key="SingerIconGlyph">&#xE77B;</x:String>
+        <x:String x:Key="MoveToIconGlyph">&#xE8DE;</x:String>
+        <SymbolIcon x:Key="ClearIcon" Symbol="Clear"/>
     </Page.Resources>
 
     <Grid>
@@ -321,7 +325,7 @@
                                 <TextBlock Text="Difficulty" Grid.Column="4" Foreground="{StaticResource ListHeaderTextBrush}"/>
                             </Grid>
                         </Grid>
-                        <ListView x:Name="MusicList" 
+                        <!--<ListView x:Name="MusicList" 
                                   HorizontalAlignment="Stretch"
                                   ItemsSource="{x:Bind ViewModel.Songs, Mode=TwoWay}"
                                   Grid.Row="2"
@@ -380,7 +384,7 @@
 
                                                 <MenuFlyoutItem x:Name="MoveToMenuItem" Text="Move to">
                                                     <MenuFlyoutItem.Icon>
-                                                        <FontIcon Glyph="&#xE8DE;"/>
+                                                        <FontIcon Glyph="{StaticResource MoveToIconGlyph}"/>
                                                     </MenuFlyoutItem.Icon>
                                                    
                                                 </MenuFlyoutItem>
@@ -397,8 +401,82 @@
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
-                            <!--songs--> 
-                        </ListView>
+                            --><!--songs--><!-- 
+                        </ListView>-->
+
+                        <GridView x:Name="MusicAlbumView" 
+                                  ItemsSource="{x:Bind ViewModel.Songs, Mode=TwoWay}"
+                                  Grid.Row="2">
+                            <GridView.ItemContainerStyle>
+                                <Style TargetType="GridViewItem">
+                                    <Setter Property="Margin" Value="5,5,5,5"/>
+                                </Style>
+                            </GridView.ItemContainerStyle>
+
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:Name="MusicAlbumTemplate" x:DataType="viewModel:SongItemViewModel">
+                                    <StackPanel Orientation="Vertical">
+                                        <Grid IsRightTapEnabled="True">
+                                            <Image Source="Assets/osuLogo.png" Width="300" Stretch="Fill" Height="300"/>
+                                            <Grid VerticalAlignment="Bottom" HorizontalAlignment="Stretch"
+                                                        Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}"
+                                                 CornerRadius="10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <FontIcon Glyph="{StaticResource SingerIconGlyph}" Grid.Column="0"/>
+                                                <TextBlock Text="{x:Bind Singer}" VerticalAlignment="Center" TextTrimming="WordEllipsis" Grid.Column="1" Margin="5,0,0,0"/>
+                                                <TextBlock Text="{x:Bind Length, Converter={StaticResource Converter2}}" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="2" Margin="0,0,10,0"/>
+                                            </Grid>
+                                            
+                                            <Grid.ContextFlyout>
+                                                <MenuFlyout>
+
+                                                    <MenuFlyoutItem Text="Play" Click="{x:Bind PlayCurrent}">
+                                                        <MenuFlyoutItem.Icon>
+                                                            <SymbolIcon Symbol="Play"/>
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutItem Text="Remove from list">
+                                                        <MenuFlyoutItem.Icon>
+                                                            <SymbolIcon Symbol="Clear"/>
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutItem Text="Delete this beatmap">
+                                                        <MenuFlyoutItem.Icon>
+                                                            <SymbolIcon Symbol="Delete"/>
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutSeparator/>
+
+                                                    <MenuFlyoutItem x:Name="MoveToMenuItem" Text="Move to">
+                                                        <MenuFlyoutItem.Icon>
+                                                            <FontIcon Glyph="{StaticResource MoveToIconGlyph}"/>
+                                                        </MenuFlyoutItem.Icon>
+
+                                                    </MenuFlyoutItem>
+
+                                                    <MenuFlyoutSeparator/>
+
+                                                    <MenuFlyoutItem x:Name="PropertyMenuItem" Text="Properties" Click="{x:Bind ShowProperty}">
+                                                        <MenuFlyoutItem.Icon>
+                                                            <SymbolIcon Symbol="MusicInfo"/>
+                                                        </MenuFlyoutItem.Icon>
+                                                    </MenuFlyoutItem>
+                                                </MenuFlyout>
+                                            </Grid.ContextFlyout>
+                                        </Grid>
+                                        <TextBlock Text="{x:Bind SongName}" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                        
                     </Grid>
                 </Grid>
             </Frame>

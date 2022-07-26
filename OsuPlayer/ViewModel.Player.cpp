@@ -23,7 +23,16 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 			}
 		);
 
+		auto settings = winrt::Windows::Storage::ApplicationData::Current().LocalSettings().Values();
+		Volume(winrt::unbox_value_or<int>(settings.TryLookup(L"GlobalVolume"), 100));
+		SongVolume(winrt::unbox_value_or<int>(settings.TryLookup(L"SongVolume"), 100));
+		HitsoundVolume(winrt::unbox_value_or<int>(settings.TryLookup(L"HitsoundVolume"), 100));
+
+		raisePropertyChange(L"Volume");
+		raisePropertyChange(L"SongVolume");
+		raisePropertyChange(L"HitsoundVolume");
 	}
+
 	winrt::Windows::Foundation::IAsyncAction PlayerViewModel::Play(ViewModel::SongItemViewModel item)
 	{
 		auto& songItemModel = *reinterpret_cast<SongItemModel*>(winrt::unbox_value<size_t>(item.ModelPointer()));
@@ -36,44 +45,42 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		raisePropertyChange(L"SongLength");
 		raisePropertyChange(L"SongLengthString");
 	}
-	void PlayerViewModel::Play()
+
+	void PlayerViewModel::PlayCurrent()
 	{
 	}
+
 	void PlayerViewModel::PlayPrevious()
 	{
 	}
+
 	void PlayerViewModel::PlayNext()
 	{
 	}
+
 	PlayMod PlayerViewModel::Mod()
 	{
 		return PlayMod();
 	}
+
 	void PlayerViewModel::Mod(PlayMod mod)
 	{
 	}
+
 	bool PlayerViewModel::UseSkinHitsound()
 	{
 		return false;
 	}
+
 	void PlayerViewModel::UseSkinHitsound(bool useSkinHitsound)
 	{
 	}
-	winrt::hstring PlayerViewModel::ProgressString()
-	{
-		return Utils::GetDurationString(Utils::GetDuration(m_progress));
-	}
-	winrt::hstring PlayerViewModel::SongLengthString()
-	{
-		if (m_currentItemToPlay)
-			return m_currentItemToPlay.LengthString();
-		else
-			return L"0:00";
-	}
+
 	int PlayerViewModel::Progress()
 	{
 		return m_progress;
 	}
+
 	int PlayerViewModel::SongLength()
 	{
 		if (m_currentItemToPlay)
@@ -81,17 +88,55 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		else
 			return 0;
 	}
+
 	int PlayerViewModel::Volume()
 	{
 		return m_songPlayer.Volume() * 100.0;
 	}
+
 	void PlayerViewModel::Volume(int volume)
 	{
 		m_songPlayer.Volume(static_cast<double>(volume) / 100.0);
 		m_hitSoundPlayer.Volume(static_cast<double>(volume) / 100.0);
 	}
+
+	int implementation::PlayerViewModel::SongVolume()
+	{
+		return 0;
+	}
+
+	void implementation::PlayerViewModel::SongVolume(int songVolume)
+	{
+	}
+
+	int implementation::PlayerViewModel::HitsoundVolume()
+	{
+		return 0;
+	}
+
+	void implementation::PlayerViewModel::HitsoundVolume(int hitsoundVolume)
+	{
+	}
+
+	void implementation::PlayerViewModel::Mute()
+	{
+	}
+
+	void implementation::PlayerViewModel::Save()
+	{
+		auto settings = winrt::Windows::Storage::ApplicationData::Current().LocalSettings().Values();
+		settings.Insert(L"GlobalVolume", winrt::box_value(Volume()));
+		settings.Insert(L"SongVolume", winrt::box_value(SongVolume()));
+		settings.Insert(L"HitsoundVolume", winrt::box_value(HitsoundVolume()));
+	}
+
 	winrt::Windows::UI::Xaml::Media::ImageSource PlayerViewModel::ImageSource()
 	{
 		return winrt::Windows::UI::Xaml::Media::ImageSource{ nullptr };
+	}
+	
+	PlayerViewModel::~PlayerViewModel()
+	{
+		Save();
 	}
 }

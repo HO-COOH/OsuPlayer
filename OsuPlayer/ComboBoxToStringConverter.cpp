@@ -20,7 +20,7 @@ namespace winrt::OsuPlayer::implementation
         return winrt::box_value(L"");
     }
     winrt::Windows::Foundation::IInspectable ComboBoxToStringConverter::ConvertBack(
-        winrt::Windows::Foundation::IInspectable const& value, 
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& value, 
         [[maybe_unused]]winrt::Windows::UI::Xaml::Interop::TypeName const& targetType, 
         [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& parameter, 
         [[maybe_unused]]winrt::hstring const& language)

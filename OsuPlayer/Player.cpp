@@ -16,42 +16,6 @@ namespace winrt::OsuPlayer::implementation
         InitializeComponent();
     }
 
-    void Player::PlayButton_Click(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        //if (isPlaying)
-        //{
-        //    /*Should pause, Render a play icon*/
-        //    PlayButtonIcon().Symbol(winrt::Windows::UI::Xaml::Controls::Symbol::Play);
-        //    songPlayer.Pause();
-        //}
-        //else
-        //{
-        //    /*Should play, render a pause icon*/
-        //    PlayButtonIcon().Symbol(winrt::Windows::UI::Xaml::Controls::Symbol::Pause);
-        //    co_await songPlayer.Play(LR"(D:\osu\Songs\609057 love solfege - Vanity Clock\love solfege - Vanity Clock.mp3)");
-        //}
-        //isPlaying = !isPlaying;
-        ViewModel().Play();
-    }
-
-
-    void Player::NextSongButton_Click(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        ViewModel().PlayNext();
-    }
-
-
-    void Player::PreviousSongButton_Click(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        ViewModel().PlayPrevious();
-    }
-
 
     void Player::HalftimeCheckbox_Checked(
         winrt::Windows::Foundation::IInspectable const& sender, 
@@ -82,13 +46,6 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
         ViewModel().UseSkinHitsound(true);
-    }
-
-    void Player::MuteButton_Click(
-        winrt::Microsoft::UI::Xaml::Controls::SplitButton const& sender, 
-        winrt::Microsoft::UI::Xaml::Controls::SplitButtonClickEventArgs const& args)
-    {
-        ViewModel().Volume(0);
     }
 
     void Player::handlePlayMod(ViewModel::PlayMod newPlayMod)
@@ -151,37 +108,6 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
         ViewModel().UseSkinHitsound(false);
-    }
-
-    //void Player::Play(winrt::Windows::Storage::StorageFile song)
-    //{
-    //    songPlayer.Play(song);
-    //    auto const length = songPlayer.getLength();
-    //    SongLengthText().Text(Utils::GetDurationString(Utils::GetDuration(length)));
-
-    //    PlayingSlider().Maximum(length);
-    //    songPlayer.player.PlaybackSession().PositionChanged(
-    //        [this](auto session, auto const& _)->winrt::Windows::Foundation::IAsyncAction
-    //        {
-    //            //auto const percentage = (static_cast<long double>(session.Position().count()) / session.NaturalDuration().count()) * 100.0;
-    //            co_await winrt::resume_foreground(PlayingSlider().Dispatcher());
-    //            PlayingSlider().Value(session.Position().count());
-    //        }
-    //    );
-    //}
-
-
-    void Player::VolumeSlider_ValueChanged(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e)
-    {
-        ViewModel().Volume(e.NewValue());
-        if (e.NewValue() <= 0)
-        {
-            MuteButtonSymbol().Symbol(winrt::Windows::UI::Xaml::Controls::Symbol::Mute);
-            return;
-        }
-        MuteButtonSymbol().Symbol(winrt::Windows::UI::Xaml::Controls::Symbol::Volume);
     }
 
     OsuPlayer::ViewModel::PlayerViewModel Player::ViewModel()

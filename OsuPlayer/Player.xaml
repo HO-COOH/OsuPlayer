@@ -22,6 +22,24 @@
             <Setter Property="CornerRadius" Value="30"/>
             <Setter Property="Background" Value="{ThemeResource SystemControlTransparentRevealBackgroundBrush}"/>
         </Style>
+
+        <x:String x:Key="GlobalVolumeText">Global volume</x:String>
+        <x:String x:Key="RightArrowIconGlyph">&#xE974;</x:String>
+        <x:String x:Key="SongVolumeText">Music volume</x:String>
+        <x:String x:Key="HitsoundVolumeText">Hitsound volume</x:String>
+        <Style x:Key="VolumeSliderStyle" TargetType="Slider">
+            <Style.Setters>
+                <Setter Property="Width" Value="300"/>
+            </Style.Setters>
+        </Style>
+        <local:VolumeToIconConverter x:Key="VolumeToIconConverter"/>
+
+        <Style x:Key="VolumeIndicatorStyle" TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Margin" Value="0,10,0,0"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+            </Style.Setters>
+        </Style>
     </UserControl.Resources>
 
     <Grid HorizontalAlignment="Stretch">
@@ -32,35 +50,80 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        
-        <Image x:Name="CoverImage" Grid.Column="0" Source="{x:Bind ViewModel.ImageSource}" Width="150" Height="150"></Image>
-        
+
+        <Image x:Name="CoverImage" Grid.Column="0" Source="{x:Bind ViewModel.ImageSource}" Width="150" Height="150"/>
+
         <!--Player control area-->
         <RelativePanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch">
             <StackPanel x:Name="PlayerControls" Orientation="Vertical" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" VerticalAlignment="Center" HorizontalAlignment="Stretch">
-            
+
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Button x:Name="PreviousSongButton" Click="PreviousSongButton_Click" Style="{StaticResource ControlButtonStyle}">
+                    <Button x:Name="PreviousSongButton" Click="{x:Bind ViewModel.PlayPrevious}" Style="{StaticResource ControlButtonStyle}">
                         <SymbolIcon Symbol="Previous"/>
                     </Button>
 
-                    <Button x:Name="PlayButton" Click="PlayButton_Click" Style="{StaticResource ControlButtonStyle}" Margin="10,0,10,0">
+                    <Button x:Name="PlayButton" Click="{x:Bind ViewModel.PlayCurrent}" Style="{StaticResource ControlButtonStyle}" Margin="10,0,10,0">
                         <SymbolIcon x:Name="PlayButtonIcon" Symbol="Play"/>
                     </Button>
 
-                    <Button x:Name="NextSongButton" Click="NextSongButton_Click" Style="{StaticResource ControlButtonStyle}">
+                    <Button x:Name="NextSongButton" Click="{x:Bind ViewModel.PlayNext}" Style="{StaticResource ControlButtonStyle}">
                         <SymbolIcon Symbol="Next"/>
                     </Button>
 
-                    <TextBlock x:Name="ProgressText" Text="{x:Bind ViewModel.ProgressString, Mode=OneWay}"  VerticalAlignment="Center"  Margin="50,0,0,0"/>
+                    <TextBlock x:Name="ProgressText" Text="{x:Bind ViewModel.Progress, Mode=OneWay, Converter={StaticResource Converter2}}"  VerticalAlignment="Center"  Margin="50,0,0,0"/>
                     <TextBlock Text="/" VerticalAlignment="Center"/>
-                    <TextBlock x:Name="SongLengthText" Text="{x:Bind ViewModel.SongLengthString, Mode=OneWay}"  VerticalAlignment="Center" />
+                    <TextBlock x:Name="SongLengthText" Text="{x:Bind ViewModel.SongLength, Mode=OneWay, Converter={StaticResource Converter2}}"  VerticalAlignment="Center" />
 
-                    <muxc:SplitButton x:Name="MuteButton" Click="MuteButton_Click" HorizontalAlignment="Right" Margin="50,0,0,0">
-                        <SymbolIcon x:Name="MuteButtonSymbol" Symbol="Mute"/>
+                    <muxc:SplitButton x:Name="MuteButton" Click="{x:Bind ViewModel.Mute}" HorizontalAlignment="Right" Margin="50,0,0,0">
+                        <muxc:SplitButton.ContentTransitions>
+                            <TransitionCollection>
+                                <EntranceThemeTransition/>
+                            </TransitionCollection>
+                        </muxc:SplitButton.ContentTransitions>
+                        <FontIcon Glyph="{x:Bind ViewModel.Volume, Converter={StaticResource VolumeToIconConverter}}"/>
                         <muxc:SplitButton.Flyout>
-                            <Flyout Placement="Top">
-                                <Slider x:Name="VolumeSlider" Orientation="Vertical" Height="100" Width="20" Value="{x:Bind ViewModel.Volume, Mode=TwoWay}"/>
+                            <Flyout Placement="Top" Closed="{x:Bind ViewModel.Save}">
+                                <muxc:Expander x:Name="VolumeFrame" ExpandDirection="Up">
+                                    <muxc:Expander.Header>
+                                        <StackPanel x:Name="SimpleVolumeContent" Orientation="Vertical">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Name="GlobalVolumeTextBox" Margin="0,10,0,0" Text="{StaticResource GlobalVolumeText}" />
+                                                <TextBlock Text="{x:Bind VolumeSlider.Value, Mode=OneWay}" Grid.Column="1" Style="{StaticResource VolumeIndicatorStyle}"/>
+                                            </Grid>
+                                            
+                                            <Slider x:Name="VolumeSlider" Style="{StaticResource VolumeSliderStyle}" Value="{x:Bind ViewModel.Volume, Mode=TwoWay}" Grid.Row="1" Grid.ColumnSpan="2"/>
+                                        </StackPanel>
+                                    </muxc:Expander.Header>
+                                    <muxc:Expander.Content>
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-50,-20,0,-10">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{StaticResource SongVolumeText}" Margin="0,10,0,0"/>
+                                                <TextBlock Text="{x:Bind SongVolumeSlider.Value, Mode=OneWay}" Grid.Column="1" Style="{StaticResource VolumeIndicatorStyle}"/>
+                                            </Grid>
+                                            
+                                            <Slider x:Name="SongVolumeSlider" HorizontalAlignment="Stretch" Style="{StaticResource VolumeSliderStyle}" Value="{x:Bind ViewModel.SongVolume, Mode=TwoWay}"/>
+
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{StaticResource HitsoundVolumeText}" Margin="0,10,0,0" />
+                                                <TextBlock Text="{x:Bind HitsoundVolumeSlider.Value, Mode=OneWay}" Grid.Column="1" Style="{StaticResource VolumeIndicatorStyle}"/>
+                                            </Grid>
+                                            
+                                            <Slider x:Name="HitsoundVolumeSlider" HorizontalAlignment="Stretch" Style="{StaticResource VolumeSliderStyle}" Value="{x:Bind ViewModel.HitsoundVolume, Mode=TwoWay}"/>
+                                        </StackPanel>
+                                    </muxc:Expander.Content>
+                                </muxc:Expander>
                             </Flyout>
                         </muxc:SplitButton.Flyout>
                     </muxc:SplitButton>
@@ -83,24 +146,7 @@
                 </Slider>
 
             </StackPanel>
-        
-            <!--<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="100,0,0,0" RelativePanel.RightOf="PlayerControls">
-                <muxc:SplitButton x:Name="MuteButton" Click="MuteButton_Click">
-                    <SymbolIcon Symbol="Mute"/>
-                    <muxc:SplitButton.Flyout>
-                        <Flyout Placement="Top">
-                            <Slider x:Name="VolumeSlider" Orientation="Vertical" Height="100" Width="20"/>
-                        </Flyout>
-                    </muxc:SplitButton.Flyout>
-                </muxc:SplitButton>
-            
-                --><!--<muxc:Expander>
-                    <muxc:Expander.Content>
-                    
-                    </muxc:Expander.Content>
-                </muxc:Expander>--><!--
-            
-            </StackPanel>-->
+
         </RelativePanel>
         <!-- Mods -->
         <StackPanel VerticalAlignment="Center" Margin="0, 0, 0, 0" Grid.Column="3">
@@ -114,7 +160,5 @@
 
         <CheckBox x:Name="UseSkinHitsoundCheckbox" Content="Use skin hitsound" Checked="UseSkinHitsoundCheckbox_Checked" Unchecked="UseSkinHitsoundCheckbox_Unchecked" Grid.Column="4"/>
     </Grid>
-
-    <!--Volume-->
 
 </UserControl>

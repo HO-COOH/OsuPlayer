@@ -13,18 +13,6 @@ namespace winrt::OsuPlayer::implementation
     {
         Player();
 
-        void PlayButton_Click(
-            winrt::Windows::Foundation::IInspectable const& sender, 
-            winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
-
-        void NextSongButton_Click(
-            winrt::Windows::Foundation::IInspectable const& sender, 
-            winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
-
-        void PreviousSongButton_Click(
-            winrt::Windows::Foundation::IInspectable const& sender, 
-            winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
-
         void HalftimeCheckbox_Checked(
             winrt::Windows::Foundation::IInspectable const& sender, 
             winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
@@ -41,10 +29,6 @@ namespace winrt::OsuPlayer::implementation
             winrt::Windows::Foundation::IInspectable const& sender, 
             winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
 
-        void MuteButton_Click(
-            winrt::Microsoft::UI::Xaml::Controls::SplitButton const& sender, 
-            winrt::Microsoft::UI::Xaml::Controls::SplitButtonClickEventArgs const& args);
-
         void HalfTimeCheckbox_Unchecked(
             winrt::Windows::Foundation::IInspectable const& sender, 
             winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
@@ -60,14 +44,12 @@ namespace winrt::OsuPlayer::implementation
         void UseSkinHitsoundCheckbox_Unchecked(
             winrt::Windows::Foundation::IInspectable const& sender, 
             winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
-
-        void VolumeSlider_ValueChanged(
-            winrt::Windows::Foundation::IInspectable const& sender, 
-            winrt::Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs const& e);
         
         OsuPlayer::ViewModel::PlayerViewModel ViewModel();
     private:
         void handlePlayMod(ViewModel::PlayMod newPlayMod);
+
+        bool m_showingSimpleVolume = true;
     };
 }
 
