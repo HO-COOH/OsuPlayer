@@ -34,6 +34,8 @@ you don't see such organizations when you don't open the project in Visual Studi
 MainPage:
 ![](screenshots/MainPage.png)
 
+AlbumView:
+![](screenshots/AlbumView.png)
 
 Settings:
 ![](screenshots/Settings.png)
