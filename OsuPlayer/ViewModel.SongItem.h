@@ -20,7 +20,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         winrt::hstring LengthString();
         int Length();
         int SelectedVersionIndex();
-
+        winrt::hstring SelectedVersion();
 
         void SelectedVersionIndex(int index);
 
@@ -41,7 +41,10 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         winrt::Windows::Foundation::IAsyncAction ShowProperty();
 
+        winrt::Windows::UI::Xaml::Controls::Image SongImage() { return m_songImageFrame; }
+
     private:
+        winrt::Windows::UI::Xaml::Controls::Image m_songImageFrame;
         int m_index{};
         int m_versionIndex{};
         winrt::Windows::Foundation::IInspectable m_modelPointer;

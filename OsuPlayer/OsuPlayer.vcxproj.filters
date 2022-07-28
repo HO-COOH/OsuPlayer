@@ -177,6 +177,9 @@
     <Image Include="Assets\osuLogo.png">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\githubLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />

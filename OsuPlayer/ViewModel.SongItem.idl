@@ -18,9 +18,13 @@ namespace OsuPlayer.ViewModel
         Windows.Foundation.Collections.IObservableVector<String> Versions{ get; };
 
         Int32 SelectedVersionIndex{ get; set; };
+        String SelectedVersion{ get; };
 
         Windows.Foundation.IAsyncAction ShowProperty();
 
         void PlayCurrent();
+
+        //For binding in xaml
+        Windows.UI.Xaml.Controls.Image SongImage{ get; };
     }
 }

@@ -9,8 +9,7 @@ namespace OsuPlayer
         //void OnSongItemEvent(Windows.Storage.StorageFile file);
         void OnSongItemEvent(OsuPlayer.ViewModel.SongItemViewModel item);
 
+        Windows.UI.Xaml.Controls.ListView MusicList{ get; };
         OsuPlayer.ViewModel.MyMusicViewModel ViewModel{ get; };
-
-        //Windows.UI.Xaml.Controls.ComboBoxItem SortOrderSelection{ get; };
     }
 }

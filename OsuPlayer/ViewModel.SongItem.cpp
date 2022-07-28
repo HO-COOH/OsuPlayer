@@ -42,10 +42,16 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         return m_versionIndex;
     }
 
+    winrt::hstring implementation::SongItemViewModel::SelectedVersion()
+    {
+        return m_versions.GetAt(m_versionIndex);
+    }
+
     void SongItemViewModel::SelectedVersionIndex(int index)
     {
         //https://github.com/microsoft/microsoft-ui-xaml/issues/7521
         m_versionIndex = std::clamp(index, 0, static_cast<int>(getModel().m_beatmaps.size() - 1));
+        raisePropertyChange(L"SelectedVersion");
     }
 
     winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> SongItemViewModel::Versions()

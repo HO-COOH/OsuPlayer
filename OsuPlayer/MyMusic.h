@@ -1,10 +1,11 @@
 ﻿#pragma once
 #include "MyMusic.g.h"
 #include "ViewModel.MyMusicViewModel.g.h"
+#include "Utils.PropertyChangeHelper.hpp"
 
 namespace winrt::OsuPlayer::implementation
 {
-    struct MyMusic : MyMusicT<MyMusic>
+    struct MyMusic : MyMusicT<MyMusic>, Utils::PropertyChangeHelper<MyMusic>
     {
         
         MyMusic();
@@ -23,6 +24,14 @@ namespace winrt::OsuPlayer::implementation
         
         ViewModel::MyMusicViewModel ViewModel();
         winrt::Windows::Foundation::IAsyncAction ColumnHeaderSetting_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void StackPanel_PointerEntered(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::Input::PointerRoutedEventArgs const& e);
+        void StackPanel_PointerExited(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::Input::PointerRoutedEventArgs const& e);
+        void ListViewMode_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+
+    private:
+        void showMusicList();
+        void showAlbumView();
+        bool m_showList = true;
     };
 }
 
