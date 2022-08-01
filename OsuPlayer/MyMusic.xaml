@@ -232,7 +232,7 @@
                 <ColumnDefinition Width="375*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="My Music" FontSize="50" Margin="20,40,20,40" Grid.Column="0" Grid.ColumnSpan="2"/>
+            <TextBlock x:Uid="MyMusicText" FontSize="50" Margin="20,40,20,40" Grid.Column="0" Grid.ColumnSpan="2"/>
 
             <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,50,0">
                 <ComboBox 
@@ -312,7 +312,11 @@
 
                             <Grid.ContextFlyout>
                                 <MenuFlyout>
-                                    <MenuFlyoutItem x:Name="ColumnHeaderSetting" Text="Column settings" Click="ColumnHeaderSetting_Click"/>
+                                    <MenuFlyoutItem x:Uid="ColumnHeaderSetting" Click="ColumnHeaderSetting_Click">
+                                        <MenuFlyoutItem.Icon>
+                                            <SymbolIcon Symbol="Setting"/>
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
                                 </MenuFlyout>
                             </Grid.ContextFlyout>
 
@@ -365,7 +369,7 @@
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock x:Name="SongNameText" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Text="{x:Bind SongName}" TextTrimming="CharacterEllipsis" Grid.Column="1" />
+                                            <TextBlock x:Name="SongNameText" Text="{x:Bind SongName}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="1" />
                                             <TextBlock x:Name="SingerText" Text="{x:Bind Singer}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="2"/>
                                             <TextBlock x:Name="MapperText" Text="{x:Bind Mapper}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="3"/>
                                             <TextBlock x:Name="LengthText" Text="{x:Bind Length, Converter={StaticResource Converter2}}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="4" />
@@ -375,19 +379,19 @@
                                         <Grid.ContextFlyout>
                                             <MenuFlyout>
 
-                                                <MenuFlyoutItem Text="Play" Click="{x:Bind PlayCurrent}">
+                                                <MenuFlyoutItem x:Uid="PlayMenuItem" Click="{x:Bind PlayCurrent}">
                                                     <MenuFlyoutItem.Icon>
                                                         <SymbolIcon Symbol="Play"/>
                                                     </MenuFlyoutItem.Icon>
                                                 </MenuFlyoutItem>
 
-                                                <MenuFlyoutItem Text="Remove from list">
+                                                <MenuFlyoutItem x:Uid="RemoveFromListMenuItem">
                                                     <MenuFlyoutItem.Icon>
                                                         <SymbolIcon Symbol="Clear"/>
                                                     </MenuFlyoutItem.Icon>
                                                 </MenuFlyoutItem>
 
-                                                <MenuFlyoutItem Text="Delete this beatmap">
+                                                <MenuFlyoutItem x:Uid="DeleteMenuItem">
                                                     <MenuFlyoutItem.Icon>
                                                         <SymbolIcon Symbol="Delete"/>
                                                     </MenuFlyoutItem.Icon>
@@ -395,7 +399,7 @@
 
                                                 <MenuFlyoutSeparator/>
 
-                                                <MenuFlyoutItem x:Name="MoveToMenuItem" Text="Move to">
+                                                <MenuFlyoutItem x:Uid="MoveToMenuItem" Text="Move to">
                                                     <MenuFlyoutItem.Icon>
                                                         <FontIcon Glyph="{StaticResource MoveToIconGlyph}"/>
                                                     </MenuFlyoutItem.Icon>
@@ -404,7 +408,7 @@
 
                                                 <MenuFlyoutSeparator/>
 
-                                                <MenuFlyoutItem x:Name="PropertyMenuItem" Text="Properties" Click="{x:Bind ShowProperty}">
+                                                <MenuFlyoutItem x:Uid="PropertyMenuItem" Click="{x:Bind ShowProperty}">
                                                     <MenuFlyoutItem.Icon>
                                                         <SymbolIcon Symbol="MusicInfo"/>
                                                     </MenuFlyoutItem.Icon>
@@ -418,8 +422,7 @@
                         </ListView>
 
                         <GridView x:Name="MusicAlbumView" Grid.Row="2"
-                                  ItemsSource="{x:Bind ViewModel.Songs, Mode=TwoWay}"
-                                  >
+                                  ItemsSource="{x:Bind ViewModel.Songs, Mode=TwoWay}">
                             <GridView.ItemContainerStyle>
                                 <Style TargetType="GridViewItem">
                                     <Setter Property="Margin" Value="5,5,5,5"/>
@@ -471,19 +474,19 @@
                                             <StackPanel.ContextFlyout>
                                                 <MenuFlyout>
 
-                                                    <MenuFlyoutItem Text="Play" Click="{x:Bind PlayCurrent}">
+                                                    <MenuFlyoutItem x:Uid="PlayMenuItem" Click="{x:Bind PlayCurrent}">
                                                         <MenuFlyoutItem.Icon>
                                                             <SymbolIcon Symbol="Play"/>
                                                         </MenuFlyoutItem.Icon>
                                                     </MenuFlyoutItem>
 
-                                                    <MenuFlyoutItem Text="Remove from list">
+                                                    <MenuFlyoutItem x:Uid="RemoveFromListMenuItem">
                                                         <MenuFlyoutItem.Icon>
                                                             <SymbolIcon Symbol="Clear"/>
                                                         </MenuFlyoutItem.Icon>
                                                     </MenuFlyoutItem>
 
-                                                    <MenuFlyoutItem Text="Delete this beatmap">
+                                                    <MenuFlyoutItem x:Uid="DeleteMenuItem">
                                                         <MenuFlyoutItem.Icon>
                                                             <SymbolIcon Symbol="Delete"/>
                                                         </MenuFlyoutItem.Icon>
@@ -491,7 +494,7 @@
 
                                                     <MenuFlyoutSeparator/>
 
-                                                    <MenuFlyoutItem x:Name="MoveToMenuItem" Text="Move to">
+                                                    <MenuFlyoutItem x:Uid="MoveToMenuItem">
                                                         <MenuFlyoutItem.Icon>
                                                             <FontIcon Glyph="{StaticResource MoveToIconGlyph}"/>
                                                         </MenuFlyoutItem.Icon>
@@ -500,7 +503,7 @@
 
                                                     <MenuFlyoutSeparator/>
 
-                                                    <MenuFlyoutItem x:Name="PropertyMenuItem" Text="Properties" Click="{x:Bind ShowProperty}">
+                                                    <MenuFlyoutItem x:Uid="PropertyMenuItem" Click="{x:Bind ShowProperty}">
                                                         <MenuFlyoutItem.Icon>
                                                             <SymbolIcon Symbol="MusicInfo"/>
                                                         </MenuFlyoutItem.Icon>
@@ -519,7 +522,8 @@
 
         </muxc:NavigationView>
 
-        <Button x:Name="ListViewMode" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,10,0" Click="ListViewMode_Click" Foreground="White">
+        <Button x:Uid="ListViewMode" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right"
+                VerticalAlignment="Top" Margin="0,15,10,0" Click="ListViewMode_Click" Foreground="White">
             <Grid>
                 <FontIcon x:Name="ListIcon" Glyph="{StaticResource ListIconGlyph}" FontSize="10"/>
                 <FontIcon x:Name="AlbumIcon" Glyph="{StaticResource AlbumIconGlyph}" FontSize="10"/>

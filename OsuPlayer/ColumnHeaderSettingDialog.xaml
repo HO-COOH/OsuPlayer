@@ -9,7 +9,6 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <x:String x:Key="TitleText">Select the columns you want to display in the song list.</x:String>
         <x:String x:Key="UpIcon">&#xE70E;</x:String>
         <x:String x:Key="DownIcon">&#xE70D;</x:String>
 
@@ -21,7 +20,7 @@
     
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-        <TextBlock Text="{StaticResource TitleText}"/>
+        <TextBlock x:Uid="ColumnHeaderSettingTitle"/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -34,7 +33,7 @@
                   BorderBrush="{ThemeResource AppBarBorderThemeBrush}" BorderThickness="1" Background="{ThemeResource SystemControlBackgroundListLowBrush}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:Name="ColumnSettingItemTemplate" x:DataType="viewModel:ColumnSettingItem">
-                        <CheckBox IsChecked="{x:Bind Show, Mode=TwoWay}" Content="{x:Bind Name}"/>
+                        <CheckBox IsChecked="{x:Bind Show, Mode=TwoWay}" Content="{x:Bind Name}" Width="20"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -49,8 +48,8 @@
                     <FontIcon Glyph="{StaticResource DownIcon}"/>
                 </Button>
 
-                <Button Content="Show" IsEnabled="{x:Bind ViewModel.IsShowEnabled, Mode=OneWay}" Click="{x:Bind ViewModel.ShowItem}"/>
-                <Button Content="Hide" IsEnabled="{x:Bind ViewModel.IsHideEnabled, Mode=OneWay}" Click="{x:Bind ViewModel.HideItem}"/>
+                <Button x:Uid="ColumnHeaderSettingShow" IsEnabled="{x:Bind ViewModel.IsShowEnabled, Mode=OneWay}" Click="{x:Bind ViewModel.ShowItem}"/>
+                <Button x:Uid="ColumnHeaderSettingHide" IsEnabled="{x:Bind ViewModel.IsHideEnabled, Mode=OneWay}" Click="{x:Bind ViewModel.HideItem}"/>
             </StackPanel>
         </Grid>
 

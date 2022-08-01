@@ -6,6 +6,7 @@
 #if __has_include("MainPage.g.cpp")
 #include "MainPage.g.cpp"
 #endif
+#include "ViewModelLocator.h"
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -16,11 +17,37 @@ namespace winrt::OsuPlayer::implementation
     MainPage::MainPage()
     {
         InitializeComponent();
+
+        MyMusicViewModel().Collections().VectorChanged([this](
+            winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::CollectionItem> sender,
+            winrt::Windows::Foundation::Collections::IVectorChangedEventArgs args)
+            {
+
+            }
+        );
+
         MyMusicModel::GetInstance().onIndexingFinished(
             [this](std::vector<SongItemModel> const& songs)
             {
+                //m_navigationItems.GetAt(0).Value(songs.size());
+                //m_navigationItems.GetAt(2).Value(MyMusicModel::GetInstance().m_collections.size());
                 MyMusicInfoBadge().Value(songs.size());
                 CollectionsInfoBadge().Value(MyMusicModel::GetInstance().m_collections.size());
+
+                auto collectionNavigationItem = CollectionNavigationItem();
+                collectionNavigationItem.MenuItems();
+                auto children = collectionNavigationItem.MenuItems();
+                for (auto collection : MyMusicModel::GetInstance().m_collections)
+                {
+                    winrt::Microsoft::UI::Xaml::Controls::NavigationViewItem item;
+                    item.Content(winrt::box_value(winrt::to_hstring(L"CollectionItem")));
+                    item.Tag(winrt::box_value(winrt::to_hstring(L"CollectionItem")));
+                    item.Icon(winrt::Windows::UI::Xaml::Controls::SymbolIcon(winrt::Windows::UI::Xaml::Controls::Symbol::List));
+                    children.Append(item);
+                }
+                if (children.Size() > 1)
+                    children.RemoveAt(0);
+                OutputDebugString(winrt::to_hstring(children.Size()).data());
             }
         );
     }
@@ -59,8 +86,13 @@ namespace winrt::OsuPlayer::implementation
         }
         else
         {
-            auto&& invokedContainer = args.InvokedItemContainer();
-
+            OutputDebugString(winrt::get_class_name(args.InvokedItemContainer()).data());
+            auto&& invoked = args.InvokedItemContainer().as<winrt::Microsoft::UI::Xaml::Controls::NavigationViewItem>();
+            //other navigation items here
         }
+    }
+    ViewModel::MyMusicViewModel MainPage::MyMusicViewModel()
+    {
+        return ViewModelLocator::Current().MyMusicViewModel();
     }
 }

@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutSetting.HelpText" xml:space="preserve">
+    <value>关于此软件和项目</value>
+  </data>
+  <data name="AboutSetting.Title" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="AddFolderButton.Text" xml:space="preserve">
+    <value>添加文件夹</value>
+  </data>
+  <data name="AllowModifyOsuDataCheckbox.Content" xml:space="preserve">
+    <value>允许修改osu!本地数据</value>
+  </data>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>osu!播放器</value>
+  </data>
+  <data name="CollectionNavigationItem.Content" xml:space="preserve">
+    <value>地图集</value>
+  </data>
+  <data name="ColumnHeaderSetting.Text" xml:space="preserve">
+    <value>列设置</value>
+  </data>
+  <data name="ColumnHeaderSettingHide.Content" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
+  <data name="ColumnHeaderSettingShow.Content" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="ColumnHeaderSettingTitle.Text" xml:space="preserve">
+    <value>选择你想要显示的列</value>
+  </data>
+  <data name="CustomSearchTextBox.PlaceholderText" xml:space="preserve">
+    <value>自定义搜索地址前缀</value>
+  </data>
+  <data name="DarkButton.Content" xml:space="preserve">
+    <value>暗色模式</value>
+  </data>
+  <data name="DefaultModSetting.HelpText" xml:space="preserve">
+    <value>设置播放时使用的默认Mod</value>
+  </data>
+  <data name="DefaultModSetting.Title" xml:space="preserve">
+    <value>默认播放Mod</value>
+  </data>
+  <data name="DefaultSkinText.Text" xml:space="preserve">
+    <value>使用这个皮肤中的打击音效</value>
+  </data>
+  <data name="DeleteMenuItem.Text" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="DoubleTimeItem.Text" xml:space="preserve">
+    <value>DoubleTime</value>
+  </data>
+  <data name="ExperimentalSetting.HelpText" xml:space="preserve">
+    <value>！开启后果自负！</value>
+  </data>
+  <data name="ExperimentalSetting.Title" xml:space="preserve">
+    <value>实验性功能</value>
+  </data>
+  <data name="GlobalVolumeTextBlock.Text" xml:space="preserve">
+    <value>全局音量</value>
+  </data>
+  <data name="HalfTimeItem.Text" xml:space="preserve">
+    <value>HalfTime</value>
+  </data>
+  <data name="HitsoundSetting.HelpText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HitsoundSetting.Title" xml:space="preserve">
+    <value>打击音效设置</value>
+  </data>
+  <data name="HitsoundToggle.OffContent" xml:space="preserve">
+    <value>关闭打击音效</value>
+  </data>
+  <data name="HitsoundToggle.OnContent" xml:space="preserve">
+    <value>开启打击音效</value>
+  </data>
+  <data name="HitsoundVolumeTextBlock.Text" xml:space="preserve">
+    <value>打击音效音量</value>
+  </data>
+  <data name="JumpListCollectionDescription.Text" xml:space="preserve">
+    <value>收藏夹数目</value>
+  </data>
+  <data name="JumpListRecentDescription.Text" xml:space="preserve">
+    <value>最近歌曲数目</value>
+  </data>
+  <data name="JumpListSetting.HelpText" xml:space="preserve">
+    <value>设置跳转列表中条目的个数</value>
+  </data>
+  <data name="JumpListSetting.Title" xml:space="preserve">
+    <value>跳转列表设置</value>
+  </data>
+  <data name="LanguageText.Text" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="LengthColumnHeaderText" xml:space="preserve">
+    <value>长度</value>
+  </data>
+  <data name="LightButton.Content" xml:space="preserve">
+    <value>亮色模式</value>
+  </data>
+  <data name="LinkClickActionDescription.Text" xml:space="preserve">
+    <value>点击按键的动作</value>
+  </data>
+  <data name="LinkClickBehaviorSetting.HelpText" xml:space="preserve">
+    <value>点击链接（例如歌曲信息）时的操作</value>
+  </data>
+  <data name="LinkClickBehaviorSetting.Title" xml:space="preserve">
+    <value>链接行为</value>
+  </data>
+  <data name="LinkClickCopyItem.Content" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="LinkClickCustomSearch.Content" xml:space="preserve">
+    <value>自定义搜索</value>
+  </data>
+  <data name="LinkClickNoneItem.Content" xml:space="preserve">
+    <value>无动作</value>
+  </data>
+  <data name="LinkClickSearchOsuItem.Content" xml:space="preserve">
+    <value>在osu!上搜索</value>
+  </data>
+  <data name="ListViewMode.ToolTipService.ToolTip" xml:space="preserve">
+    <value>列表/专辑模式</value>
+  </data>
+  <data name="MapperColumnHeaderText" xml:space="preserve">
+    <value>作图者</value>
+  </data>
+  <data name="MoveToMenuItem.Text" xml:space="preserve">
+    <value>移动到</value>
+  </data>
+  <data name="MyMusicNavigationItem.Content" xml:space="preserve">
+    <value>我的音乐</value>
+  </data>
+  <data name="MyMusicText.Text" xml:space="preserve">
+    <value>我的音乐</value>
+  </data>
+  <data name="NavigationSearch.PlaceholderText" xml:space="preserve">
+    <value>搜索</value>
+  </data>
+  <data name="NightCoreItem.Text" xml:space="preserve">
+    <value>NightCore</value>
+  </data>
+  <data name="OsuPathsSettings.HelpText" xml:space="preserve">
+    <value>osu!的安装路径</value>
+  </data>
+  <data name="OsuPathsSettings.Title" xml:space="preserve">
+    <value>osu!路径</value>
+  </data>
+  <data name="PlayMenuItem.Text" xml:space="preserve">
+    <value>播放</value>
+  </data>
+  <data name="PropertyMenuItem.Text" xml:space="preserve">
+    <value>地图信息</value>
+  </data>
+  <data name="RecentNavigationItem.Content" xml:space="preserve">
+    <value>最近项目</value>
+  </data>
+  <data name="RemoveFromListMenuItem.Text" xml:space="preserve">
+    <value>从列表中移除</value>
+  </data>
+  <data name="SearchNoResult.Text" xml:space="preserve">
+    <value>请检查你的拼写或者搜索点别的</value>
+  </data>
+  <data name="SettingsTitle.Text" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="SingerColumnHeaderText" xml:space="preserve">
+    <value>歌手</value>
+  </data>
+  <data name="SongItemDialogArtist.Text" xml:space="preserve">
+    <value>艺术家</value>
+  </data>
+  <data name="SongItemDialogBitrate.Text" xml:space="preserve">
+    <value>比特率</value>
+  </data>
+  <data name="SongItemDialogLength.Text" xml:space="preserve">
+    <value>长度</value>
+  </data>
+  <data name="SongItemDialogSongLocation.Text" xml:space="preserve">
+    <value>歌曲路径</value>
+  </data>
+  <data name="SongItemDialogTags.Text" xml:space="preserve">
+    <value>标签</value>
+  </data>
+  <data name="SongItemDialogTitle.Text" xml:space="preserve">
+    <value>歌名</value>
+  </data>
+  <data name="SongPropertyTitle.Text" xml:space="preserve">
+    <value>信息</value>
+  </data>
+  <data name="SongVolumeTextBlock.Text" xml:space="preserve">
+    <value>音乐音量</value>
+  </data>
+  <data name="SystemThemeButton.Content" xml:space="preserve">
+    <value>跟随系统</value>
+  </data>
+  <data name="ThemeSetting.HelpText" xml:space="preserve">
+    <value>设置此应用亮色或暗色主题</value>
+  </data>
+  <data name="ThemeSetting.Title" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="VersionColumnHeaderText" xml:space="preserve">
+    <value>版本</value>
+  </data>
+</root>

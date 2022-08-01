@@ -11,30 +11,23 @@ namespace Model
 		/**
 		 * @brief Name of the collection
 		*/
-		std::string m_name;
+		std::string_view m_name;
 
 		/**
-		 * @brief
+		 * @brief Pointers to beatmaps that this collection contains
 		*/
-		std::vector<Db::Beatmap> m_beatmapPtr;
+		std::vector<Db::Beatmap const*> m_beatmapPtr;
 	};
 
 	/**
 	 * @brief Find collection items from a set of beatmaps
-	 * @param beatmap
-	 * @param file
-	 * @return
+	 * @param map A map of <beatmapMd5 (string), beatmapPointer>
+	 * @param file The file path of `collections.db`
+	 * @return A vector of CollectionItem
+	 * @details
+	 *		A collection in osu's `collections.db` only records its name and an array of beatmap's md5. 
+			See the definitions of `OsuDBParser.hpp Db::Collection`
 	*/
-	std::vector<CollectionItemModel> GetCollectionItemModel(std::unordered_set<Db::Beatmap>&& beatmap, winrt::Windows::Storage::StorageFile file);
+	std::vector<CollectionItemModel> GetCollectionItemModel(std::unordered_map<std::string_view, Db::Beatmap const*> map, winrt::Windows::Storage::StorageFile file);
 
-	namespace Test
-	{
-		struct CollectionItemModel
-		{
-			std::string_view m_name;
-			std::vector<Db::Beatmap const*> m_beatmapPtr;
-		};
-		std::vector<CollectionItemModel> GetCollectionItemModel(std::unordered_map<std::string_view, Db::Beatmap const*> map, winrt::Windows::Storage::StorageFile file);
-
-	}
 }

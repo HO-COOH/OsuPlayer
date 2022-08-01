@@ -35,26 +35,26 @@
 
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2" Text="Properties" FontSize="50" Margin="0,-10,0,0"/>
+        <TextBlock Grid.ColumnSpan="2" x:Uid="SongPropertyTitle" FontSize="50" Margin="0,-10,0,0"/>
 
-        <TextBlock Text="Title" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="1" Grid.Column="0"/>
+        <TextBlock x:Uid="SongItemDialogTitle" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="1" Grid.Column="0"/>
         <RichTextBlock x:Name="TitleText" Grid.Row="2" Grid.Column="0"/>
 
-        <TextBlock Text="Artist" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="1" Grid.Column="1"/>
+        <TextBlock x:Uid="SongItemDialogArtist" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="1" Grid.Column="1"/>
         <RichTextBlock x:Name="ArtistText" Grid.Row="2" Grid.Column="1"/>
 
-        <TextBlock Text="Bit rate" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="3" Grid.Column="0"/>
+        <TextBlock x:Uid="SongItemDialogBitrate" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="3" Grid.Column="0"/>
         <TextBlock x:Name="BitrateText"  Grid.Row="4" Grid.Column="0"/>
 
-        <TextBlock Text="Length" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="3" Grid.Column="1"/>
+        <TextBlock x:Uid="SongItemDialogLength" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="3" Grid.Column="1"/>
         <TextBlock x:Name="LengthText" Grid.Row="4" Grid.Column="1"/>
 
-        <TextBlock Text="Song location" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="5" Grid.ColumnSpan="2"/>
+        <TextBlock x:Uid="SongItemDialogSongLocation" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="5" Grid.ColumnSpan="2"/>
         <HyperlinkButton x:Name="SongPathButton" Click="SongPathButton_Click" Grid.Row="6" Grid.ColumnSpan="2">
             <TextBlock x:Name="SongPathText" TextWrapping="Wrap"></TextBlock>
         </HyperlinkButton>
 
-        <TextBlock Text="Tags" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="7" Grid.ColumnSpan="2"/>
+        <TextBlock x:Uid="SongItemDialogTags" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="7" Grid.ColumnSpan="2"/>
         <RichTextBlock x:Name="TagsText" Grid.Row="8" Grid.ColumnSpan="2"/>
     </Grid>
 </Page>

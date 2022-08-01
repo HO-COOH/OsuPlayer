@@ -7,9 +7,18 @@
 
 #include "ViewModelLocator.h"
 #include "Utils.h"
+#include <winrt/Windows.ApplicationModel.Resources.h>
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
+	struct ResourceName
+	{
+		constexpr static inline wchar_t const* Singer = L"SingerColumnHeaderText";
+		constexpr static inline wchar_t const* Mapper = L"MapperColumnHeaderText";
+		constexpr static inline wchar_t const* Length = L"LengthColumnHeaderText";
+		constexpr static inline wchar_t const* Version = L"VersionColumnHeaderText";
+	};
+
 	void implementation::ColumnSettingItem::Show(bool show)
 	{
 		if (show != m_show)
@@ -22,22 +31,22 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
 	winrt::Windows::Storage::ApplicationDataContainer ColumnSettings::m_localSettings = winrt::Windows::Storage::ApplicationData::Current().LocalSettings();
 
-	implementation::ColumnSettings::ColumnSettings()
+	ColumnSettings::ColumnSettings()
 	{
-		constexpr wchar_t const* ItemNames[]
-		{
-			L"Singer",
-			L"Mapper",
-			L"Length",
-			L"Versions"
-		};
+		auto resourceLoader = winrt::Windows::ApplicationModel::Resources::ResourceLoader::GetForCurrentView();
+		
+
 		auto itemsString = Utils::SplitPathFromString(winrt::unbox_value_or<winrt::hstring>(m_localSettings.Values().TryLookup(L"Columns"), L""));
 		if (itemsString.empty())
 		{
-			for (auto const& item : ItemNames)
-			{
-				m_items.Append(ViewModel::ColumnSettingItem{ true, item });
-			}
+			//for (auto const& item : ItemNames)
+			//{
+			//	m_items.Append(ViewModel::ColumnSettingItem{ true, item });
+			//}
+			m_items.Append(ViewModel::ColumnSettingItem{ true, resourceLoader.GetString(ResourceName::Singer) });
+			m_items.Append(ViewModel::ColumnSettingItem{ true, resourceLoader.GetString(ResourceName::Mapper) });
+			m_items.Append(ViewModel::ColumnSettingItem{ true, resourceLoader.GetString(ResourceName::Length) });
+			m_items.Append(ViewModel::ColumnSettingItem{ true, resourceLoader.GetString(ResourceName::Version) });
 		}
 		else
 		{

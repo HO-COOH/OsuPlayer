@@ -8,16 +8,23 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 {
 	winrt::hstring CollectionItem::Name()
 	{
-		return m_name;
+		return winrt::to_hstring(m_modelPointer->m_name);
 	}
-	void CollectionItem::Name(winrt::hstring name)
-	{
-		m_name = name;
-	}
+
 	Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> CollectionItem::SongItems()
 	{
 		return m_songItems;
 	}
+	winrt::Windows::Foundation::IInspectable CollectionItem::ModelPointer()
+	{
+		return winrt::box_value<size_t>(reinterpret_cast<size_t>(m_modelPointer));
+	}
+
+	void CollectionItem::ModelPointer(winrt::Windows::Foundation::IInspectable modelPointer)
+	{
+		m_modelPointer = reinterpret_cast<Model::CollectionItemModel*>(winrt::unbox_value<size_t>(modelPointer));
+	}
+
 	int CollectionItem::Count()
 	{
 		return m_songItems.Size();

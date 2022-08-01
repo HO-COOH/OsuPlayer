@@ -16,6 +16,9 @@
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
+    winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> MyMusicViewModel::s_songItems = winrt::single_threaded_observable_vector<ViewModel::SongItemViewModel>();
+    winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::CollectionItem> MyMusicViewModel::s_collections = winrt::single_threaded_observable_vector<ViewModel::CollectionItem>();
+
     MyMusicViewModel::MyMusicViewModel()
     {
         //After finished indexing, transform the song items to Views
@@ -25,10 +28,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
                 updateList();
             }
         );
-
-        s_songItems.VectorChanged([](winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> v, winrt::Windows::Foundation::Collections::IVectorChangedEventArgs const& args)
-        {
-        });
     }
 
     int MyMusicViewModel::SortByIndex()
@@ -48,13 +47,13 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         
     }
 
-    void implementation::MyMusicViewModel::Songs(winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> songs)
+    void MyMusicViewModel::Songs(winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> songs)
     {
         s_songItems = songs;
     }
 
 
-    void implementation::MyMusicViewModel::updateList()
+    void MyMusicViewModel::updateList()
     {
         s_songItems.Clear();
         int i = 0;
@@ -68,6 +67,17 @@ namespace winrt::OsuPlayer::ViewModel::implementation
             }
             viewModel.ModelPointer(winrt::box_value<size_t>(reinterpret_cast<size_t>(&GetModel().m_songs[i++])));
             s_songItems.Append(viewModel);
+        }
+    }
+    void MyMusicViewModel::updateCollection()
+    {
+        s_collections.Clear();
+        int i = 0;
+        for (auto& collection : GetModel().m_collections)
+        {
+            CollectionItem item;
+            item.ModelPointer(winrt::box_value(reinterpret_cast<size_t>(&collection)));
+            s_collections.Append(item);
         }
     }
 }

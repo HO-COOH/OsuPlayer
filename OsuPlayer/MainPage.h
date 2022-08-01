@@ -4,7 +4,7 @@
 #include "Player.g.h"
 #include <winrt/Windows.UI.Xaml.Input.h>
 
-#include <winrt/Windows.UI.Xaml.Media.Animation.h>
+#include "ViewModel.MyMusicViewModel.g.h"
 
 namespace winrt::OsuPlayer::implementation
 {
@@ -16,6 +16,7 @@ namespace winrt::OsuPlayer::implementation
         void NavigationViewControl_ItemInvoked(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender, winrt::Microsoft::UI::Xaml::Controls::NavigationViewItemInvokedEventArgs const& args);
 
         Player player() { return {}; }
+        ViewModel::MyMusicViewModel MyMusicViewModel();
     };
 }
 

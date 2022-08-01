@@ -7,8 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}">
-    
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+    xmlns:viewModel="using:OsuPlayer.ViewModel">
+
     <Grid>
         <Grid.BackgroundTransition>
             <BrushTransition/>
@@ -17,36 +18,36 @@
             <RowDefinition/>
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
-        
+
         <muxc:NavigationView x:Name="NavigationViewControl" Grid.Row="0"
             ItemInvoked="NavigationViewControl_ItemInvoked"
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <!--MenuItemTemplate="{StaticResource NavigationTemplate}"
+                             MenuItemsSource="{x:Bind NavigationItems}"-->
             <muxc:NavigationView.AutoSuggestBox>
                 <AutoSuggestBox
                     x:Name="SearchBox"
-                    PlaceholderText="Search"
-                    QuerySubmitted="SearchBox_QuerySubmitted">
-                
-                </AutoSuggestBox>
+                    x:Uid="NavigationSearch"
+                    QuerySubmitted="SearchBox_QuerySubmitted"/>
             </muxc:NavigationView.AutoSuggestBox>
         
-            <!-- Navigation Items-->
             <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem Icon="Play" Content="My Music" Tag="My Music" 
+                <muxc:NavigationViewItem Icon="Play" x:Uid="MyMusicNavigationItem" Tag="My Music" 
                                          PointerPressed="NavigationViewItem_PointerPressed">
                     <muxc:NavigationViewItem.InfoBadge>
                         <muxc:InfoBadge x:Name="MyMusicInfoBadge" Value="1"/>
                     </muxc:NavigationViewItem.InfoBadge>
                 </muxc:NavigationViewItem>
 
-                <muxc:NavigationViewItem Icon="Clock" Content="Recent">
+                <muxc:NavigationViewItem Icon="Clock" x:Uid="RecentNavigationItem">
                     <muxc:NavigationViewItem.InfoBadge>
                         <muxc:InfoBadge x:Name="RecentInfoBadge" Value="2"/>
                     </muxc:NavigationViewItem.InfoBadge>
                 </muxc:NavigationViewItem>
             
                 <muxc:NavigationViewItemSeparator/>
-                <muxc:NavigationViewItem Icon="List" Content="Collections">
+
+                <muxc:NavigationViewItem x:Name="CollectionNavigationItem" Icon="List" x:Uid="CollectionNavigationItem">
                     <muxc:NavigationViewItem.InfoBadge>
                         <muxc:InfoBadge x:Name="CollectionsInfoBadge" Value="3"/>
                     </muxc:NavigationViewItem.InfoBadge>

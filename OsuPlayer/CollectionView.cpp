@@ -4,7 +4,7 @@
 #include "CollectionView.g.cpp"
 #endif
 #include <winrt/Windows.Foundation.Collections.h>
-#include "Model.MyMusic.h"
+#include "ViewModelLocator.h"
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -14,29 +14,10 @@ namespace winrt::OsuPlayer::implementation
     CollectionView::CollectionView()
     {
         InitializeComponent();
-       
-        m_collectionItems = winrt::single_threaded_observable_vector<OsuPlayer::ViewModel::CollectionItem>();
-
-        for (auto const& collectionItemModel : Model::MyMusicModel::GetInstance().m_collections)
-        {
-            ViewModel::CollectionItem collectionItemViewModel;
-            collectionItemViewModel.Name(winrt::to_hstring(collectionItemModel.m_name));
-
-            for (auto const& songItem : collectionItemModel.m_beatmapPtr)
-            {
-                ViewModel::SongItemViewModel itemViewModel;
-
-                collectionItemViewModel.SongItems().Append(itemViewModel);
-            }
-
-            m_collectionItems.Append(collectionItemViewModel);
-        }
-
     }
 
-    Windows::Foundation::Collections::IObservableVector<OsuPlayer::ViewModel::CollectionItem> CollectionView::CollectionItems()
+    ViewModel::MyMusicViewModel CollectionView::ViewModel()
     {
-        return m_collectionItems;
+        return ViewModelLocator::Current().MyMusicViewModel();
     }
-
 }

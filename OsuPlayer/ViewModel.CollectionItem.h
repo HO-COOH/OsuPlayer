@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "ViewModel.CollectionItem.g.h"
+#include "Model.CollectionItem.h"
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
@@ -8,13 +9,15 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         CollectionItem() = default;
 
         winrt::hstring Name();
-        void Name(winrt::hstring name);
 
         Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> SongItems();
 
+        winrt::Windows::Foundation::IInspectable ModelPointer();
+        void ModelPointer(winrt::Windows::Foundation::IInspectable modelPointer);
+
         int Count();
     private:
-        winrt::hstring m_name;
+        Model::CollectionItemModel* m_modelPointer{};
         Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> m_songItems = winrt::single_threaded_observable_vector<OsuPlayer::ViewModel::SongItemViewModel>();
     };
 }

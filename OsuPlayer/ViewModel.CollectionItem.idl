@@ -8,8 +8,9 @@ namespace OsuPlayer.ViewModel
     {
         CollectionItem();
         
-        String Name{ get; set; };
+        String Name{ get; };
         Windows.Foundation.Collections.IObservableVector<OsuPlayer.ViewModel.SongItemViewModel> SongItems{ get; };
+        IInspectable ModelPointer{ get; set; };
 
         Int32 Count{ get; };
     }

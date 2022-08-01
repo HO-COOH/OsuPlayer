@@ -10,6 +10,7 @@
 #include <winrt/Windows.ApplicationModel.DataTransfer.h>
 #include "ColumnHeaderSettingDialog.g.h"
 #include <winrt/Windows.UI.Xaml.Media.Animation.h>
+#include <winrt/Windows.ApplicationModel.Resources.h>
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -55,8 +56,6 @@ namespace winrt::OsuPlayer::implementation
         return ViewModelLocator::Current().MyMusicViewModel();
     }
 
-
-
     void MyMusic::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs const& e)
     {
 
@@ -67,7 +66,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::UI::Xaml::Controls::ContentDialog settingDialog;
         settingDialog.Content(ColumnHeaderSettingDialog{});
         settingDialog.PrimaryButtonText(L"OK");
-        settingDialog.Title(winrt::box_value(L"Column Settings"));
+        settingDialog.Title(winrt::box_value(winrt::Windows::ApplicationModel::Resources::ResourceLoader::GetForCurrentView().GetString(L"ColumnHeaderSetting/Text")));
         settingDialog.DefaultButton(winrt::Windows::UI::Xaml::Controls::ContentDialogButton::Primary);
         settingDialog.CloseButtonText(L"Cancel");
         if (co_await settingDialog.ShowAsync() == winrt::Windows::UI::Xaml::Controls::ContentDialogResult::Primary)

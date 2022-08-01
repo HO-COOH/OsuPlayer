@@ -186,7 +186,7 @@ namespace Model
             {
                 Utils::StreambufAdaptor osuDbBuf{ osuDbFile[i] };
                 m_osuDbs.emplace_back(osuDbBuf.getBuffer());
-                auto collections = Test::GetCollectionItemModel(m_osuDbs.back().getBeatmapMd5Map(), collectionFile[i]);
+                auto collections = GetCollectionItemModel(m_osuDbs.back().getBeatmapMd5Map(), collectionFile[i]);
                 std::move(collections.begin(), collections.end(), std::back_inserter(m_collections));
             }
 

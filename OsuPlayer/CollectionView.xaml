@@ -42,7 +42,7 @@
         <Popup IsOpen="True">
             <TextBlock Text="Pop up!" FontSize="50"/>
         </Popup>
-    <ListView ItemsSource="{x:Bind CollectionItems, Mode=OneWay}" 
+    <ListView ItemsSource="{x:Bind ViewModel.Collections}" 
               ItemTemplate="{StaticResource CollectionItemTemplate}">
         <ListView.ItemsPanel>
             <ItemsPanelTemplate>

@@ -1,4 +1,5 @@
 import "Player.idl";
+import "ViewModel.MyMusic.idl";
 namespace OsuPlayer
 {
     [default_interface]
@@ -7,5 +8,6 @@ namespace OsuPlayer
         MainPage();
 
         Player player{ get; };
+        OsuPlayer.ViewModel.MyMusicViewModel MyMusicViewModel{ get; };
     }
 }

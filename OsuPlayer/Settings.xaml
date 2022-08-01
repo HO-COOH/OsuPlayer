@@ -7,8 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    mc:Ignorable="d"
-    >
+    mc:Ignorable="d">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -200,37 +199,8 @@
                 <Setter Property="Glyph" Value="{StaticResource NavigationFontIcon}"/>
             </Style>
 
-            <x:String x:Key="OsuPathSettingTitleText">osu! Paths</x:String>
-            <x:String x:Key="OsuPathSettingHelpText">Path to your osu! installation folder.</x:String>
-
-            <x:String x:Key="ThemeSettingTitleText">Theme</x:String>
-            <x:String x:Key="ThemeSettingHelpText">Sets the theme of this application.</x:String>
-
-            <x:String x:Key="DefaultModTitleText">Default play mod</x:String>
-            <x:String x:Key="DefaultModHelpText">Use a mod for default player sound effect.</x:String>
-
             <x:String x:Key="DefaultSkinTitleText">Skin hitsound</x:String>
-            <x:String x:Key="DefaultSkinHelpText">Use the hitsound from this skin:</x:String>
 
-            <x:String x:Key="HitsoundSettingsTitleText">Hitsound settings</x:String>
-            <x:String x:Key="HitsoundSettingsHelpText">Controls how hitsounds are played.</x:String>
-            <x:String x:Key="HitsoundOnText">Turn on hitsound</x:String>
-            <x:String x:Key="HitsoundOffText">Turn off hitsound</x:String>
-
-            <x:String x:Key="JumpListTitleText">Jumplist settings</x:String>
-            <x:String x:Key="JumpListHelpText">Numbers of shortcuts showing in the jumplist for quick launching.</x:String>
-
-            <x:String x:Key="LinkClickBehaviorTitleText">Behaviors of clicking on links</x:String>
-            <x:String x:Key="LinkClickBehaviorHelpText">Choose different behaviors when clicking on a link</x:String>
-
-            <x:String x:Key="LinkClickActionDescription">Actions when clicking on a link:</x:String>
-            <x:String x:Key="CustomSearchHint">Custom search address</x:String>
-
-            <x:String x:Key="ExperimentalTitleText">Experimental features</x:String>
-            <x:String x:Key="ExperimentalHelpText">!You are on your own risk!</x:String>
-
-            <x:String x:Key="AboutTitleText">About</x:String>
-            <x:String x:Key="AboutHelpText">About this software and the project.</x:String>
 
             <x:String x:Key="NoModShortName">None</x:String>
             <x:String x:Key="NoModLongName">NoMod</x:String>
@@ -240,11 +210,6 @@
             <x:String x:Key="NightCoreLongName">NightCore</x:String>
             <x:String x:Key="HalfTimeShortName">HT</x:String>
             <x:String x:Key="HalfTimeLongName">HalfTime</x:String>
-
-            <x:String x:Key="JumpListRecentDescription">Number of recent songs</x:String>
-            <x:String x:Key="JumpListCollectionDescription">Number of collections</x:String>
-
-            <x:String x:Key="ModifyOsuDataDescription">Allow modifying osu! data</x:String>
 
             <x:String x:Key="OsuPathIconGlyph">&#xF12B;</x:String>
             <x:String x:Key="NewFolderIconGlyph">&#xE8F4;</x:String>
@@ -275,11 +240,10 @@
             </StackPanel.ChildrenTransitions>
             
             <!-- Title -->
-            <TextBlock Text="Settings" FontSize="50" MaxWidth="1000" VerticalAlignment="Center"/>
+            <TextBlock x:Uid="SettingsTitle" FontSize="50" MaxWidth="1000" VerticalAlignment="Center"/>
 
             <!--                Osu paths settings                -->
-            <local:SettingContainer Title="{StaticResource OsuPathSettingTitleText}" HelpText="{StaticResource OsuPathSettingTitleText}"
-                                    Style="{StaticResource ExpanderSettingContainerStyle}">
+            <local:SettingContainer x:Uid="OsuPathsSettings" Style="{StaticResource ExpanderSettingContainerStyle}">
                 <local:SettingContainer.Symbol>
                     <FontIcon Glyph="{StaticResource OsuPathIconGlyph}"/>
                 </local:SettingContainer.Symbol>
@@ -287,7 +251,7 @@
                     <Button x:Name="NewFolderButton" Click="NewFolderButton_Click">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Glyph="{StaticResource NewFolderIconGlyph}"/>
-                            <TextBlock Text="Add folder" Margin="10,0,0,0"/>
+                            <TextBlock x:Uid="AddFolderButton" Margin="10,0,0,0"/>
                         </StackPanel>
                     </Button>
                 </local:SettingContainer.HeaderContent>
@@ -326,16 +290,16 @@
             
             
             <!--                Theme                              -->
-            <local:SettingContainer Title="{StaticResource ThemeSettingTitleText}" HelpText="{StaticResource ThemeSettingHelpText}">
+            <local:SettingContainer x:Uid="ThemeSetting">
                 <local:SettingContainer.Symbol>
                     <FontIcon Glyph="{StaticResource ThemeIconGlyph}"/>
                 </local:SettingContainer.Symbol>
                 <local:SettingContainer.HeaderContent>
                     <ComboBox x:Name="ThemeComboBox" HorizontalAlignment="Right" Width="Auto" SelectedIndex="{x:Bind ViewModel.ThemeIndex, Mode=TwoWay}">
                         <ComboBox.Items>
-                            <ComboBoxItem Content="Light" x:Name="LightButton"/>
-                            <ComboBoxItem Content="Dark" x:Name="DarkButton"/>
-                            <ComboBoxItem Content="Use system setting" x:Name="SystemThemeButton"/>
+                            <ComboBoxItem x:Uid="LightButton"/>
+                            <ComboBoxItem x:Uid="DarkButton"/>
+                            <ComboBoxItem x:Uid="SystemThemeButton"/>
                         </ComboBox.Items>
                     </ComboBox>
                 </local:SettingContainer.HeaderContent>
@@ -343,7 +307,7 @@
             
             
             <!--               Default mod                          -->
-            <local:SettingContainer Title="{StaticResource DefaultModTitleText}" HelpText="{StaticResource DefaultModHelpText}">
+            <local:SettingContainer x:Uid="DefaultModSetting">
                 <local:SettingContainer.Symbol>
                     <FontIcon Glyph="{StaticResource PlayModIconGlyph}"/>
                 </local:SettingContainer.Symbol>
@@ -352,9 +316,9 @@
                         <TextBlock Text="{x:Bind DefaultModString, Mode=OneWay}"/>
                         <muxc:ToggleSplitButton.Flyout>
                             <MenuFlyout>
-                                <MenuFlyoutItem x:Name="HalfTimeItem" Text="{StaticResource HalfTimeLongName}" Click="HalfTimeItem_Click"/>
-                                <MenuFlyoutItem x:Name="DoubleTimeItem" Text="{StaticResource DoubleTimeLongName}" Click="DoubleTimeItem_Click"/>
-                                <MenuFlyoutItem x:Name="NightCoreItem" Text="{StaticResource NightCoreLongName}" Click="NightCoreItem_Click"/>
+                                <MenuFlyoutItem x:Uid="HalfTimeItem" Click="HalfTimeItem_Click"/>
+                                <MenuFlyoutItem x:Uid="DoubleTimeItem" Click="DoubleTimeItem_Click"/>
+                                <MenuFlyoutItem x:Uid="NightCoreItem" Click="NightCoreItem_Click"/>
                             </MenuFlyout>
                         </muxc:ToggleSplitButton.Flyout>
                     </muxc:ToggleSplitButton>
@@ -363,14 +327,13 @@
             
             
             <!--              Skin                                 -->
-            <local:SettingContainer Title="{StaticResource HitsoundSettingsTitleText}" HelpText="{StaticResource HitsoundSettingsHelpText}"
-                                    Style="{StaticResource ExpanderSettingContainerStyle}">
+            <local:SettingContainer x:Uid="HitsoundSetting" Style="{StaticResource ExpanderSettingContainerStyle}">
                 <local:SettingContainer.Symbol>
                     <FontIcon Glyph="{StaticResource SkinIconGlyph}"/>
                 </local:SettingContainer.Symbol>
                 <local:SettingContainer.HeaderContent>
                     <StackPanel Orientation="Horizontal">
-                        <ToggleSwitch OnContent="{StaticResource HitsoundOnText}" OffContent="{StaticResource HitsoundOffText}"/>
+                        <ToggleSwitch x:Uid="HitsoundToggle"/>
                     </StackPanel>
                 </local:SettingContainer.HeaderContent>
                 
@@ -387,7 +350,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="{StaticResource DefaultSkinHelpText}" Grid.Row="0" Grid.Column="0"/>
+                        <TextBlock x:Uid="DefaultSkinText" Grid.Row="0" Grid.Column="0"/>
                         <muxc:ToggleSplitButton x:Name="SkinButton" Grid.Row="0" Grid.Column="1" Margin="0,-3,0,3" HorizontalAlignment="Right">
                             <TextBlock Text="Default"/>
                             <muxc:ToggleSplitButton.Flyout>
@@ -403,8 +366,7 @@
             
             
             <!--                 Link behaviors                   -->
-            <local:SettingContainer Title="{StaticResource LinkClickBehaviorTitleText}" HelpText="{StaticResource LinkClickBehaviorHelpText}"
-                                    Style="{StaticResource ExpanderSettingContainerStyle}">
+            <local:SettingContainer x:Uid="LinkClickBehaviorSetting" Style="{StaticResource ExpanderSettingContainerStyle}">
                 <local:SettingContainer.Symbol>
                     <FontIcon Glyph="{StaticResource LinkIconGlyph}"/>
                 </local:SettingContainer.Symbol>
@@ -423,22 +385,21 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="{StaticResource LinkClickActionDescription}" Grid.Row="0" Grid.Column="0"/>
+                        <TextBlock x:Uid="LinkClickActionDescription" Grid.Row="0" Grid.Column="0"/>
                         <ComboBox x:Name="LinkClickBehaviorBox" Grid.Row="0" Grid.Column="1" Margin="10,0,0,0" SelectedIndex="{x:Bind ViewModel.LinkActionIndex, Mode=TwoWay}">
-                            <ComboBoxItem Content="None"/>
-                            <ComboBoxItem Content="Copy"/>
-                            <ComboBoxItem Content="Search on osu!"/>
-                            <ComboBoxItem Content="Custom search"/>
+                            <ComboBoxItem x:Uid="LinkClickNoneItem"/>
+                            <ComboBoxItem x:Uid="LinkClickCopyItem"/>
+                            <ComboBoxItem x:Uid="LinkClickSearchOsuItem"/>
+                            <ComboBoxItem x:Uid="LinkClickCustomSearch"/>
                         </ComboBox>
-                        <TextBox Visibility="{x:Bind ViewModel.CustomSearchTextBoxVisibility, Mode=OneWay}" PlaceholderText="{StaticResource CustomSearchHint}" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0"/>
+                        <TextBox Visibility="{x:Bind ViewModel.CustomSearchTextBoxVisibility, Mode=OneWay}" x:Uid="CustomSearchTextBox" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0"/>
                     </Grid>
 
                 </local:SettingContainer.ExpanderContent>
             </local:SettingContainer>
             
             <!--             JumpLists                            -->
-            <local:SettingContainer Title="{StaticResource JumpListTitleText}" HelpText="{StaticResource JumpListHelpText}"
-                                    Style="{StaticResource ExpanderSettingContainerStyle}">
+            <local:SettingContainer x:Uid="JumpListSetting" Style="{StaticResource ExpanderSettingContainerStyle}">
                 <local:SettingContainer.Symbol>
                     <FontIcon Glyph="{StaticResource JumpListIconGlyph}"/>
                 </local:SettingContainer.Symbol>
@@ -459,10 +420,10 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="{StaticResource JumpListRecentDescription}" Grid.Row="0" Grid.Column="0"/>
+                        <TextBlock x:Uid="JumpListRecentDescription" Grid.Row="0" Grid.Column="0"/>
                         <muxc:NumberBox SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.JumpListRecentSongs, Mode=TwoWay}" Margin="10,0,0,10" Grid.Row="0" Grid.Column="1"/>
 
-                        <TextBlock Text="{StaticResource JumpListCollectionDescription}" Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock x:Uid="JumpListCollectionDescription" Grid.Row="1" Grid.Column="0"/>
                         <muxc:NumberBox SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.JumpListRecentCollections, Mode=TwoWay}" Margin="10,0,0,0" Grid.Row="1" Grid.Column="1"/>
                     </Grid>
                 </local:SettingContainer.ExpanderContent>
@@ -470,40 +431,47 @@
 
             
             <!--                   Experimental              -->
-            <local:SettingContainer Title="{StaticResource ExperimentalTitleText}" HelpText="{StaticResource ExperimentalHelpText}"
-                                    Style="{StaticResource ExpanderSettingContainerStyle}">
+            <local:SettingContainer x:Uid="ExperimentalSetting" Style="{StaticResource ExpanderSettingContainerStyle}">
                 <local:SettingContainer.Symbol>
                     <FontIcon Glyph="{StaticResource ExperimentalIconGlyph}"/>
                 </local:SettingContainer.Symbol>
                 <local:SettingContainer.ExpanderContent>
                     <StackPanel Orientation="Vertical">
-                        <CheckBox x:Name="AllowModifyOsuDataCheckbox" Content="{StaticResource ModifyOsuDataDescription}" IsChecked="{x:Bind ViewModel.AllowModifyOsuData, Mode=TwoWay}"/>
+                        <CheckBox x:Uid="AllowModifyOsuDataCheckbox" IsChecked="{x:Bind ViewModel.AllowModifyOsuData, Mode=TwoWay}"/>
                     </StackPanel>
                 </local:SettingContainer.ExpanderContent>
             </local:SettingContainer>
             
             <!--                  About                      -->
-            <local:SettingContainer Title="{StaticResource AboutTitleText}" HelpText="{StaticResource AboutHelpText}"
-                                    Style="{StaticResource ExpanderSettingContainerStyle}">
+            <local:SettingContainer x:Uid="AboutSetting" Style="{StaticResource ExpanderSettingContainerStyle}">
                 <local:SettingContainer.Symbol>
                     <FontIcon Glyph="{StaticResource AboutIconGlyph}"/>
                 </local:SettingContainer.Symbol>
                 <local:SettingContainer.ExpanderContent>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Image Source="/Assets/githubLogo.png" Width="35" Height="35" Stretch="Uniform" Grid.Column="0"/>
-                        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,0,0,0">
-                            <TextBlock Text="HO-COOH"/>
-                            <RichTextBlock>
-                                <Paragraph>
-                                    <Hyperlink NavigateUri="https://github.com/HO-COOH/OsuPlayer">https://github.com/HO-COOH/OsuPlayer</Hyperlink>
-                                </Paragraph>
-                            </RichTextBlock>
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="/Assets/githubLogo.png" Width="35" Height="35" Stretch="Uniform" Grid.Column="0"/>
+                            <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,0,0,0">
+                                <TextBlock Text="HO-COOH"/>
+                                <RichTextBlock>
+                                    <Paragraph>
+                                        <Hyperlink NavigateUri="https://github.com/HO-COOH/OsuPlayer">https://github.com/HO-COOH/OsuPlayer</Hyperlink>
+                                    </Paragraph>
+                                </RichTextBlock>
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <TextBlock x:Uid="LanguageText"/>
+                            <ComboBox Margin="10,0,0,0">
+                                <ComboBoxItem Content="English"/>
+                                <ComboBoxItem Content="中文"/>
+                            </ComboBox>
                         </StackPanel>
-                    </Grid>
+                    </StackPanel>
                 </local:SettingContainer.ExpanderContent>
             </local:SettingContainer>
 

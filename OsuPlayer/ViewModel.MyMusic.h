@@ -4,6 +4,7 @@
 #include "Utils.PropertyChangeHelper.hpp"
 #include "Model.MyMusic.h"
 #include "ViewModel.SongItemViewModel.g.h"
+#include "ViewModel.CollectionItem.g.h"
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
@@ -16,9 +17,13 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> Songs();
         void Songs(winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> songs);
+
+        winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::CollectionItem> Collections() { return s_collections; }
     private:
         void updateList();
-        inline static winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> s_songItems = winrt::single_threaded_observable_vector<ViewModel::SongItemViewModel>();
+        void updateCollection();
+        static winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> s_songItems;
+        static winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::CollectionItem> s_collections;
         static Model::MyMusicModel& GetModel() { return Model::MyMusicModel().GetInstance(); }
     };
 }

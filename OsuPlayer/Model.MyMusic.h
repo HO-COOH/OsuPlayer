@@ -63,8 +63,7 @@ namespace Model
 
 
 		std::vector<SongItemModel> m_songs;
-		//std::vector<CollectionItemModel> m_collections;
-		std::vector<Test::CollectionItemModel> m_collections;
+		std::vector<CollectionItemModel> m_collections;
 		std::vector<Db::Osu> m_osuDbs;
 		static MyMusicModel& GetInstance();
 

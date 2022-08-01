@@ -151,6 +151,7 @@
     <ClInclude Include="Utils.Lazy.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="OsuSkinParser.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
@@ -212,6 +213,12 @@
     <Filter Include="Converter">
       <UniqueIdentifier>{59270dd9-77dd-48aa-8386-89f43f5c7153}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Strings\en-US">
+      <UniqueIdentifier>{3308656d-8561-48ab-909a-d4a7f802d00a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Strings\zh-CN">
+      <UniqueIdentifier>{dfc1d6b7-28aa-4ee2-89e0-1424d1dee1e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
@@ -219,8 +226,11 @@
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Resources.resw">
-      <Filter>Strings</Filter>
+    <PRIResource Include="Strings\en-US\Resources.resw">
+      <Filter>Strings\en-US</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\zh-CN\Resources.resw">
+      <Filter>Strings\zh-CN</Filter>
     </PRIResource>
   </ItemGroup>
 </Project>

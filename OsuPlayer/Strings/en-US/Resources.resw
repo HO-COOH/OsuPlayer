@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutSetting.HelpText" xml:space="preserve">
+    <value>About this software and the project.</value>
+  </data>
+  <data name="AboutSetting.Title" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AddFolderButton.Text" xml:space="preserve">
+    <value>Add folder</value>
+  </data>
+  <data name="AllowModifyOsuDataCheckbox.Content" xml:space="preserve">
+    <value>Allow modifying osu! data</value>
+  </data>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>OsuPlayerEN</value>
+  </data>
+  <data name="CollectionNavigationItem.Content" xml:space="preserve">
+    <value>Collection</value>
+  </data>
+  <data name="ColumnHeaderSetting.Text" xml:space="preserve">
+    <value>Column settings</value>
+  </data>
+  <data name="ColumnHeaderSettingHide.Content" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="ColumnHeaderSettingShow.Content" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="ColumnHeaderSettingTitle.Text" xml:space="preserve">
+    <value>Select the columns you want to display in the song list.</value>
+  </data>
+  <data name="CustomSearchTextBox.PlaceholderText" xml:space="preserve">
+    <value>Custom search address</value>
+  </data>
+  <data name="DarkButton.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="DefaultModSetting.HelpText" xml:space="preserve">
+    <value>Use a mod for default player sound effect.</value>
+  </data>
+  <data name="DefaultModSetting.Title" xml:space="preserve">
+    <value>Default play mod</value>
+  </data>
+  <data name="DefaultSkinText.Text" xml:space="preserve">
+    <value>Use the hitsound from this skin:</value>
+  </data>
+  <data name="DeleteMenuItem.Text" xml:space="preserve">
+    <value>Delete this beatmap</value>
+  </data>
+  <data name="DoubleTimeItem.Text" xml:space="preserve">
+    <value>DoubleTime</value>
+  </data>
+  <data name="ExperimentalSetting.HelpText" xml:space="preserve">
+    <value>!You are on your own risk!</value>
+  </data>
+  <data name="ExperimentalSetting.Title" xml:space="preserve">
+    <value>Experimental features</value>
+  </data>
+  <data name="GlobalVolumeTextBlock.Text" xml:space="preserve">
+    <value>Global volume</value>
+  </data>
+  <data name="HalfTimeItem.Text" xml:space="preserve">
+    <value>HalfTime</value>
+  </data>
+  <data name="HitsoundSetting.HelpText" xml:space="preserve">
+    <value>Controls how hitsounds are played.</value>
+  </data>
+  <data name="HitsoundSetting.Title" xml:space="preserve">
+    <value>Hitsound settings</value>
+  </data>
+  <data name="HitsoundToggle.OffContent" xml:space="preserve">
+    <value>Turn off hitsound</value>
+  </data>
+  <data name="HitsoundToggle.OnContent" xml:space="preserve">
+    <value>Turn on hitsound</value>
+  </data>
+  <data name="HitsoundVolumeTextBlock.Text" xml:space="preserve">
+    <value>Hitsound volume</value>
+  </data>
+  <data name="JumpListCollectionDescription.Text" xml:space="preserve">
+    <value>Number of collections</value>
+  </data>
+  <data name="JumpListRecentDescription.Text" xml:space="preserve">
+    <value>Number of recent songs</value>
+  </data>
+  <data name="JumpListSetting.HelpText" xml:space="preserve">
+    <value>Numbers of shortcuts showing in the jumplist for quick launching.</value>
+  </data>
+  <data name="JumpListSetting.Title" xml:space="preserve">
+    <value>Jumplist settings</value>
+  </data>
+  <data name="LanguageText.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="LengthColumnHeaderText" xml:space="preserve">
+    <value>Length</value>
+  </data>
+  <data name="LightButton.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="LinkClickActionDescription.Text" xml:space="preserve">
+    <value>Actions when clicking on a link:</value>
+  </data>
+  <data name="LinkClickBehaviorSetting.HelpText" xml:space="preserve">
+    <value>Choose different behaviors when clicking on a link</value>
+  </data>
+  <data name="LinkClickBehaviorSetting.Title" xml:space="preserve">
+    <value>Behaviors of clicking on links</value>
+  </data>
+  <data name="LinkClickCopyItem.Content" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="LinkClickCustomSearch.Content" xml:space="preserve">
+    <value>Custom search</value>
+  </data>
+  <data name="LinkClickNoneItem.Content" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="LinkClickSearchOsuItem.Content" xml:space="preserve">
+    <value>Search on osu!</value>
+  </data>
+  <data name="ListViewMode.ToolTipService.ToolTip" xml:space="preserve">
+    <value>List view / Album view</value>
+  </data>
+  <data name="MapperColumnHeaderText" xml:space="preserve">
+    <value>Mapper</value>
+  </data>
+  <data name="MoveToMenuItem.Text" xml:space="preserve">
+    <value>Move to</value>
+  </data>
+  <data name="MyMusicNavigationItem.Content" xml:space="preserve">
+    <value>My Music</value>
+  </data>
+  <data name="MyMusicText.Text" xml:space="preserve">
+    <value>My Music</value>
+  </data>
+  <data name="NavigationSearch.PlaceholderText" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="NightCoreItem.Text" xml:space="preserve">
+    <value>NightCore</value>
+  </data>
+  <data name="OsuPathsSettings.HelpText" xml:space="preserve">
+    <value>Path to your osu! installation folder.</value>
+  </data>
+  <data name="OsuPathsSettings.Title" xml:space="preserve">
+    <value>osu! Paths</value>
+  </data>
+  <data name="PlayMenuItem.Text" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="PropertyMenuItem.Text" xml:space="preserve">
+    <value>Properties</value>
+  </data>
+  <data name="RecentNavigationItem.Content" xml:space="preserve">
+    <value>Recent</value>
+  </data>
+  <data name="RemoveFromListMenuItem.Text" xml:space="preserve">
+    <value>Remove from list</value>
+  </data>
+  <data name="SearchNoResult.Text" xml:space="preserve">
+    <value>Check your spelling, or search for somgthing else</value>
+  </data>
+  <data name="SettingsTitle.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SingerColumnHeaderText" xml:space="preserve">
+    <value>Singer</value>
+  </data>
+  <data name="SongItemDialogArtist.Text" xml:space="preserve">
+    <value>Artist</value>
+  </data>
+  <data name="SongItemDialogBitrate.Text" xml:space="preserve">
+    <value>Bit rate</value>
+  </data>
+  <data name="SongItemDialogLength.Text" xml:space="preserve">
+    <value>Length</value>
+  </data>
+  <data name="SongItemDialogSongLocation.Text" xml:space="preserve">
+    <value>Song location</value>
+  </data>
+  <data name="SongItemDialogTags.Text" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="SongItemDialogTitle.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="SongPropertyTitle.Text" xml:space="preserve">
+    <value>Properties</value>
+  </data>
+  <data name="SongVolumeTextBlock.Text" xml:space="preserve">
+    <value>Music volume</value>
+  </data>
+  <data name="SystemThemeButton.Content" xml:space="preserve">
+    <value>Use system setting</value>
+  </data>
+  <data name="ThemeSetting.HelpText" xml:space="preserve">
+    <value>Sets the theme of this application.</value>
+  </data>
+  <data name="ThemeSetting.Title" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="VersionColumnHeaderText" xml:space="preserve">
+    <value>Version</value>
+  </data>
+</root>
