@@ -24,13 +24,12 @@ namespace winrt::OsuPlayer::implementation
 
         winrt::hstring SongPath() { return {}; }
         void SongPath(winrt::hstring songPath);
-    private:
-
-        static winrt::Windows::UI::Xaml::Documents::Paragraph HandleTagsRichText(winrt::hstring const& tags);
-        static winrt::Windows::UI::Xaml::Documents::Paragraph HandleTitleRichText(winrt::hstring const& title);
     public:
+        winrt::hstring m_title;
         winrt::Windows::Foundation::IAsyncAction SongPathButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
-        void TagsText_SelectionChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        winrt::Windows::UI::Xaml::Documents::Paragraph HandleTagsRichText(winrt::hstring const& tags);
+        winrt::Windows::UI::Xaml::Documents::Paragraph HandleTitleRichText(winrt::hstring const& title);
+        winrt::Windows::Foundation::IAsyncAction CopyOnLinkClick(winrt::Windows::UI::Xaml::Documents::Hyperlink link, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs args);
     };
 }
 

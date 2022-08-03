@@ -19,14 +19,21 @@
                 
                 <muxc:Expander.HeaderTemplate>
                     <DataTemplate x:DataType="local:CollectionItem">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{x:Bind Name}" Grid.Column="0" HorizontalAlignment="Left"/>
-                            <muxc:InfoBadge Value="{x:Bind Count}" Grid.Column="1" HorizontalAlignment="Right"/>
-                        </Grid>
+                        <muxc:Expander>
+                            <muxc:Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{x:Bind Name}" Grid.Column="0" HorizontalAlignment="Left"/>
+                                    <muxc:InfoBadge Value="{x:Bind Count}" Grid.Column="1" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </muxc:Expander.Header>
+                            <!--<muxc:Expander.Content>
+                                <
+                            </muxc:Expander.Content>-->
+                        </muxc:Expander>
                     </DataTemplate>
                 </muxc:Expander.HeaderTemplate>
                 
@@ -39,10 +46,7 @@
 
 
     <StackPanel>
-        <Popup IsOpen="True">
-            <TextBlock Text="Pop up!" FontSize="50"/>
-        </Popup>
-    <ListView ItemsSource="{x:Bind ViewModel.Collections}" 
+        <ListView ItemsSource="{x:Bind ViewModel.Collections}" 
               ItemTemplate="{StaticResource CollectionItemTemplate}">
         <ListView.ItemsPanel>
             <ItemsPanelTemplate>

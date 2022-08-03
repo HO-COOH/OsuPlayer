@@ -130,6 +130,7 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="Model.CollectionItem.h" />
+    <ClInclude Include="Model.Skin.h" />
     <ClInclude Include="OsuSkinParser.hpp" />
     <ClInclude Include="SettingContainer.h">
       <DependentUpon>SettingContainer.idl</DependentUpon>
@@ -292,6 +293,7 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="Model.CollectionItem.cpp" />
+    <ClCompile Include="Model.Skin.cpp" />
     <ClCompile Include="SettingContainer.cpp">
       <DependentUpon>SettingContainer.idl</DependentUpon>
       <SubType>Code</SubType>

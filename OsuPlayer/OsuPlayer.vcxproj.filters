@@ -103,6 +103,9 @@
       <Filter>Models</Filter>
     </ClCompile>
     <ClCompile Include="ViewModelLocator.cpp" />
+    <ClCompile Include="Model.Skin.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -152,6 +155,9 @@
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="OsuSkinParser.hpp" />
+    <ClInclude Include="Model.Skin.h">
+      <Filter>Models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

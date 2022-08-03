@@ -12,6 +12,8 @@
 #include "Model.Folders.h"
 #include "Model.MyMusic.h"
 #include "Utils.Log.hpp"
+#include <ppltasks.h>
+#include <pplawait.h>
 
 namespace Model
 {
@@ -93,12 +95,6 @@ namespace Model
 		return m_bitrate != 0;
 	}
 
-
-	void SongItemModel::handleImageFile(winrt::Windows::Storage::StorageFile&& file)
-	{
-
-	}
-
 	Metadata& SongItemModel::getMetadata(int index)
 	{
 		if (auto& originalFile = m_beatmaps[index].originalFile; originalFile.has_value())
@@ -153,5 +149,29 @@ namespace Model
 				}
 			}
 		}
+	}
+
+	winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile> SongItemModel::getImageFile()
+	{
+		if (!isDataFilled())
+			co_await fillDataAsync();
+
+		for (int i = 0; i < m_beatmaps.size(); ++i)
+		{
+			co_await concurrency::create_task([this, i]() {getMetadata(i); });
+			auto const& beatmap = m_beatmaps[i];
+			auto const& backgroundEvents = beatmap.originalFile->events.backgrounds;
+			if (!backgroundEvents.empty() && !backgroundEvents.front().fileName.empty())
+			{
+				auto const& fileName = backgroundEvents.front().fileName;
+				auto file = co_await m_folder.GetFileAsync(winrt::to_hstring(fileName));
+				if (file)
+					co_return file;
+				else
+					Utils::ConsoleLogger{} <<"Beatmap: "<< beatmap.originalFile->metaData.title.data() << " -> " << fileName.data() << " could not load!\n";
+			}
+		}
+		
+		co_return winrt::Windows::Storage::StorageFile{ nullptr };
 	}
 }

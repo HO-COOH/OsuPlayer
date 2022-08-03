@@ -147,6 +147,9 @@
   <data name="ColumnHeaderSettingTitle.Text" xml:space="preserve">
     <value>选择你想要显示的列</value>
   </data>
+  <data name="CopyTip.Subtitle" xml:space="preserve">
+    <value>已复制！</value>
+  </data>
   <data name="CustomSearchTextBox.PlaceholderText" xml:space="preserve">
     <value>自定义搜索地址前缀</value>
   </data>
@@ -217,7 +220,7 @@
     <value>亮色模式</value>
   </data>
   <data name="LinkClickActionDescription.Text" xml:space="preserve">
-    <value>点击按键的动作</value>
+    <value>点击链接的动作</value>
   </data>
   <data name="LinkClickBehaviorSetting.HelpText" xml:space="preserve">
     <value>点击链接（例如歌曲信息）时的操作</value>
@@ -257,6 +260,18 @@
   </data>
   <data name="NightCoreItem.Text" xml:space="preserve">
     <value>NightCore</value>
+  </data>
+  <data name="OsuPathClickActionDescription.Text" xml:space="preserve">
+    <value>点击osu文件地址的动作</value>
+  </data>
+  <data name="OsuPathOpenFileItem.Content" xml:space="preserve">
+    <value>打开.osu文件</value>
+  </data>
+  <data name="OsuPathOpenFolderItem.Content" xml:space="preserve">
+    <value>打开文件夹</value>
+  </data>
+  <data name="OsuPathOpenInOsuItem.Content" xml:space="preserve">
+    <value>打开osu!并复制歌名</value>
   </data>
   <data name="OsuPathsSettings.HelpText" xml:space="preserve">
     <value>osu!的安装路径</value>

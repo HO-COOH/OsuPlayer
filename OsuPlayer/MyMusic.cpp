@@ -140,4 +140,12 @@ namespace winrt::OsuPlayer::implementation
         MusicList().Visibility(winrt::Windows::UI::Xaml::Visibility::Collapsed);
         MusicAlbumView().Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
     }
+
+    void MyMusic::SongImage_ImageFailed(
+        winrt::Windows::Foundation::IInspectable const& sender, 
+        winrt::Windows::UI::Xaml::ExceptionRoutedEventArgs const& e)
+    {
+
+    }
 }
+

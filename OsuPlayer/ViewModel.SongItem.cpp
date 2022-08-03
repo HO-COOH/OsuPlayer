@@ -85,7 +85,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         content.Tags(winrt::to_hstring(co_await tagTask));
         content.Bitrate(winrt::to_hstring(co_await bitrateTask) + L" kbps");
-        content.SongPath(songItem.Difficulties()[versionIndex]);
+        content.SongPath((co_await songItem.getFileOf(songItem.m_beatmaps[versionIndex])).Path());
         content.Title(songItem.SongName());
         content.Singer(songItem.Singer());
         content.Length(Utils::GetDurationString(Utils::GetDuration(songItem.Length())));
@@ -97,6 +97,23 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         co_await propertyDialog.ShowAsync();
     }
+
+    winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage SongItemViewModel::SongImage()
+    {
+        return m_imageStream;
+    }
+
+    winrt::Windows::Foundation::IAsyncAction SongItemViewModel::loadImage()
+    {
+        auto imageFile = co_await getModel().getImageFile();
+        if (imageFile)
+        {
+            auto stream = co_await imageFile.OpenReadAsync();
+            m_imageStream.SetSourceAsync(stream);
+        }
+        raisePropertyChange(L"SongImage");
+    }
+
 
     Model::SongItemModel& implementation::SongItemViewModel::getModel()
     {

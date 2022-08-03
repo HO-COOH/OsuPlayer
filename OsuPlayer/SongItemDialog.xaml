@@ -5,6 +5,7 @@
     xmlns:local="using:OsuPlayer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
 
     
@@ -51,10 +52,12 @@
 
         <TextBlock x:Uid="SongItemDialogSongLocation" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="5" Grid.ColumnSpan="2"/>
         <HyperlinkButton x:Name="SongPathButton" Click="SongPathButton_Click" Grid.Row="6" Grid.ColumnSpan="2">
-            <TextBlock x:Name="SongPathText" TextWrapping="Wrap"></TextBlock>
+            <TextBlock x:Name="SongPathText" TextWrapping="Wrap"/>
         </HyperlinkButton>
 
         <TextBlock x:Uid="SongItemDialogTags" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Grid.Row="7" Grid.ColumnSpan="2"/>
         <RichTextBlock x:Name="TagsText" Grid.Row="8" Grid.ColumnSpan="2"/>
+
+        <muxc:TeachingTip x:Uid="CopyTip" x:Name="Tip" Subtitle="Copied!"/>
     </Grid>
 </Page>

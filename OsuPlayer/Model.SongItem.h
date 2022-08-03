@@ -47,9 +47,11 @@ namespace Model
 		std::vector<BeatmapInfo> m_beatmaps;
 
 		winrt::Windows::Foundation::IAsyncAction fillDataAsync();
-	private:
-		void handleImageFile(winrt::Windows::Storage::StorageFile&& file);
+		winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile> getImageFile();
 
+		//Return the file of a beatmap
+		winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile> getFileOf(BeatmapInfo const& info);
+	private:
 		int m_length{};	//in milliseconds
 		int m_bitrate{};
 		
@@ -60,10 +62,6 @@ namespace Model
 
 		////Return the folder of this beatmap set
 		//winrt::Windows::Foundation::IAsyncAction getFolder();
-
-		//Return the file of a beatmap
-		winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile> getFileOf(BeatmapInfo const& info);
-
 	};
 
 }

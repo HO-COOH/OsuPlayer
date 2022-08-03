@@ -818,9 +818,9 @@ struct TimingPoint
         meter{ std::stoi(result[2].data()) },
         sampleSet{ static_cast<SampleSet>(std::stoi(result[3].data())) },
         sampleIndex{ std::stoi(result[4].data()) },
-        volume{ std::stoi(result[5].data()) },
-        uninherited{ static_cast<bool>(std::stoi(result[6].data())) },
-        effects{ static_cast<unsigned>(std::stoul(result[7].data())) }
+        volume{ std::atoi(result[5].data()) },
+        uninherited{ static_cast<bool>(std::atoi(result[6].data())) },
+        effects{ static_cast<unsigned>(std::atoll(result[7].data())) }
     {
     }
 
@@ -1815,7 +1815,7 @@ struct Video final : EventBase
     {}
 private:
     Video(std::array<std::string_view, 5> const& data)
-        : Video(data[0], data[1], data[2], std::stoi(data[3].data()), std::stoi(data[4].data()))
+        : Video(data[0], data[1], data[2], std::atoi(data[3].data()), std::atoi(data[4].data()))
     {}
 public:
     Video(std::string_view line)
@@ -1885,10 +1885,14 @@ struct Events
         while (details::GetLine(file, line))
         {
             auto [eventType, _, __] = details::SplitString<3>(line);
-            try {
-                auto const eventId = static_cast<Type>(std::stoi(eventType.data()));
-                switch (eventId)
-                {
+            if (eventType == "0" ||
+                eventType == "Video" || eventType == "1" ||
+                eventType == "Break" || eventType == "2")
+            {
+                try {
+                    auto const eventId = static_cast<Type>(std::atoi(eventType.data()));
+                    switch (eventId)
+                    {
                     case Type::Background:
                         backgrounds.emplace_back(line);
                         break;
@@ -1900,11 +1904,12 @@ struct Events
                         break;
                     default:
                         continue;
+                    }
                 }
-            }
-            catch (...)
-            {
-                continue;
+                catch (...)
+                {
+                    continue;
+                }
             }
         }
     }

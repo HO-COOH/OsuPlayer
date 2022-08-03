@@ -13,7 +13,6 @@ namespace OsuPlayer
         String DefaultModString{ get; };
         
         //Resource
-        Windows.UI.Xaml.Controls.ContentDialog ExperimentFeatureWarningDialog{ get; };
         Windows.UI.Xaml.Controls.ComboBox LinkClickBehaviorBox{ get; };
     }
 }

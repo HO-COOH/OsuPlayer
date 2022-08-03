@@ -9,6 +9,7 @@
 #include "ViewModelLocator.h"
 #include <winrt/Windows.UI.ViewManagement.h>
 #include "Model.MyMusic.h"
+#include "Model.Skin.h"
 
 
 using namespace winrt;
@@ -75,7 +76,16 @@ winrt::Windows::Foundation::IAsyncAction winrt::OsuPlayer::implementation::Setti
     {
         auto const result = co_await ViewModel().AddOsuPath();
         if (result == ViewModel::AddOsuFolderResult::Success)
+        {
+            SkinFlyout().Items().Clear();
+            for (auto const& skin : Model::Skins::GetInstance().m_skins)
+            {
+                winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem item;
+                item.Text(winrt::to_hstring(skin.getInfo().name));
+                SkinFlyout().Items().Append(item);
+            }
             co_return;
+        }
 
         constexpr auto InvalidPrompt = L"Invalid osu! folder!";
         constexpr auto DuplicatePrompt = L"Duplicate osu! folder!";

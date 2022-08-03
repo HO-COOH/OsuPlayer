@@ -26,10 +26,10 @@ you don't see such organizations when you don't open the project in Visual Studi
 - [x] Add your osu! path, then give it some time to index your beatmaps
 - [x] Song lists
 - [x] Property page
-- [ ] Sort
+- [x] Sort
 - [ ] View collections
 - [ ] View Singers
-- [ ] IRC
+- [ ] IRC 
 
 MainPage:
 ![](screenshots/MainPage.png)
@@ -48,5 +48,6 @@ Currently I am limited by the unresolved WinUI related bugs:
 - [Same control property name and binding name cause function template has already been defined compile error](https://github.com/microsoft/microsoft-ui-xaml/issues/7313)
 - [Renaming xaml file breaks everything in C++/WinRT](https://github.com/microsoft/microsoft-ui-xaml/issues/7365)
 - [Setting FlyoutPlacementMode to Auto crash](https://github.com/microsoft/microsoft-ui-xaml/issues/7384)
+- [NavigationView regression on WinUI 2.8](https://github.com/microsoft/microsoft-ui-xaml/issues/7533)
 
 Microsoft please FIX!

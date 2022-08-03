@@ -18,6 +18,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
 	SettingsViewModel::SettingsViewModel() :
 		m_theme(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"Theme"), 0)),
+		m_osuPathAction(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"OsuPathAction"), 0)),
+		m_linkAction(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"LinkAction"), 2)),
+		m_customSearchPrefix(winrt::unbox_value_or<winrt::hstring>(m_localSettings.Values().TryLookup(L"CustomSearchPrefix"), L"")),
 		m_mod(static_cast<Mod>(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"Mod"), 0))),
 		m_jumplistRecentSongs(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"RecentSongs"), 0)),
 		m_jumplistRecentCollections(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"RecentCollections"), 0)),
@@ -47,6 +50,10 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 			model.Path(folder.Path());
 			OsuPaths().Append(model);
 			co_await concurrency::create_task([] { Model::MyMusicModel::GetInstance().startIndexing(); });
+			co_await concurrency::create_task([this, folder]()
+			{
+				Model::Skins::GetInstance().add(folder.GetFolderAsync(L"Skins").get());
+			});
 			co_return AddOsuFolderResult::Success;
 		}
 		co_return AddOsuFolderResult::Invalid;
@@ -105,10 +112,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		m_localSettings.Values().Insert(L"Mod", winrt::box_value(static_cast<int>(enable? m_mod : Mod::Normal)));
 	}
 
-	winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> SettingsViewModel::Skins()
-	{
-		return winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring>();
-	}
 
 	winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::OsuPathItemViewModel> SettingsViewModel::OsuPaths()
 	{
@@ -129,6 +132,21 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 			raisePropertyChange(L"IsModEnabled");
 		}
 	}
+
+	int SettingsViewModel::OsuPathActionIndex()
+	{
+		return m_osuPathAction;
+	}
+
+	void SettingsViewModel::OsuPathActionIndex(int osuPathAction)
+	{
+		if (m_osuPathAction != osuPathAction)
+		{
+			m_osuPathAction = osuPathAction;
+			m_localSettings.Values().Insert(L"OsuPathAction", winrt::box_value(osuPathAction));
+		}
+	}
+
 	int implementation::SettingsViewModel::LinkActionIndex()
 	{
 		return m_linkAction;
@@ -140,6 +158,18 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 			m_linkAction = linkAction;
 			m_localSettings.Values().Insert(L"LinkAction", winrt::box_value(m_linkAction));
 			raisePropertyChange(L"CustomSearchTextBoxVisibility");
+		}
+	}
+	winrt::hstring SettingsViewModel::CustomSearchPrefix()
+	{
+		return m_customSearchPrefix;
+	}
+	void SettingsViewModel::CustomSearchPrefix(winrt::hstring prefix)
+	{
+		if (m_customSearchPrefix != prefix)
+		{
+			m_customSearchPrefix = prefix;
+			m_localSettings.Values().Insert(L"CustomSearchPrefix", winrt::box_value(prefix));
 		}
 	}
 	winrt::Windows::UI::Xaml::Visibility implementation::SettingsViewModel::CustomSearchTextBoxVisibility()

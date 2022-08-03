@@ -147,6 +147,9 @@
   <data name="ColumnHeaderSettingTitle.Text" xml:space="preserve">
     <value>Select the columns you want to display in the song list.</value>
   </data>
+  <data name="CopyTip.Subtitle" xml:space="preserve">
+    <value>Copied!</value>
+  </data>
   <data name="CustomSearchTextBox.PlaceholderText" xml:space="preserve">
     <value>Custom search address</value>
   </data>
@@ -257,6 +260,18 @@
   </data>
   <data name="NightCoreItem.Text" xml:space="preserve">
     <value>NightCore</value>
+  </data>
+  <data name="OsuPathClickActionDescription.Text" xml:space="preserve">
+    <value>Actions when clicking on an osu file path:</value>
+  </data>
+  <data name="OsuPathOpenFileItem.Content" xml:space="preserve">
+    <value>Open the .osu file</value>
+  </data>
+  <data name="OsuPathOpenFolderItem.Content" xml:space="preserve">
+    <value>Open the folder</value>
+  </data>
+  <data name="OsuPathOpenInOsuItem.Content" xml:space="preserve">
+    <value>Open osu! and copy the song name</value>
   </data>
   <data name="OsuPathsSettings.HelpText" xml:space="preserve">
     <value>Path to your osu! installation folder.</value>

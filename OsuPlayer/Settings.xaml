@@ -38,12 +38,6 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
-            <ContentDialog x:Name="ExperimentFeatureWarningDialog" Title="Be careful!"
-                       PrimaryButtonText="I don't mean that!" SecondaryButtonText="I understand!"
-                       DefaultButton="Primary" 
-                       Content="This is an expriment feature that will probably break your local osu! data! Are you sure you want to do that?">
-            </ContentDialog>
-
             <Style x:Key="StackPanelInExpanderStyle" TargetType="StackPanel">
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Padding" Value="0,12,0,12" />
@@ -354,7 +348,7 @@
                         <muxc:ToggleSplitButton x:Name="SkinButton" Grid.Row="0" Grid.Column="1" Margin="0,-3,0,3" HorizontalAlignment="Right">
                             <TextBlock Text="Default"/>
                             <muxc:ToggleSplitButton.Flyout>
-                                <MenuFlyout></MenuFlyout>
+                                <MenuFlyout x:Name="SkinFlyout"/>
                             </muxc:ToggleSplitButton.Flyout>
                         </muxc:ToggleSplitButton>
 
@@ -379,20 +373,30 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock x:Uid="LinkClickActionDescription" Grid.Row="0" Grid.Column="0"/>
-                        <ComboBox x:Name="LinkClickBehaviorBox" Grid.Row="0" Grid.Column="1" Margin="10,0,0,0" SelectedIndex="{x:Bind ViewModel.LinkActionIndex, Mode=TwoWay}">
+                        <TextBlock x:Uid="OsuPathClickActionDescription" Grid.Row="0" Grid.Column="0"/>
+                        <ComboBox x:Name="OsuPathClickBehaviorBox" Grid.Row="0" Grid.Column="1" Margin="10,0,0,10" SelectedIndex="{x:Bind ViewModel.OsuPathActionIndex, Mode=TwoWay}">
+                            <ComboBoxItem x:Uid="OsuPathOpenFileItem"/>
+                            <ComboBoxItem x:Uid="OsuPathOpenFolderItem"/>
+                            <ComboBoxItem x:Uid="OsuPathOpenInOsuItem"/>
+                        </ComboBox>
+
+                        <TextBlock x:Uid="LinkClickActionDescription" Grid.Row="1" Grid.Column="0"/>
+                        <ComboBox x:Name="LinkClickBehaviorBox" Grid.Row="1" Grid.Column="1" Margin="10,0,0,0" SelectedIndex="{x:Bind ViewModel.LinkActionIndex, Mode=TwoWay}">
                             <ComboBoxItem x:Uid="LinkClickNoneItem"/>
                             <ComboBoxItem x:Uid="LinkClickCopyItem"/>
                             <ComboBoxItem x:Uid="LinkClickSearchOsuItem"/>
                             <ComboBoxItem x:Uid="LinkClickCustomSearch"/>
                         </ComboBox>
-                        <TextBox Visibility="{x:Bind ViewModel.CustomSearchTextBoxVisibility, Mode=OneWay}" x:Uid="CustomSearchTextBox" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0"/>
+                        <TextBox Visibility="{x:Bind ViewModel.CustomSearchTextBoxVisibility, Mode=OneWay}" 
+                                 x:Uid="CustomSearchTextBox" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0"
+                                 Text="{x:Bind ViewModel.CustomSearchPrefix, Mode=TwoWay}"/>
                     </Grid>
 
                 </local:SettingContainer.ExpanderContent>

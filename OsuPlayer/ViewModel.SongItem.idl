@@ -25,6 +25,7 @@ namespace OsuPlayer.ViewModel
         void PlayCurrent();
 
         //For binding in xaml
-        Windows.UI.Xaml.Controls.Image SongImage{ get; };
+        Windows.UI.Xaml.Media.Imaging.BitmapImage SongImage{ get; };
+        Windows.Foundation.IAsyncAction loadImage();
     }
 }

@@ -4,6 +4,7 @@
 #include <winrt/Windows.Foundation.h>
 #include "Utils.PropertyChangeHelper.hpp"
 #include "Model.Folders.h"
+#include "Model.Skin.h"
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
@@ -21,15 +22,17 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         bool IsModEnabled();
         void IsModEnabled(bool enable);
 
-        winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> Skins();
-
- 
-
         Mod DefaultMod() const;
         void DefaultMod(Mod mod);
 
+        int OsuPathActionIndex();
+        void OsuPathActionIndex(int osuPathAction);
+
         int LinkActionIndex();
         void LinkActionIndex(int linkAction);
+
+        winrt::hstring CustomSearchPrefix();
+        void CustomSearchPrefix(winrt::hstring prefix);
 
         winrt::Windows::UI::Xaml::Visibility CustomSearchTextBoxVisibility();
 
@@ -45,17 +48,20 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         //Methods
         winrt::Windows::Foundation::IAsyncOperation<AddOsuFolderResult> AddOsuPath();
 
+
+
         
     private:
         int m_theme;
+        int m_osuPathAction;
         int m_linkAction;
+        winrt::hstring m_customSearchPrefix;
         Mod m_mod;
         int m_jumplistRecentSongs;
         int m_jumplistRecentCollections;
         bool m_allowModifyOsuData;
         static winrt::Windows::Storage::ApplicationDataContainer m_localSettings;
         winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::OsuPathItemViewModel> m_osuPathItems = winrt::single_threaded_observable_vector<ViewModel::OsuPathItemViewModel>();
-        winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> m_skinItems;
         void setTheme();
         void loadOsuPaths();
         static Model::Folders& GetFolderData() { return Model::Folders::GetInstance(); }

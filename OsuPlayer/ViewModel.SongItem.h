@@ -29,22 +29,15 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         
 
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> Versions();
-
-
-        //winrt::Windows::Media::Core::MediaSource SongFile();
-
-
-        //winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage Image();
-
-
         void PlayCurrent();
 
         winrt::Windows::Foundation::IAsyncAction ShowProperty();
 
-        winrt::Windows::UI::Xaml::Controls::Image SongImage() { return m_songImageFrame; }
+        winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage SongImage();
 
+        winrt::Windows::Foundation::IAsyncAction loadImage();
     private:
-        winrt::Windows::UI::Xaml::Controls::Image m_songImageFrame;
+        winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage m_imageStream;
         int m_index{};
         int m_versionIndex{};
         winrt::Windows::Foundation::IInspectable m_modelPointer;

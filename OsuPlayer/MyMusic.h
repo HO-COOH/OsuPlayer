@@ -32,6 +32,8 @@ namespace winrt::OsuPlayer::implementation
         void showMusicList();
         void showAlbumView();
         bool m_showList = true;
+    public:
+        void SongImage_ImageFailed(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::ExceptionRoutedEventArgs const& e);
     };
 }
 

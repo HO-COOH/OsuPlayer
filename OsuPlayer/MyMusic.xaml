@@ -436,9 +436,10 @@
                             </GridView.ItemContainerTransitions>
                             <GridView.ItemTemplate>
                                 <DataTemplate x:Name="MusicAlbumTemplate" x:DataType="viewModel:SongItemViewModel">
-                                    <StackPanel Orientation="Vertical" Width="300" PointerEntered="StackPanel_PointerEntered" PointerExited="StackPanel_PointerExited">
-                                        <StackPanel IsRightTapEnabled="True" Width="300" Height="300" >
-                                            <Image x:Name="SongImage" Source="Assets/osuLogo.png" Stretch="Fill" />
+                                    <StackPanel Orientation="Vertical" Width="320" PointerEntered="StackPanel_PointerEntered" PointerExited="StackPanel_PointerExited"
+                                                Loaded="{x:Bind loadImage}">
+                                        <StackPanel IsRightTapEnabled="True" Width="320" Height="180" Background="Red">
+                                            <Image x:Name="SongImage" Width="320" Height="180" Stretch="UniformToFill" ImageFailed="SongImage_ImageFailed" Source="{x:Bind SongImage, Mode=OneWay}"/>
                                             <Grid x:Name="InfoGrid" VerticalAlignment="Bottom" 
                                                  Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}"
                                                  CornerRadius="10" >
@@ -525,8 +526,8 @@
         <Button x:Uid="ListViewMode" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right"
                 VerticalAlignment="Top" Margin="0,15,10,0" Click="ListViewMode_Click" Foreground="White">
             <Grid>
-                <FontIcon x:Name="ListIcon" Glyph="{StaticResource ListIconGlyph}" FontSize="10"/>
-                <FontIcon x:Name="AlbumIcon" Glyph="{StaticResource AlbumIconGlyph}" FontSize="10"/>
+                <FontIcon x:Name="ListIcon" Glyph="{StaticResource ListIconGlyph}" FontSize="12"/>
+                <FontIcon x:Name="AlbumIcon" Glyph="{StaticResource AlbumIconGlyph}" FontSize="12"/>
             </Grid>
         </Button>
     </Grid>
