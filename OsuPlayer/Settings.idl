@@ -14,5 +14,6 @@ namespace OsuPlayer
         
         //Resource
         Windows.UI.Xaml.Controls.ComboBox LinkClickBehaviorBox{ get; };
+        Windows.UI.Xaml.Controls.ToggleSwitch HitsoundGlobalSwitch{ get; };
     }
 }

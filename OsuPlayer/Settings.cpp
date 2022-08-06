@@ -10,6 +10,8 @@
 #include <winrt/Windows.UI.ViewManagement.h>
 #include "Model.MyMusic.h"
 #include "Model.Skin.h"
+#include "HitsoundPanel.g.h"
+#include <algorithm>
 
 
 using namespace winrt;
@@ -45,7 +47,6 @@ namespace winrt::OsuPlayer::implementation
             case ViewModel::Mod::Normal:        return L"Normal";
         }
     }
-
 }
 
 
@@ -82,6 +83,13 @@ winrt::Windows::Foundation::IAsyncAction winrt::OsuPlayer::implementation::Setti
             {
                 winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem item;
                 item.Text(winrt::to_hstring(skin.getInfo().name));
+                item.Click([](auto sender, auto e)
+                {
+                    auto& allSkins = Model::Skins::GetInstance().m_skins;
+                    auto skinName = winrt::to_string(sender.as<winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem>().Text());
+                    auto item = std::find_if(allSkins.begin(), allSkins.end(), [skinName](Model::Skin const& skinItem) { return skinItem.getInfo().name == skinName; });
+                    ViewModelLocator::Current().SettingsViewModel().SelectedSkin(item->m_folder);
+                });
                 SkinFlyout().Items().Append(item);
             }
             co_return;
@@ -103,4 +111,5 @@ winrt::Windows::Foundation::IAsyncAction winrt::OsuPlayer::implementation::Setti
         if (auto result = co_await invalidOsuFolderDialog.ShowAsync(); result != winrt::Windows::UI::Xaml::Controls::ContentDialogResult::Primary)
             co_return;
     }
+
 }

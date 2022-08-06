@@ -31,6 +31,12 @@
     <Page Include="ColumnHeaderSettingDialog.xaml">
       <Filter>Views\Controls</Filter>
     </Page>
+    <Page Include="HitsoundPanel.xaml">
+      <Filter>Views</Filter>
+    </Page>
+    <Page Include="HitsoundSample.xaml">
+      <Filter>Views\Controls</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -71,6 +77,18 @@
       <Filter>ViewModels</Filter>
     </Midl>
     <Midl Include="VolumeToIconConverter.idl">
+      <Filter>Converter</Filter>
+    </Midl>
+    <Midl Include="ViewModel.HitsoundPanel.idl">
+      <Filter>ViewModels</Filter>
+    </Midl>
+    <Midl Include="ReferenceToVisibilityConverter.idl">
+      <Filter>Converter</Filter>
+    </Midl>
+    <Midl Include="ReferenceToBoolConverter.idl">
+      <Filter>Converter</Filter>
+    </Midl>
+    <Midl Include="BoolToVisibilityConverter.idl">
       <Filter>Converter</Filter>
     </Midl>
   </ItemGroup>

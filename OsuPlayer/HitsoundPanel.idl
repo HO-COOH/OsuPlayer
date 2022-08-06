@@ -1,0 +1,10 @@
+import "ViewModel.HitsoundPanel.idl";
+namespace OsuPlayer
+{
+    [default_interface]
+    runtimeclass HitsoundPanel : Windows.UI.Xaml.Controls.Page
+    {
+        HitsoundPanel();
+        OsuPlayer.ViewModel.HitsoundPanelViewModel ViewModel{ get; };
+    }
+}

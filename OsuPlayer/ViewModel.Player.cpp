@@ -39,6 +39,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		co_await songItemModel.fillDataAsync();
 		co_await songItemModel.Source().OpenAsync();
 		m_songPlayer.Pause();
+		m_songPlayer.Source(nullptr);
 		m_songPlayer.Source(songItemModel.Source());
 		m_songPlayer.Play();
 		m_currentItemToPlay = item;

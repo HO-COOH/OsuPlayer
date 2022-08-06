@@ -29,6 +29,7 @@ namespace OsuPlayer.ViewModel
         Int32 ThemeIndex{ get; set; };
         Boolean IsModEnabled{ get; set; };
         Mod DefaultMod{ get; set; };
+        Windows.Storage.StorageFolder SelectedSkin{ get; set; };
 
         Int32 OsuPathActionIndex{ get; set; };
         Int32 LinkActionIndex{ get; set; };

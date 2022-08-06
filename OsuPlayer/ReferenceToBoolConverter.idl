@@ -1,0 +1,9 @@
+namespace OsuPlayer
+{
+    [bindable]
+    [default_interface]
+    runtimeclass ReferenceToBoolConverter : Windows.UI.Xaml.Data.IValueConverter
+    {
+        ReferenceToBoolConverter();
+    }
+}

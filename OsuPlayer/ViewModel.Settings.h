@@ -25,6 +25,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         Mod DefaultMod() const;
         void DefaultMod(Mod mod);
 
+        winrt::Windows::Storage::StorageFolder SelectedSkin();
+        void SelectedSkin(winrt::Windows::Storage::StorageFolder selectedSkin);
+
         int OsuPathActionIndex();
         void OsuPathActionIndex(int osuPathAction);
 
@@ -56,6 +59,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         int m_osuPathAction;
         int m_linkAction;
         winrt::hstring m_customSearchPrefix;
+        winrt::Windows::Storage::StorageFolder m_selectedSkin{ nullptr };
         Mod m_mod;
         int m_jumplistRecentSongs;
         int m_jumplistRecentCollections;

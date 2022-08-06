@@ -1,0 +1,30 @@
+namespace OsuPlayer.ViewModel
+{
+    runtimeclass HitsoundSample
+    {
+        HitsoundSample();
+        String Name{ get; set; };
+        Int32 Volume{get; set; };
+        void Play();
+    };
+
+    runtimeclass HitsoundSampleSet
+    {
+        HitsoundSampleSet();
+        HitsoundSample Hitnormal{ get; };
+        HitsoundSample Hitfinish{ get; };
+        HitsoundSample Hitwhistle{ get; };
+        HitsoundSample Hitclap{ get; };
+    };
+
+    [bindable]
+    [default_interface]
+    runtimeclass HitsoundPanelViewModel
+    {
+        HitsoundPanelViewModel();
+
+        HitsoundSampleSet Normal{ get; };
+        HitsoundSampleSet Soft{ get; };
+        HitsoundSampleSet Drum{ get; };
+    }
+}

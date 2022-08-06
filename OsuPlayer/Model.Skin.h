@@ -7,7 +7,7 @@
 
 namespace Model
 {
-	class Skin
+	struct Skin
 	{
 		Osu::SkinInfo m_info;
 		winrt::Windows::Storage::StorageFolder m_folder;

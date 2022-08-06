@@ -108,8 +108,8 @@ namespace winrt::OsuPlayer::implementation
     
     winrt::Windows::UI::Xaml::Documents::Paragraph SongItemDialog::HandleTagsRichText(winrt::hstring const& str)
     {
+        auto const linkAction = ViewModelLocator::Current().SettingsViewModel().LinkActionIndex(); //don't check it in the for-loop
         winrt::Windows::UI::Xaml::Documents::Paragraph paragraph;
-        
         for (auto tag : Split(std::wstring_view{ str }, L' '))
         {
             winrt::Windows::UI::Xaml::Documents::Hyperlink link;
@@ -117,7 +117,7 @@ namespace winrt::OsuPlayer::implementation
             run[0].Text(tag);   //This is for showing the link's text
             run[1].Text(L" ");  //This is for adding a space separating the links
 
-            switch (ViewModelLocator::Current().SettingsViewModel().LinkActionIndex())
+            switch (linkAction)
             {
                 case 1: link.Click({ this, &SongItemDialog::CopyOnLinkClick }); break;
                 case 2: link.NavigateUri(MakeSearchLink(tag, true)); break;

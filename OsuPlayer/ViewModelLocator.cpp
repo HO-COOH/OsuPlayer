@@ -26,3 +26,9 @@ winrt::OsuPlayer::ViewModel::ColumnSettings ViewModelLocator::ColumnSettings() c
 {
     return m_columnSettingsViewModel;
 }
+
+winrt::OsuPlayer::ViewModel::HitsoundPanelViewModel ViewModelLocator::HitsoundPanelViewModel() const
+{
+    static winrt::OsuPlayer::ViewModel::HitsoundPanelViewModel model;
+    return model;
+}

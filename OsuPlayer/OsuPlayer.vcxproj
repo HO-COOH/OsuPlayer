@@ -117,12 +117,24 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="BackgroundAcrylic.h" />
+    <ClInclude Include="BoolToVisibilityConverter.h">
+      <DependentUpon>BoolToVisibilityConverter.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="ColumnHeaderSettingDialog.h">
       <DependentUpon>ColumnHeaderSettingDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="ComboBoxToStringConverter.h">
       <DependentUpon>ComboBoxToStringConverter.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="HitsoundPanel.h">
+      <DependentUpon>HitsoundPanel.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="HitsoundSample.h">
+      <DependentUpon>HitsoundSample.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="LengthToStringConverter.h">
@@ -132,6 +144,14 @@
     <ClInclude Include="Model.CollectionItem.h" />
     <ClInclude Include="Model.Skin.h" />
     <ClInclude Include="OsuSkinParser.hpp" />
+    <ClInclude Include="ReferenceToBoolConverter.h">
+      <DependentUpon>ReferenceToBoolConverter.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="ReferenceToVisibilityConverter.h">
+      <DependentUpon>ReferenceToVisibilityConverter.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="SettingContainer.h">
       <DependentUpon>SettingContainer.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -156,6 +176,10 @@
     <ClInclude Include="Model.MyMusic.h" />
     <ClInclude Include="ViewModel.ColumnSetting.h">
       <DependentUpon>ViewModel.ColumnSetting.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="ViewModel.HitsoundPanel.h">
+      <DependentUpon>ViewModel.HitsoundPanel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="ViewModel.MyMusic.h">
@@ -236,6 +260,12 @@
     <Page Include="ColumnHeaderSettingDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="HitsoundPanel.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="HitsoundSample.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -280,6 +310,10 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="BackgroundAcrylic.cpp" />
+    <ClCompile Include="BoolToVisibilityConverter.cpp">
+      <DependentUpon>BoolToVisibilityConverter.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="ColumnHeaderSettingDialog.cpp">
       <DependentUpon>ColumnHeaderSettingDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -288,12 +322,28 @@
       <DependentUpon>ComboBoxToStringConverter.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="HitsoundPanel.cpp">
+      <DependentUpon>HitsoundPanel.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="HitsoundSample.cpp">
+      <DependentUpon>HitsoundSample.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="LengthToStringConverter.cpp">
       <DependentUpon>LengthToStringConverter.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="Model.CollectionItem.cpp" />
     <ClCompile Include="Model.Skin.cpp" />
+    <ClCompile Include="ReferenceToBoolConverter.cpp">
+      <DependentUpon>ReferenceToBoolConverter.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="ReferenceToVisibilityConverter.cpp">
+      <DependentUpon>ReferenceToVisibilityConverter.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="SettingContainer.cpp">
       <DependentUpon>SettingContainer.idl</DependentUpon>
       <SubType>Code</SubType>
@@ -314,6 +364,10 @@
     <ClCompile Include="Model.MyMusic.cpp" />
     <ClCompile Include="ViewModel.ColumnSetting.cpp">
       <DependentUpon>ViewModel.ColumnSetting.idl</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="ViewModel.HitsoundPanel.cpp">
+      <DependentUpon>ViewModel.HitsoundPanel.idl</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="ViewModel.MyMusic.cpp">
@@ -388,6 +442,9 @@
       <DependentUpon>ArtistView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
+    <Midl Include="BoolToVisibilityConverter.idl">
+      <SubType>Designer</SubType>
+    </Midl>
     <Midl Include="ColumnHeaderSettingDialog.idl">
       <DependentUpon>ColumnHeaderSettingDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -395,7 +452,21 @@
     <Midl Include="ComboBoxToStringConverter.idl">
       <SubType>Designer</SubType>
     </Midl>
+    <Midl Include="HitsoundPanel.idl">
+      <DependentUpon>HitsoundPanel.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="HitsoundSample.idl">
+      <DependentUpon>HitsoundSample.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
     <Midl Include="LengthToStringConverter.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="ReferenceToBoolConverter.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="ReferenceToVisibilityConverter.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="SettingContainer.idl">
@@ -416,6 +487,9 @@
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="ViewModel.ColumnSetting.idl">
+      <SubType>Designer</SubType>
+    </Midl>
+    <Midl Include="ViewModel.HitsoundPanel.idl">
       <SubType>Designer</SubType>
     </Midl>
     <Midl Include="ViewModel.MyMusic.idl">

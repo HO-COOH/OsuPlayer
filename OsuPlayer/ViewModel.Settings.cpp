@@ -133,6 +133,17 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		}
 	}
 
+	winrt::Windows::Storage::StorageFolder SettingsViewModel::SelectedSkin()
+	{
+		return m_selectedSkin;
+	}
+
+	void SettingsViewModel::SelectedSkin(winrt::Windows::Storage::StorageFolder selectedSkin)
+	{
+		m_selectedSkin = selectedSkin;
+		raisePropertyChange(L"SelectedSkin");
+	}
+
 	int SettingsViewModel::OsuPathActionIndex()
 	{
 		return m_osuPathAction;

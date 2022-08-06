@@ -217,6 +217,7 @@
             <x:String x:Key="AboutIconGlyph">&#xF6FA;</x:String>
 
             <local:ComboBoxToStringConverter x:Key="ComboBoxToStringConverter"/>
+            <local:ReferenceToVisibilityConverter x:Key="ReferenceToVisibilityConverter"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -326,9 +327,7 @@
                     <FontIcon Glyph="{StaticResource SkinIconGlyph}"/>
                 </local:SettingContainer.Symbol>
                 <local:SettingContainer.HeaderContent>
-                    <StackPanel Orientation="Horizontal">
-                        <ToggleSwitch x:Uid="HitsoundToggle"/>
-                    </StackPanel>
+                    <ToggleSwitch x:Name="HitsoundGlobalSwitch" x:Uid="HitsoundToggle"/>
                 </local:SettingContainer.HeaderContent>
                 
                 <local:SettingContainer.ExpanderContent>
@@ -345,15 +344,16 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock x:Uid="DefaultSkinText" Grid.Row="0" Grid.Column="0"/>
-                        <muxc:ToggleSplitButton x:Name="SkinButton" Grid.Row="0" Grid.Column="1" Margin="0,-3,0,3" HorizontalAlignment="Right">
+                        <muxc:ToggleSplitButton x:Name="SkinButton" Grid.Row="0" Grid.Column="1" Margin="0,-3,0,3" HorizontalAlignment="Right" 
+                                                IsEnabled="{x:Bind HitsoundGlobalSwitch.IsOn, Mode=OneWay}"
+                                                IsChecked="{x:Bind HitsoundGlobalSwitch.IsOn, Mode=OneWay}">
                             <TextBlock Text="Default"/>
                             <muxc:ToggleSplitButton.Flyout>
                                 <MenuFlyout x:Name="SkinFlyout"/>
                             </muxc:ToggleSplitButton.Flyout>
                         </muxc:ToggleSplitButton>
 
-                        
-
+                        <local:HitsoundPanel Grid.Row="2" Grid.ColumnSpan="2" Visibility="{x:Bind ViewModel.SelectedSkin, Mode=OneWay, Converter={StaticResource ReferenceToVisibilityConverter}}"/>
                     </Grid>
                 </local:SettingContainer.ExpanderContent>
             </local:SettingContainer>

@@ -1,0 +1,15 @@
+import "ViewModel.HitsoundPanel.idl";
+namespace OsuPlayer
+{
+    [default_interface]
+    runtimeclass HitsoundSample : Windows.UI.Xaml.Controls.UserControl
+    {
+        HitsoundSample();
+        
+        String HitsoundName{ get; set; };
+        static Windows.UI.Xaml.DependencyProperty HitsoundNameProperty{ get; };
+
+        OsuPlayer.ViewModel.HitsoundSample Sample{ get; set; };
+        static Windows.UI.Xaml.DependencyProperty SampleProperty{ get; };
+    }
+}
