@@ -105,13 +105,33 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
     winrt::Windows::Foundation::IAsyncAction SongItemViewModel::loadImage()
     {
-        auto imageFile = co_await getModel().getImageFile();
-        if (imageFile)
-        {
-            auto stream = co_await imageFile.OpenReadAsync();
-            m_imageStream.SetSourceAsync(stream);
-        }
+        co_await getImageFile();
+        if (!m_imageFile)
+            co_return;
+        m_imageStream.SetSourceAsync(co_await m_imageFile.OpenAsync(winrt::Windows::Storage::FileAccessMode::Read));
         raisePropertyChange(L"SongImage");
+    }
+
+    winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile> SongItemViewModel::SongImageFile()
+    {
+        co_await getImageFile();
+        co_return m_imageFile;
+    }
+
+    winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::Streams::IRandomAccessStream> SongItemViewModel::SongImageStream()
+    {
+        co_await getImageFile();
+        winrt::Windows::Storage::Streams::IRandomAccessStream stream = m_imageFile.OpenReadAsync().as<winrt::Windows::Storage::Streams::IRandomAccessStream>();
+        co_return stream;
+    }
+
+    winrt::Windows::Foundation::IAsyncAction SongItemViewModel::getImageFile()
+    {
+        if (m_imageFile)
+            co_return;
+
+        m_imageFile = co_await getModel().getImageFile();
+        co_return;
     }
 
 

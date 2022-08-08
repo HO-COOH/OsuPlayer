@@ -36,11 +36,16 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage SongImage();
 
         winrt::Windows::Foundation::IAsyncAction loadImage();
+
+        winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile> SongImageFile();
+        winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::Streams::IRandomAccessStream> SongImageStream();
     private:
+        winrt::Windows::Foundation::IAsyncAction getImageFile();
         winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage m_imageStream;
         int m_index{};
         int m_versionIndex{};
         winrt::Windows::Foundation::IInspectable m_modelPointer;
+        winrt::Windows::Storage::StorageFile m_imageFile{ nullptr };
         
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> m_versions = winrt::single_threaded_observable_vector<winrt::hstring>();
         Model::SongItemModel& getModel();

@@ -70,6 +70,14 @@ namespace winrt::OsuPlayer::implementation
     }
 
 
+    void MainPage::CollectionNavigationItem_PointerPressed(
+        winrt::Windows::Foundation::IInspectable const& sender, 
+        winrt::Windows::UI::Xaml::Input::PointerRoutedEventArgs const& e)
+    {
+        ContentFrame().Navigate(xaml_typename<OsuPlayer::CollectionView>());
+    }
+
+
     void MainPage::NavigationViewControl_ItemInvoked(
         winrt::Microsoft::UI::Xaml::Controls::NavigationView const& sender,
         winrt::Microsoft::UI::Xaml::Controls::NavigationViewItemInvokedEventArgs const& args)

@@ -6,6 +6,7 @@
 
 #include "Model.MyMusic.h"
 #include "Utils.h"
+#include "Model.Recent.h"
 
 using namespace Model;
 
@@ -40,11 +41,19 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		co_await songItemModel.Source().OpenAsync();
 		m_songPlayer.Pause();
 		m_songPlayer.Source(nullptr);
-		m_songPlayer.Source(songItemModel.Source());
-		m_songPlayer.Play();
 		m_currentItemToPlay = item;
+		winrt::Windows::Media::Playback::MediaPlaybackItem playbackItem{songItemModel.Source()};
+		co_await updateForSMTC(playbackItem);
+		m_songPlayer.Source(playbackItem);
+		m_songPlayer.Play();
+		
+		//update ui
 		raisePropertyChange(L"SongLength");
 		raisePropertyChange(L"SongLengthString");
+
+		//update recent data
+		auto& recentInstance = Model::Recent::GetInstance();
+		recentInstance.addRecordForSong(songItemModel);
 	}
 
 	void PlayerViewModel::PlayCurrent()
@@ -139,5 +148,22 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	PlayerViewModel::~PlayerViewModel()
 	{
 		Save();
+	}
+	winrt::Windows::Foundation::IAsyncAction PlayerViewModel::updateForSMTC(winrt::Windows::Media::Playback::MediaPlaybackItem item)
+	{
+		auto properties = item.GetDisplayProperties();
+		auto musicProperty = properties.MusicProperties();
+		musicProperty.Title(m_currentItemToPlay.SongName());
+		musicProperty.Artist(m_currentItemToPlay.Singer());
+
+		auto stream = winrt::Windows::Storage::Streams::RandomAccessStreamReference::CreateFromFile(co_await m_currentItemToPlay.SongImageFile());
+		//co_await stream.OpenReadAsync();
+		properties.Thumbnail(stream);
+		properties.Type(winrt::Windows::Media::MediaPlaybackType::Music);
+		item.ApplyDisplayProperties(properties);
+		co_return;
+	}
+	void PlayerViewModel::updateForSMTC()
+	{
 	}
 }

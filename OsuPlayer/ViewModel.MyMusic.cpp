@@ -26,6 +26,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
             [this](std::vector<Model::SongItemModel> const& songs)
             {
                 updateList();
+                updateCollection();
             }
         );
     }

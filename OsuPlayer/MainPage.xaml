@@ -10,6 +10,10 @@
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     xmlns:viewModel="using:OsuPlayer.ViewModel">
 
+    <Page.Resources>
+        <x:String x:Key="AddIconGlyph">&#xE710;</x:String>
+    </Page.Resources>
+
     <Grid>
         <Grid.BackgroundTransition>
             <BrushTransition/>
@@ -47,7 +51,21 @@
             
                 <muxc:NavigationViewItemSeparator/>
 
-                <muxc:NavigationViewItem x:Name="CollectionNavigationItem" Icon="List" x:Uid="CollectionNavigationItem">
+                <muxc:NavigationViewItem x:Name="CollectionNavigationItem" Icon="List"
+                                         PointerPressed="CollectionNavigationItem_PointerPressed">
+                    <muxc:NavigationViewItem.Content>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Uid="CollectionNavigationItemText"/>
+                            <Button x:Name="AddCollectionButton" Grid.Column="1" HorizontalAlignment="Right"
+                                    Background="Transparent" BorderBrush="Transparent" Width="35">
+                                <FontIcon Glyph="{StaticResource AddIconGlyph}" FontSize="10"/>
+                            </Button>
+                        </Grid>
+                    </muxc:NavigationViewItem.Content>
                     <muxc:NavigationViewItem.InfoBadge>
                         <muxc:InfoBadge x:Name="CollectionsInfoBadge" Value="3"/>
                     </muxc:NavigationViewItem.InfoBadge>

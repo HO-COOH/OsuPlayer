@@ -132,7 +132,7 @@
   <data name="AppDisplayName" xml:space="preserve">
     <value>osu!播放器</value>
   </data>
-  <data name="CollectionNavigationItem.Content" xml:space="preserve">
+  <data name="CollectionNavigationItemText.Text" xml:space="preserve">
     <value>地图集</value>
   </data>
   <data name="ColumnHeaderSetting.Text" xml:space="preserve">
@@ -248,6 +248,9 @@
   </data>
   <data name="MoveToMenuItem.Text" xml:space="preserve">
     <value>移动到</value>
+  </data>
+  <data name="MyCollectionText.Text" xml:space="preserve">
+    <value>地图集</value>
   </data>
   <data name="MyMusicNavigationItem.Content" xml:space="preserve">
     <value>我的音乐</value>

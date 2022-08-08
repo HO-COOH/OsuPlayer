@@ -9,24 +9,62 @@
 #include <ViewModelLocator.h>
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Media.Core.h>
+#include <Utils.Log.hpp>
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
-	winrt::Windows::Foundation::IAsyncAction HitsoundSample::Play()
+	HitsoundSampleSet::HitsoundSampleSet(winrt::hstring sampleSetName) :
+		m_hitNormal{sampleSetName + L"-hitnormal"},
+		m_hitFinish{sampleSetName + L"-hitfinish"},
+		m_hitWhistle{sampleSetName + L"-hitwhistle"},
+		m_hitClap{sampleSetName + L"-hitclap"}
 	{
-		auto folder = ViewModelLocator::Current().SettingsViewModel().SelectedSkin();
+	}
+
+	void HitsoundSample::Play()
+	{
 		s_player.Pause();
 		s_player.Source(nullptr);
-		OutputDebugString(m_name.data());
+		s_player.Source(winrt::Windows::Media::Core::MediaSource::CreateFromStorageFile(m_hitsoundFile));
+		s_player.Play();
+	}
+
+	winrt::Windows::Foundation::IAsyncAction HitsoundSample::Update()
+	{
 		try
 		{
-			auto file = co_await folder.GetFileAsync(m_name + L".wav");
-			s_player.Source(winrt::Windows::Media::Core::MediaSource::CreateFromStorageFile(file));
-			s_player.Play();
+			m_hitsoundFile = co_await ViewModelLocator::Current().SettingsViewModel().SelectedSkin().GetFileAsync(m_name + L".wav");
 		}
-		catch (...)
+		catch (winrt::hresult_error const& e)
 		{
-			//File not found
+			Utils::ConsoleLogger{} << ViewModelLocator::Current().SettingsViewModel().SelectedSkin().Path().data() << L"\\" << m_name.data() << L" not found\n";
+			constexpr auto FileNotFoundErrorCode = HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);
+			
+			if (e.code() == FileNotFoundErrorCode)
+				m_hitsoundFile = nullptr;
+			else
+				throw;
 		}
+		raisePropertyChange(L"IsAvailable");
+	}
+
+	winrt::Windows::Foundation::IAsyncAction HitsoundPanelViewModel::Update()
+	{
+		co_await winrt::when_all(
+			m_normal.Hitnormal(). Update(),
+			m_normal.Hitfinish(). Update(),
+			m_normal.Hitwhistle().Update(),
+			m_normal.Hitclap().   Update(),
+
+			m_soft.Hitnormal().Update(),
+			m_soft.Hitfinish().Update(),
+			m_soft.Hitwhistle().Update(),
+			m_soft.Hitclap().Update(),
+
+			m_drum.Hitnormal().Update(),
+			m_drum.Hitfinish().Update(),
+			m_drum.Hitwhistle().Update(),
+			m_drum.Hitclap().Update()
+		);
 	}
 }

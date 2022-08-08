@@ -19,41 +19,110 @@
                 
                 <muxc:Expander.HeaderTemplate>
                     <DataTemplate x:DataType="local:CollectionItem">
-                        <muxc:Expander>
-                            <muxc:Expander.Header>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{x:Bind Name}" Grid.Column="0" HorizontalAlignment="Left"/>
-                                    <muxc:InfoBadge Value="{x:Bind Count}" Grid.Column="1" HorizontalAlignment="Right"/>
-                                </Grid>
-                            </muxc:Expander.Header>
-                            <!--<muxc:Expander.Content>
-                                <
-                            </muxc:Expander.Content>-->
-                        </muxc:Expander>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{x:Bind Name}" Grid.Column="0" HorizontalAlignment="Left"/>
+                            <muxc:InfoBadge Value="{x:Bind Count}" Grid.Column="1" HorizontalAlignment="Right"/>
+                        </Grid>
                     </DataTemplate>
                 </muxc:Expander.HeaderTemplate>
                 
                 <muxc:Expander.Content>
-                    <ListView ItemsSource="{x:Bind SongItems}"/>
+                    <ListView ItemsSource="{x:Bind SongItems}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:Name="SongItemTemplate" x:DataType="local:SongItemViewModel">
+                                <Grid Height="30" IsDoubleTapEnabled="True" HorizontalAlignment="Stretch" DoubleTapped="{x:Bind PlayCurrent}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox x:Name="CheckBox" Grid.Column="0"/>
+
+                                    <Grid Grid.Column="1" Height="30" VerticalAlignment="Top">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0"/>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="SongNameText" Text="{x:Bind SongName}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="1" />
+                                        <TextBlock x:Name="SingerText" Text="{x:Bind Singer}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="2"/>
+                                        <TextBlock x:Name="MapperText" Text="{x:Bind Mapper}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="3"/>
+                                        <TextBlock x:Name="LengthText" Text="{x:Bind Length, Converter={StaticResource Converter2}}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis" Grid.Column="4" />
+                                        <ComboBox x:Name="VersionSelectionBox" ItemsSource="{x:Bind Versions, Mode=OneWay}" SelectedIndex="{x:Bind SelectedVersionIndex, Mode=TwoWay}" Grid.Column="5" Margin="10,0,0,0"/>
+                                    </Grid>
+
+                                    <Grid.ContextFlyout>
+                                        <MenuFlyout>
+
+                                            <MenuFlyoutItem x:Uid="PlayMenuItem" Click="{x:Bind PlayCurrent}">
+                                                <MenuFlyoutItem.Icon>
+                                                    <SymbolIcon Symbol="Play"/>
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+
+                                            <MenuFlyoutItem x:Uid="RemoveFromListMenuItem">
+                                                <MenuFlyoutItem.Icon>
+                                                    <SymbolIcon Symbol="Clear"/>
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+
+                                            <MenuFlyoutItem x:Uid="DeleteMenuItem">
+                                                <MenuFlyoutItem.Icon>
+                                                    <SymbolIcon Symbol="Delete"/>
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+
+                                            <MenuFlyoutSeparator/>
+
+                                            <MenuFlyoutItem x:Uid="MoveToMenuItem" Text="Move to">
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="{StaticResource MoveToIconGlyph}"/>
+                                                </MenuFlyoutItem.Icon>
+
+                                            </MenuFlyoutItem>
+
+                                            <MenuFlyoutSeparator/>
+
+                                            <MenuFlyoutItem x:Uid="PropertyMenuItem" Click="{x:Bind ShowProperty}">
+                                                <MenuFlyoutItem.Icon>
+                                                    <SymbolIcon Symbol="MusicInfo"/>
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </Grid.ContextFlyout>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </muxc:Expander.Content>
             </muxc:Expander>
         </DataTemplate>
     </Page.Resources>
 
 
-    <StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Uid="MyCollectionText" FontSize="50" Margin="20,40,20,40"/>
+
         <ListView ItemsSource="{x:Bind ViewModel.Collections}" 
-              ItemTemplate="{StaticResource CollectionItemTemplate}">
-        <ListView.ItemsPanel>
+              ItemTemplate="{StaticResource CollectionItemTemplate}" Grid.Row="1">
+        <!--<ListView.ItemsPanel>
             <ItemsPanelTemplate>
                 <ItemsStackPanel AreStickyGroupHeadersEnabled="True"/>
             </ItemsPanelTemplate>
         </ListView.ItemsPanel>
-        <!--<ListView.GroupStyle>
+        --><!--<ListView.GroupStyle>
             <GroupStyle>
                 <GroupStyle.HeaderTemplate>
                     <DataTemplate x:DataType="local:CollectionItemViewModel">
@@ -63,5 +132,5 @@
             </GroupStyle>
         </ListView.GroupStyle>-->
     </ListView>
-    </StackPanel>
+    </Grid>
 </Page>

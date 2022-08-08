@@ -124,6 +124,9 @@
     <ClCompile Include="Model.Skin.cpp">
       <Filter>Models</Filter>
     </ClCompile>
+    <ClCompile Include="Model.Recent.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -174,6 +177,9 @@
     </ClInclude>
     <ClInclude Include="OsuSkinParser.hpp" />
     <ClInclude Include="Model.Skin.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.Recent.h">
       <Filter>Models</Filter>
     </ClInclude>
   </ItemGroup>

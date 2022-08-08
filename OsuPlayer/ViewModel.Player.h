@@ -40,6 +40,12 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         ~PlayerViewModel();
     private:
+        //Update the System Media Transport Controls by directly setting properties to the PlayBackItem
+        winrt::Windows::Foundation::IAsyncAction updateForSMTC(winrt::Windows::Media::Playback::MediaPlaybackItem item);
+
+        //Update the System Media Transport Controls by directly setting SystemMediaTransportControlsDisplayUpdater
+        void updateForSMTC();
+
         winrt::Windows::Media::Playback::MediaPlayer m_songPlayer;
         winrt::Windows::Media::Playback::MediaPlayer m_hitSoundPlayer;
         ViewModel::SongItemViewModel m_currentItemToPlay{ nullptr };

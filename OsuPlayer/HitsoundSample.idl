@@ -5,9 +5,6 @@ namespace OsuPlayer
     runtimeclass HitsoundSample : Windows.UI.Xaml.Controls.UserControl
     {
         HitsoundSample();
-        
-        String HitsoundName{ get; set; };
-        static Windows.UI.Xaml.DependencyProperty HitsoundNameProperty{ get; };
 
         OsuPlayer.ViewModel.HitsoundSample Sample{ get; set; };
         static Windows.UI.Xaml.DependencyProperty SampleProperty{ get; };

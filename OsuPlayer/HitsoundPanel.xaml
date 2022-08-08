@@ -21,21 +21,40 @@
         </Grid.ColumnDefinitions>
         
         <!-- Normal -->
-        <local:HitsoundSample Grid.Row="0" Grid.Column="0" HitsoundName="normal-hitnormal" Sample="{x:Bind ViewModel.Normal.Hitnormal}"/>
-        <local:HitsoundSample Grid.Row="0" Grid.Column="1" HitsoundName="normal-hitfinish" Sample="{x:Bind ViewModel.Normal.Hitfinish}"/>
-        <local:HitsoundSample Grid.Row="0" Grid.Column="2" HitsoundName="normal-hitwistle" Sample="{x:Bind ViewModel.Normal.Hitwhistle}"/>
-        <local:HitsoundSample Grid.Row="0" Grid.Column="3" HitsoundName="normal-hitclap"   Sample="{x:Bind ViewModel.Normal.Hitclap}"/>
+        <local:HitsoundSample Grid.Row="0" Grid.Column="0" Sample="{x:Bind ViewModel.Normal.Hitnormal}"/>
+        <local:HitsoundSample Grid.Row="0" Grid.Column="1" Sample="{x:Bind ViewModel.Normal.Hitfinish}"/>
+        <local:HitsoundSample Grid.Row="0" Grid.Column="2" Sample="{x:Bind ViewModel.Normal.Hitwhistle}"/>
+        <local:HitsoundSample Grid.Row="0" Grid.Column="3" Sample="{x:Bind ViewModel.Normal.Hitclap}"/>
         
         <!-- Soft -->
-        <local:HitsoundSample Grid.Row="1" Grid.Column="0" HitsoundName="soft-hitnormal" Sample="{x:Bind ViewModel.Soft.Hitnormal}"/>
-        <local:HitsoundSample Grid.Row="1" Grid.Column="1" HitsoundName="soft-hitfinish" Sample="{x:Bind ViewModel.Soft.Hitfinish}"/>
-        <local:HitsoundSample Grid.Row="1" Grid.Column="2" HitsoundName="soft-hitwistle" Sample="{x:Bind ViewModel.Soft.Hitwhistle}"/>
-        <local:HitsoundSample Grid.Row="1" Grid.Column="3" HitsoundName="soft-hitclap"   Sample="{x:Bind ViewModel.Soft.Hitclap}"/>
+        <local:HitsoundSample Grid.Row="1" Grid.Column="0" Sample="{x:Bind ViewModel.Soft.Hitnormal}"/>
+        <local:HitsoundSample Grid.Row="1" Grid.Column="1" Sample="{x:Bind ViewModel.Soft.Hitfinish}"/>
+        <local:HitsoundSample Grid.Row="1" Grid.Column="2" Sample="{x:Bind ViewModel.Soft.Hitwhistle}"/>
+        <local:HitsoundSample Grid.Row="1" Grid.Column="3" Sample="{x:Bind ViewModel.Soft.Hitclap}"/>
         
         <!-- Drum -->
-        <local:HitsoundSample Grid.Row="2" Grid.Column="0" HitsoundName="drum-hitnormal" Sample="{x:Bind ViewModel.Drum.Hitnormal}"/>
-        <local:HitsoundSample Grid.Row="2" Grid.Column="1" HitsoundName="drum-hitfinish" Sample="{x:Bind ViewModel.Drum.Hitfinish}"/>
-        <local:HitsoundSample Grid.Row="2" Grid.Column="2" HitsoundName="drum-hitwistle" Sample="{x:Bind ViewModel.Drum.Hitwhistle}"/>
-        <local:HitsoundSample Grid.Row="2" Grid.Column="3" HitsoundName="drum-hitclap"   Sample="{x:Bind ViewModel.Drum.Hitclap}"/>
+        <local:HitsoundSample Grid.Row="2" Grid.Column="0" Sample="{x:Bind ViewModel.Drum.Hitnormal}"/>
+        <local:HitsoundSample Grid.Row="2" Grid.Column="1" Sample="{x:Bind ViewModel.Drum.Hitfinish}"/>
+        <local:HitsoundSample Grid.Row="2" Grid.Column="2" Sample="{x:Bind ViewModel.Drum.Hitwhistle}"/>
+        <local:HitsoundSample Grid.Row="2" Grid.Column="3" Sample="{x:Bind ViewModel.Drum.Hitclap}"/>
+        
+        <!--
+         HitsoundName="normal-hitnormal"
+         HitsoundName="normal-hitfinish"
+         HitsoundName="normal-hitwistle"
+         HitsoundName="normal-hitclap"  
+        
+        
+         HitsoundName="soft-hitnormal"  
+         HitsoundName="soft-hitfinish"  
+         HitsoundName="soft-hitwistle"  
+         HitsoundName="soft-hitclap"    
+        
+        
+         HitsoundName="drum-hitnormal"  
+         HitsoundName="drum-hitfinish"  
+         HitsoundName="drum-hitwistle"  
+         HitsoundName="drum-hitclap"
+        -->
     </Grid>
 </Page>

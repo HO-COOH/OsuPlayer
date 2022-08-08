@@ -78,19 +78,24 @@ winrt::Windows::Foundation::IAsyncAction winrt::OsuPlayer::implementation::Setti
         auto const result = co_await ViewModel().AddOsuPath();
         if (result == ViewModel::AddOsuFolderResult::Success)
         {
-            SkinFlyout().Items().Clear();
+            auto skinFlyoutItems = SkinFlyout().Items();
+            skinFlyoutItems.Clear();
             for (auto const& skin : Model::Skins::GetInstance().m_skins)
             {
                 winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem item;
                 item.Text(winrt::to_hstring(skin.getInfo().name));
-                item.Click([](auto sender, auto e)
+                item.Click([this](auto sender, auto e) -> winrt::Windows::Foundation::IAsyncAction
                 {
                     auto& allSkins = Model::Skins::GetInstance().m_skins;
-                    auto skinName = winrt::to_string(sender.as<winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem>().Text());
+                    auto text = sender.as<winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem>().Text();
+                    auto skinName = winrt::to_string(text);
+                    SkinButtonText().Text(text);
                     auto item = std::find_if(allSkins.begin(), allSkins.end(), [skinName](Model::Skin const& skinItem) { return skinItem.getInfo().name == skinName; });
-                    ViewModelLocator::Current().SettingsViewModel().SelectedSkin(item->m_folder);
+                    auto& viewModelLoctor = ViewModelLocator::Current();
+                    viewModelLoctor.SettingsViewModel().SelectedSkin(item->m_folder);
+                    co_await viewModelLoctor.HitsoundPanelViewModel().Update();
                 });
-                SkinFlyout().Items().Append(item);
+                skinFlyoutItems.Append(item);
             }
             co_return;
         }

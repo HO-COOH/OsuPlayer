@@ -142,6 +142,7 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="Model.CollectionItem.h" />
+    <ClInclude Include="Model.Recent.h" />
     <ClInclude Include="Model.Skin.h" />
     <ClInclude Include="OsuSkinParser.hpp" />
     <ClInclude Include="ReferenceToBoolConverter.h">
@@ -335,6 +336,7 @@
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="Model.CollectionItem.cpp" />
+    <ClCompile Include="Model.Recent.cpp" />
     <ClCompile Include="Model.Skin.cpp" />
     <ClCompile Include="ReferenceToBoolConverter.cpp">
       <DependentUpon>ReferenceToBoolConverter.idl</DependentUpon>

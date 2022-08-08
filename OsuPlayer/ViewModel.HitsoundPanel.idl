@@ -1,16 +1,19 @@
 namespace OsuPlayer.ViewModel
 {
-    runtimeclass HitsoundSample
+    runtimeclass HitsoundSample : Windows.UI.Xaml.Data.INotifyPropertyChanged
     {
-        HitsoundSample();
-        String Name{ get; set; };
-        Int32 Volume{get; set; };
+        HitsoundSample(String name);
+        String Name{ get; };
+        Int32 Volume{ get; set; };
+        Boolean IsAvailable{ get; };
+
         void Play();
+        Windows.Foundation.IAsyncAction Update();
     };
 
     runtimeclass HitsoundSampleSet
     {
-        HitsoundSampleSet();
+        HitsoundSampleSet(String sampleSetName);
         HitsoundSample Hitnormal{ get; };
         HitsoundSample Hitfinish{ get; };
         HitsoundSample Hitwhistle{ get; };
@@ -26,5 +29,7 @@ namespace OsuPlayer.ViewModel
         HitsoundSampleSet Normal{ get; };
         HitsoundSampleSet Soft{ get; };
         HitsoundSampleSet Drum{ get; };
+
+        Windows.Foundation.IAsyncAction Update();
     }
 }

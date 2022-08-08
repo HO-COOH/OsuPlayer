@@ -11,14 +11,6 @@ using namespace Windows::UI::Xaml;
 
 namespace winrt::OsuPlayer::implementation
 {
-    winrt::Windows::UI::Xaml::DependencyProperty HitsoundSample::m_hitsoundNameProperty =
-        winrt::Windows::UI::Xaml::DependencyProperty::Register(
-            L"HitsoundName",
-            winrt::xaml_typename<winrt::Windows::Foundation::IInspectable>(),
-            winrt::xaml_typename<OsuPlayer::HitsoundSample>(),
-            { nullptr }
-    );
-
     winrt::Windows::UI::Xaml::DependencyProperty HitsoundSample::m_sampleProperty =
         winrt::Windows::UI::Xaml::DependencyProperty::Register(
             L"Sample",
@@ -32,21 +24,6 @@ namespace winrt::OsuPlayer::implementation
         InitializeComponent();
     }
 
-    winrt::hstring HitsoundSample::HitsoundName()
-    {
-        return winrt::unbox_value<winrt::hstring>(GetValue(m_hitsoundNameProperty));
-    }
-
-    void HitsoundSample::HitsoundName(winrt::hstring name)
-    {
-        SetValue(m_hitsoundNameProperty, winrt::box_value(name));
-    }
-
-    winrt::Windows::UI::Xaml::DependencyProperty HitsoundSample::HitsoundNameProperty()
-    {
-        return m_hitsoundNameProperty;
-    }
-
     ViewModel::HitsoundSample HitsoundSample::Sample()
     {
         return winrt::unbox_value<ViewModel::HitsoundSample>(GetValue(m_sampleProperty));
@@ -54,7 +31,6 @@ namespace winrt::OsuPlayer::implementation
 
     void HitsoundSample::Sample(ViewModel::HitsoundSample sample)
     {
-        sample.Name(HitsoundName());
         return SetValue(m_sampleProperty, winrt::box_value(sample));
     }
 

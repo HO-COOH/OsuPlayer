@@ -12,15 +12,10 @@ namespace winrt::OsuPlayer::implementation
     {
         HitsoundSample();
 
-        winrt::hstring HitsoundName();
-        void HitsoundName(winrt::hstring name);
-        static winrt::Windows::UI::Xaml::DependencyProperty HitsoundNameProperty();
-
         ViewModel::HitsoundSample Sample();
         void Sample(ViewModel::HitsoundSample sample);
         static winrt::Windows::UI::Xaml::DependencyProperty SampleProperty();
     private:
-        static winrt::Windows::UI::Xaml::DependencyProperty m_hitsoundNameProperty;
         static winrt::Windows::UI::Xaml::DependencyProperty m_sampleProperty;
 
     public:

@@ -347,13 +347,14 @@
                         <muxc:ToggleSplitButton x:Name="SkinButton" Grid.Row="0" Grid.Column="1" Margin="0,-3,0,3" HorizontalAlignment="Right" 
                                                 IsEnabled="{x:Bind HitsoundGlobalSwitch.IsOn, Mode=OneWay}"
                                                 IsChecked="{x:Bind HitsoundGlobalSwitch.IsOn, Mode=OneWay}">
-                            <TextBlock Text="Default"/>
+                            <TextBlock x:Name="SkinButtonText" Text="Default"/>
                             <muxc:ToggleSplitButton.Flyout>
                                 <MenuFlyout x:Name="SkinFlyout"/>
                             </muxc:ToggleSplitButton.Flyout>
                         </muxc:ToggleSplitButton>
 
-                        <local:HitsoundPanel Grid.Row="2" Grid.ColumnSpan="2" Visibility="{x:Bind ViewModel.SelectedSkin, Mode=OneWay, Converter={StaticResource ReferenceToVisibilityConverter}}"/>
+                        <local:HitsoundPanel x:Name="HitsoundPanel" Grid.Row="2" Grid.ColumnSpan="2" 
+                                             Visibility="{x:Bind ViewModel.SelectedSkin, Mode=OneWay, Converter={StaticResource ReferenceToVisibilityConverter}}"/>
                     </Grid>
                 </local:SettingContainer.ExpanderContent>
             </local:SettingContainer>

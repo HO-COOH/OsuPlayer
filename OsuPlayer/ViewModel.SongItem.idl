@@ -26,6 +26,8 @@ namespace OsuPlayer.ViewModel
 
         //For binding in xaml
         Windows.UI.Xaml.Media.Imaging.BitmapImage SongImage{ get; };
+        Windows.Foundation.IAsyncOperation<Windows.Storage.StorageFile> SongImageFile{ get; };
+        Windows.Foundation.IAsyncOperation<Windows.Storage.Streams.IRandomAccessStream> SongImageStream{ get; };
         Windows.Foundation.IAsyncAction loadImage();
     }
 }
