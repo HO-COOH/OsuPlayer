@@ -59,6 +59,16 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         return m_versions;
     }
 
+    void SongItemViewModel::IsPlaying(bool isPlaying)
+    {
+        if (m_isPlaying != isPlaying)
+        {
+            m_isPlaying = isPlaying;
+            raisePropertyChange(L"IsPlaying");
+            m_isPlayingChanged(*this, isPlaying);
+        }
+    }
+
 
     //winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage SongItemViewModel::Image()
     //{

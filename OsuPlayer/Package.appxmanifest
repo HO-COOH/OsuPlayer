@@ -4,7 +4,8 @@
 		 xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
 		 xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
 		 xmlns:iot="http://schemas.microsoft.com/appx/manifest/iot/windows10"
-		 IgnorableNamespaces="uap mp rescap iot">
+		 xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+		 IgnorableNamespaces="uap mp rescap iot uap3">
   <Identity
     Name="982aab8a-398d-49b5-8d13-89030a438ec4"
     Publisher="CN=Peter"
@@ -35,6 +36,7 @@
 		<Capability Name="internetClient" />
 		<rescap:Capability Name="broadFileSystemAccess"/>
 		<iot:Capability Name="systemManagement"/>
+		<uap3:Capability Name="backgroundMediaPlayback"/>
 	</Capabilities>
 
 </Package>

@@ -19,6 +19,8 @@ namespace OsuPlayer.ViewModel
 
         Int32 SelectedVersionIndex{ get; set; };
         String SelectedVersion{ get; };
+        Boolean IsPlaying{ get; set; };
+        event Windows.Foundation.EventHandler<Boolean> IsPlayingChanged;
 
         Windows.Foundation.IAsyncAction ShowProperty();
 

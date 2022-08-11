@@ -26,8 +26,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		m_jumplistRecentCollections(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"RecentCollections"), 0)),
 		m_allowModifyOsuData(winrt::unbox_value_or<bool>(m_localSettings.Values().TryLookup(L"AllowModifyOsuData"), false))
 	{
-		//if (m_theme != 2)
-		//	setTheme();
 		loadOsuPaths();
 	}
 
@@ -63,10 +61,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	{
 		switch (m_theme)
 		{
-			case 0: Utils::ThemeHelper::RootTheme(winrt::Windows::UI::Xaml::ElementTheme::Light); break;
-			case 1: Utils::ThemeHelper::RootTheme(winrt::Windows::UI::Xaml::ElementTheme::Dark); break;
-			default:
-				break;
+			case 0:  return Utils::ThemeHelper::RootTheme(winrt::Windows::UI::Xaml::ElementTheme::Light);
+			case 1:  return Utils::ThemeHelper::RootTheme(winrt::Windows::UI::Xaml::ElementTheme::Dark);
+			default: return Utils::ThemeHelper::RootTheme(winrt::Windows::UI::Xaml::ElementTheme::Default);
 		}
 	}
 

@@ -20,7 +20,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 				m_progress = session.Position().count() / 10'000ll;
 				co_await winrt::resume_foreground(winrt::Windows::ApplicationModel::Core::CoreApplication::MainView().CoreWindow().Dispatcher());
 				raisePropertyChange(L"Progress");
-				raisePropertyChange(L"ProgressString");
 			}
 		);
 
@@ -36,11 +35,14 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
 	winrt::Windows::Foundation::IAsyncAction PlayerViewModel::Play(ViewModel::SongItemViewModel item)
 	{
+		if (m_currentItemToPlay)
+			m_currentItemToPlay.IsPlaying(false);
 		auto& songItemModel = *reinterpret_cast<SongItemModel*>(winrt::unbox_value<size_t>(item.ModelPointer()));
 		co_await songItemModel.fillDataAsync();
 		co_await songItemModel.Source().OpenAsync();
 		m_songPlayer.Pause();
 		m_songPlayer.Source(nullptr);
+		item.IsPlaying(true);
 		m_currentItemToPlay = item;
 		winrt::Windows::Media::Playback::MediaPlaybackItem playbackItem{songItemModel.Source()};
 		co_await updateForSMTC(playbackItem);
@@ -49,11 +51,11 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		
 		//update ui
 		raisePropertyChange(L"SongLength");
-		raisePropertyChange(L"SongLengthString");
 
 		//update recent data
 		auto& recentInstance = Model::Recent::GetInstance();
 		recentInstance.addRecordForSong(songItemModel);
+		recentInstance.updateJumpList();
 	}
 
 	void PlayerViewModel::PlayCurrent()

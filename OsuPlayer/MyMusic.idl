@@ -2,7 +2,7 @@ import "ViewModel.MyMusic.idl";
 namespace OsuPlayer
 {
     [default_interface]
-    runtimeclass MyMusic : Windows.UI.Xaml.Controls.Page
+    runtimeclass MyMusic : Windows.UI.Xaml.Controls.Page, Windows.UI.Xaml.Data.INotifyPropertyChanged
     {
         MyMusic();
 
@@ -11,5 +11,6 @@ namespace OsuPlayer
 
         Windows.UI.Xaml.Controls.ListView MusicList{ get; };
         OsuPlayer.ViewModel.MyMusicViewModel ViewModel{ get; };
+        void UnloadObject(Windows.UI.Xaml.DependencyObject object);
     }
 }

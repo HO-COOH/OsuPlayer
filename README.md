@@ -49,5 +49,7 @@ Currently I am limited by the unresolved WinUI related bugs:
 - [Renaming xaml file breaks everything in C++/WinRT](https://github.com/microsoft/microsoft-ui-xaml/issues/7365)
 - [Setting FlyoutPlacementMode to Auto crash](https://github.com/microsoft/microsoft-ui-xaml/issues/7384)
 - [NavigationView regression on WinUI 2.8](https://github.com/microsoft/microsoft-ui-xaml/issues/7533)
+- [Compile error when using x:Load and x:Bind with C++/WinRT](https://github.com/microsoft/microsoft-ui-xaml/issues/7579)
+
 
 Microsoft please FIX!

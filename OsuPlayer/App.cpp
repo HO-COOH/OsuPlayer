@@ -2,6 +2,7 @@
 
 #include "App.h"
 #include "MainPage.h"
+#include "Utils.ThemeHelper.h"
 //https://docs.microsoft.com/en-us/uwp/api/windows.ui.startscreen.jumplistitem?view=winrt-22000 for taskbar jump list
 using namespace winrt;
 using namespace Windows::ApplicationModel;
@@ -92,8 +93,10 @@ void App::OnLaunched(LaunchActivatedEventArgs const& e)
             }
             // Ensure the current window is active
             Window::Current().Activate();
+            
         }
     }
+    Utils::ThemeHelper::Initialize();
 }
 
 /// <summary>

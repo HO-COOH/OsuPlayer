@@ -32,8 +32,13 @@ namespace winrt::OsuPlayer::implementation
         void showMusicList();
         void showAlbumView();
         bool m_showList = true;
+        std::vector<ViewModel::SongItemViewModel::IsPlayingChanged_revoker> m_events;
+        static void ShowAlbumViewInfo(winrt::Windows::UI::Xaml::Controls::Grid infoGrid, bool isEvent = false);
+        static void HideAlbumViewInfo(winrt::Windows::UI::Xaml::Controls::Grid infoGrid, bool isEvent = false);
     public:
         void SongImage_ImageFailed(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::ExceptionRoutedEventArgs const& e);
+        void InfoGrid_Loaded(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void MusicListGrid_Loaded(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
     };
 }
 

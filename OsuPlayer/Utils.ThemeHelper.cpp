@@ -6,6 +6,19 @@
 #include <winrt/Windows.UI.h>
 #include "App.xaml.g.h"
 
+namespace winrt
+{
+    hstring to_hstring(winrt::Windows::UI::Xaml::ElementTheme theme)
+    {
+        switch (theme)
+        {
+            case winrt::Windows::UI::Xaml::ElementTheme::Default:   return L"Default";
+            case winrt::Windows::UI::Xaml::ElementTheme::Light:     return L"Light";
+            case winrt::Windows::UI::Xaml::ElementTheme::Dark:      return L"Dark";
+        }
+    }
+}
+
 namespace Utils
 {
 
@@ -31,11 +44,9 @@ namespace Utils
     void ThemeHelper::RootTheme(winrt::Windows::UI::Xaml::ElementTheme theme)
     {
         if (auto&& rootElement = winrt::Windows::UI::Xaml::Window::Current().Content().try_as<winrt::Windows::UI::Xaml::FrameworkElement>(); rootElement)
-        {
             rootElement.RequestedTheme(theme);
-        }
 
-        winrt::Windows::Storage::ApplicationData::Current().LocalSettings().Values().Insert(SelectedAppThemeKey, winrt::box_value(winrt::to_hstring(static_cast<int>(theme))));
+        winrt::Windows::Storage::ApplicationData::Current().LocalSettings().Values().Insert(SelectedAppThemeKey, winrt::box_value(winrt::to_hstring(theme)));
 
         UpdateTitlebarColors();
     }
@@ -44,10 +55,15 @@ namespace Utils
     {
         CurrentApplicationWindow = winrt::Windows::UI::Xaml::Window::Current();
 
-        if (auto savedTheme = winrt::Windows::Storage::ApplicationData::Current().LocalSettings().Values().Lookup(SelectedAppThemeKey); savedTheme)
+        if (auto savedTheme = winrt::Windows::Storage::ApplicationData::Current().LocalSettings().Values().TryLookup(SelectedAppThemeKey); savedTheme)
         {
-            //RootTheme(savedTheme.as<winrt::Windows::UI::Xaml::ElementTheme>());
-            RootTheme(winrt::Windows::UI::Xaml::ElementTheme{ std::stoi((std::wstring)savedTheme.as<winrt::hstring>()) });
+            auto str = winrt::unbox_value_or<winrt::hstring>(savedTheme, L"");
+            if (str == L"Default")
+                RootTheme(winrt::Windows::UI::Xaml::ElementTheme::Default);
+            else if (str == L"Light")
+                RootTheme(winrt::Windows::UI::Xaml::ElementTheme::Light);
+            else if (str == L"Dark")
+                RootTheme(winrt::Windows::UI::Xaml::ElementTheme::Dark);
         }
 
         uiSettingsEventRevoker = uiSettings.ColorValuesChanged(winrt::auto_revoke, &UiSettings_ColorValuesChanged);

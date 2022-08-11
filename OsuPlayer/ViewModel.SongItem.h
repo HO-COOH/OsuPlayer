@@ -29,6 +29,12 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         
 
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::hstring> Versions();
+        bool IsPlaying() { return m_isPlaying; }
+        void IsPlaying(bool isPlaying);
+
+        winrt::event_token IsPlayingChanged(winrt::Windows::Foundation::EventHandler<bool> const& handler) { return m_isPlayingChanged.add(handler); }
+        void IsPlayingChanged(winrt::event_token const& token) noexcept { m_isPlayingChanged.remove(token); }
+
         void PlayCurrent();
 
         winrt::Windows::Foundation::IAsyncAction ShowProperty();
@@ -44,6 +50,8 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage m_imageStream;
         int m_index{};
         int m_versionIndex{};
+        bool m_isPlaying = false;
+        winrt::event<winrt::Windows::Foundation::EventHandler<bool>> m_isPlayingChanged;
         winrt::Windows::Foundation::IInspectable m_modelPointer;
         winrt::Windows::Storage::StorageFile m_imageFile{ nullptr };
         

@@ -1715,26 +1715,26 @@ struct EventBase
      * @brief Type of the event.
      * @details Some events may be referred to by either a name or a number.
      */
-    std::variant<int, std::string> eventType;
+    int eventType;
 
     /**
      * @brief Start time of the event, in milliseconds from the beginning of the originalBeatmap's audio.
      */
     int startTime;
 
-    EventBase(std::string_view eventTypeStr, int startTime) : startTime{ startTime }
-    {
-        try
-        {
-            eventType = std::stoi(eventTypeStr.data());
-        }
-        catch (const std::invalid_argument&)
-        {
-            eventType = std::string{ eventTypeStr };
-        }
-    }
+    //EventBase(std::string_view eventTypeStr, int startTime) : startTime{ startTime }
+    //{
+    //    try
+    //    {
+    //        eventType = std::stoi(eventTypeStr.data());
+    //    }
+    //    catch (const std::invalid_argument&)
+    //    {
+    //        eventType = std::string{ eventTypeStr };
+    //    }
+    //}
 
-    EventBase(std::string_view eventTypeStr) : EventBase(eventTypeStr, 0) {}
+    //EventBase(std::string_view eventTypeStr) : EventBase(eventTypeStr, 0) {}
 
     EventBase(int eventType, int startTime) : eventType{ eventType }, startTime{ startTime }{}
 
@@ -1811,7 +1811,7 @@ struct Video final : EventBase
     int yOffset;
 
     Video(std::string_view video, std::string_view startTime, std::string_view fileName, int xOffset, int yOffset)
-        : EventBase{ video, std::stoi(startTime.data()) }, xOffset{ xOffset }, yOffset{ yOffset }
+        : EventBase{ 1, std::stoi(startTime.data()) }, xOffset{ xOffset }, yOffset{ yOffset }
     {}
 private:
     Video(std::array<std::string_view, 5> const& data)
@@ -1885,32 +1885,19 @@ struct Events
         while (details::GetLine(file, line))
         {
             auto [eventType, _, __] = details::SplitString<3>(line);
-            if (eventType == "0" ||
-                eventType == "Video" || eventType == "1" ||
-                eventType == "Break" || eventType == "2")
+            if (eventType == "0")
             {
-                try {
-                    auto const eventId = static_cast<Type>(std::atoi(eventType.data()));
-                    switch (eventId)
-                    {
-                    case Type::Background:
-                        backgrounds.emplace_back(line);
-                        break;
-                    case Type::Video:
-                        videos.emplace_back(line);
-                        break;
-                    case Type::Break:
-                        breaks.emplace_back(line);
-                        break;
-                    default:
-                        continue;
-                    }
-                }
-                catch (...)
-                {
-                    continue;
-                }
+                backgrounds.emplace_back(line);
             }
+            else if (eventType == "Video" || eventType == "1")
+            {
+                videos.emplace_back(line);
+            }
+            else if (eventType == "Break" || eventType == "2")
+            {
+                breaks.emplace_back(line);
+            }
+
         }
     }
 

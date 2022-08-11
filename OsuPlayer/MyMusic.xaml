@@ -217,6 +217,7 @@
         <x:String x:Key="AlbumIconGlyph">&#xEB9F;</x:String>
         <x:String x:Key="RightArrowIconGlyph">&#xE974;</x:String>
         <SymbolIcon x:Key="ClearIcon" Symbol="Clear"/>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Page.Resources>
 
     <Grid>
@@ -320,7 +321,7 @@
                                 </MenuFlyout>
                             </Grid.ContextFlyout>
 
-                            <Grid Grid.Column="1">
+                            <Grid x:Name="MusicListHeaderGrid" Grid.Column="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
@@ -328,16 +329,16 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Title" Grid.Column="0" Foreground="{StaticResource ListHeaderTextBrush}" Visibility="{x:Bind MusicList.Visibility, Mode=OneWay}"/>
-                                <TextBlock Text="Singer" Grid.Column="1" Foreground="{StaticResource ListHeaderTextBrush}" Visibility="{x:Bind MusicList.Visibility, Mode=OneWay}"/>
-                                <TextBlock Text="Mapper" Grid.Column="2" Foreground="{StaticResource ListHeaderTextBrush}" Visibility="{x:Bind MusicList.Visibility, Mode=OneWay}"/>
-                                <TextBlock Text="Length" Grid.Column="3" Foreground="{StaticResource ListHeaderTextBrush}" Visibility="{x:Bind MusicList.Visibility, Mode=OneWay}"/>
+                                <TextBlock Text="Title" Grid.Column="0"  Foreground="{StaticResource ListHeaderTextBrush}"/>
+                                <TextBlock Text="Singer" Grid.Column="1" Foreground="{StaticResource ListHeaderTextBrush}"/>
+                                <TextBlock Text="Mapper" Grid.Column="2" Foreground="{StaticResource ListHeaderTextBrush}"/>
+                                <TextBlock Text="Length" Grid.Column="3" Foreground="{StaticResource ListHeaderTextBrush}"/>
                                 <Grid Grid.Column="4">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Difficulty" Grid.Column="4" Foreground="{StaticResource ListHeaderTextBrush}" Visibility="{x:Bind MusicList.Visibility, Mode=OneWay}"/>
+                                    <TextBlock Text="Difficulty" Grid.Column="4" Foreground="{StaticResource ListHeaderTextBrush}"/>
 
                                 </Grid>
                             </Grid>
@@ -348,11 +349,11 @@
                                   Grid.Row="2"
                                   CanDragItems="True"
                                   CanReorderItems="True"
-                                  AllowDrop="True">
-
+                                  AllowDrop="True"
+                                  x:Load="False">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:Name="SongItemTemplate" x:DataType="viewModel:SongItemViewModel">
-                                    <Grid Height="30" IsDoubleTapEnabled="True" HorizontalAlignment="Stretch" DoubleTapped="{x:Bind PlayCurrent}">
+                                    <Grid x:Name="MusicListGrid" Height="30" IsDoubleTapEnabled="True" HorizontalAlignment="Stretch" DoubleTapped="{x:Bind PlayCurrent}" Loaded="MusicListGrid_Loaded">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="50"/>
                                             <ColumnDefinition Width="*"/>
@@ -422,7 +423,9 @@
                         </ListView>
 
                         <GridView x:Name="MusicAlbumView" Grid.Row="2"
-                                  ItemsSource="{x:Bind ViewModel.Songs, Mode=TwoWay}">
+                                  ItemsSource="{x:Bind ViewModel.Songs, Mode=TwoWay}"
+                                  x:Load="False"
+                                  >
                             <GridView.ItemContainerStyle>
                                 <Style TargetType="GridViewItem">
                                     <Setter Property="Margin" Value="5,5,5,5"/>
@@ -442,7 +445,7 @@
                                             <Image x:Name="SongImage" Width="320" Height="180" Stretch="UniformToFill" ImageFailed="SongImage_ImageFailed" Source="{x:Bind SongImage, Mode=OneWay}"/>
                                             <Grid x:Name="InfoGrid" VerticalAlignment="Bottom" 
                                                  Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}"
-                                                 CornerRadius="10" >
+                                                 CornerRadius="10" Loaded="InfoGrid_Loaded">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>
