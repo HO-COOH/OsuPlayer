@@ -8,6 +8,10 @@
 #include "Utils.h"
 #include "Model.Recent.h"
 
+#include "OsuParser.hpp"
+#include "ViewModelLocator.h"
+#include <chrono>
+
 using namespace Model;
 
 namespace winrt::OsuPlayer::ViewModel::implementation
@@ -46,11 +50,32 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		m_currentItemToPlay = item;
 		winrt::Windows::Media::Playback::MediaPlaybackItem playbackItem{songItemModel.Source()};
 		co_await updateForSMTC(playbackItem);
+
+		//Add timed metadata
+		//winrt::Windows::Media::Core::TimedMetadataTrack hitObjectsMeta{ L"0", L"en-US", winrt::Windows::Media::Core::TimedMetadataKind::Data };
+		//hitObjectsMeta.Label(L"Custom data track");
+		//hitObjectsMeta.CueEntered([](auto, auto) {});
+		//for (auto const& hitObject : songItemModel.m_beatmaps[item.SelectedVersionIndex()].originalFile->hitObjects)
+		//{
+		//	//...
+		//}
+		////Test
+		//winrt::Windows::Media::Core::DataCue cue;
+		//cue.StartTime(std::chrono::seconds{1 });
+		//cue.Duration(std::chrono::seconds{ 1 });
+		//cue.Data(winrt::hstring{ L"Me" });
+
+		//playbackItem.Source().ExternalTimedMetadataTracks().Append(hitObjectsMeta);
+		//playbackItem.TimedMetadataTracks().SetPresentationMode(
+		//	0, 
+		//	winrt::Windows::Media::Playback::TimedMetadataTrackPresentationMode::ApplicationPresented);
+
 		m_songPlayer.Source(playbackItem);
 		m_songPlayer.Play();
 		
 		//update ui
 		raisePropertyChange(L"SongLength");
+		raisePropertyChange(L"HasItems");
 
 		//update recent data
 		auto& recentInstance = Model::Recent::GetInstance();
@@ -72,12 +97,39 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
 	PlayMod PlayerViewModel::Mod()
 	{
-		return PlayMod();
+		return m_mod;
 	}
 
 	void PlayerViewModel::Mod(PlayMod mod)
 	{
+		if (mod != m_mod)
+		{
+			m_mod = mod;
+			raisePropertyChange(L"ModString");
+			raisePropertyChange(L"IsModEnabled");
+		}
 	}
+
+	bool PlayerViewModel::IsModEnabled()
+	{
+		return m_mod != PlayMod::Normal;
+	}
+
+	void PlayerViewModel::IsModEnabled(bool enable)
+	{
+	}
+
+	winrt::hstring PlayerViewModel::ModString()
+	{
+		switch (m_mod)
+		{
+			case PlayMod::HalfTime:		return L"HalfTime";
+			case PlayMod::DoubleTime:	return L"DoubleTime";
+			case PlayMod::NightCore:	return L"NightCore";
+			default:					return L"NoMod";
+		}
+	}
+
 
 	bool PlayerViewModel::UseSkinHitsound()
 	{
@@ -110,31 +162,47 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	{
 		m_songPlayer.Volume(static_cast<double>(volume) / 100.0);
 		m_hitSoundPlayer.Volume(static_cast<double>(volume) / 100.0);
+		raisePropertyChange(L"Volume");
 	}
 
-	int implementation::PlayerViewModel::SongVolume()
+	int PlayerViewModel::SongVolume()
 	{
 		return 0;
 	}
 
-	void implementation::PlayerViewModel::SongVolume(int songVolume)
+	void PlayerViewModel::SongVolume(int songVolume)
 	{
 	}
 
-	int implementation::PlayerViewModel::HitsoundVolume()
+	int PlayerViewModel::HitsoundVolume()
 	{
 		return 0;
 	}
 
-	void implementation::PlayerViewModel::HitsoundVolume(int hitsoundVolume)
+	void PlayerViewModel::HitsoundVolume(int hitsoundVolume)
 	{
 	}
 
-	void implementation::PlayerViewModel::Mute()
+	void PlayerViewModel::Mute()
 	{
+		if (m_muteInfo.isMute)
+		{
+			m_muteInfo.songVolumeBefore = m_songPlayer.Volume();
+			m_muteInfo.hitsoundVolumeBefore = m_hitSoundPlayer.Volume();
+			m_muteInfo.globalVolumeBefore = Volume();
+			Volume(0);
+			m_muteInfo.isMute = true;
+		}
+		else
+		{
+			m_songPlayer.Volume(m_muteInfo.songVolumeBefore);
+			m_hitSoundPlayer.Volume(m_muteInfo.hitsoundVolumeBefore);
+			Volume(m_muteInfo.globalVolumeBefore);
+			m_muteInfo.isMute = false;
+		}
 	}
 
-	void implementation::PlayerViewModel::Save()
+	void PlayerViewModel::Save()
 	{
 		auto settings = winrt::Windows::Storage::ApplicationData::Current().LocalSettings().Values();
 		settings.Insert(L"GlobalVolume", winrt::box_value(Volume()));
@@ -151,6 +219,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	{
 		Save();
 	}
+
 	winrt::Windows::Foundation::IAsyncAction PlayerViewModel::updateForSMTC(winrt::Windows::Media::Playback::MediaPlaybackItem item)
 	{
 		auto properties = item.GetDisplayProperties();
@@ -167,5 +236,11 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	}
 	void PlayerViewModel::updateForSMTC()
 	{
+
+	}
+
+	void PlayerViewModel::playHitsound(HitObject const& hitObject)
+	{
+
 	}
 }

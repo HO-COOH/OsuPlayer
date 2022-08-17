@@ -1,4 +1,5 @@
 import "ViewModel.Player.idl";
+import "ViewModel.Settings.idl";
 
 namespace OsuPlayer
 {
@@ -12,5 +13,6 @@ namespace OsuPlayer
         Windows.UI.Xaml.Controls.Slider HitsoundVolumeSlider{ get; };
         //The view-model
         OsuPlayer.ViewModel.PlayerViewModel ViewModel{ get; };
+        OsuPlayer.ViewModel.SettingsViewModel SettingsViewModel{ get; };
     }
 }

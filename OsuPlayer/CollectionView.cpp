@@ -16,8 +16,8 @@ namespace winrt::OsuPlayer::implementation
         InitializeComponent();
     }
 
-    ViewModel::MyMusicViewModel CollectionView::ViewModel()
+    winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::CollectionItem> CollectionView::Collections()
     {
-        return ViewModelLocator::Current().MyMusicViewModel();
+        return ViewModelLocator::Current().Collections();
     }
 }

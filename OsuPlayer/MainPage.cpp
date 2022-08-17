@@ -7,6 +7,7 @@
 #include "MainPage.g.cpp"
 #endif
 #include "ViewModelLocator.h"
+#include <winrt/Windows.ApplicationModel.Resources.h>
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -18,9 +19,9 @@ namespace winrt::OsuPlayer::implementation
     {
         InitializeComponent();
 
-        MyMusicViewModel().Collections().VectorChanged([this](
-            winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::CollectionItem> sender,
-            winrt::Windows::Foundation::Collections::IVectorChangedEventArgs args)
+        ViewModelLocator::Current().Collections().VectorChanged([this](
+                winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::CollectionItem> sender,
+                winrt::Windows::Foundation::Collections::IVectorChangedEventArgs args)
             {
 
             }
@@ -29,8 +30,6 @@ namespace winrt::OsuPlayer::implementation
         MyMusicModel::GetInstance().onIndexingFinished(
             [this](std::vector<SongItemModel> const& songs)
             {
-                //m_navigationItems.GetAt(0).Value(songs.size());
-                //m_navigationItems.GetAt(2).Value(MyMusicModel::GetInstance().m_collections.size());
                 MyMusicInfoBadge().Value(songs.size());
                 CollectionsInfoBadge().Value(MyMusicModel::GetInstance().m_collections.size());
 
@@ -40,15 +39,20 @@ namespace winrt::OsuPlayer::implementation
                 for (auto collection : MyMusicModel::GetInstance().m_collections)
                 {
                     winrt::Microsoft::UI::Xaml::Controls::NavigationViewItem item;
-                    item.Content(winrt::box_value(winrt::to_hstring(L"CollectionItem")));
-                    item.Tag(winrt::box_value(winrt::to_hstring(L"CollectionItem")));
+                    item.Content(winrt::box_value(winrt::to_hstring(collection.m_name)));
+                    item.Tag(winrt::box_value(L"CollectionItemPage"));
                     item.Icon(winrt::Windows::UI::Xaml::Controls::SymbolIcon(winrt::Windows::UI::Xaml::Controls::Symbol::List));
+                    winrt::Microsoft::UI::Xaml::Controls::InfoBadge badge;
+                    badge.Value(collection.m_beatmapPtr.size());
+                    item.InfoBadge(badge);
                     children.Append(item);
                 }
-                if (children.Size() > 1)
-                    children.RemoveAt(0);
                 OutputDebugString(winrt::to_hstring(children.Size()).data());
             }
+        );
+
+        ViewModelLocator::Current().MyMusicViewModel().ListName(
+            winrt::Windows::ApplicationModel::Resources::ResourceLoader::GetForCurrentView().GetString(L"MyMusicTitle")
         );
     }
 
@@ -97,10 +101,54 @@ namespace winrt::OsuPlayer::implementation
             OutputDebugString(winrt::get_class_name(args.InvokedItemContainer()).data());
             auto&& invoked = args.InvokedItemContainer().as<winrt::Microsoft::UI::Xaml::Controls::NavigationViewItem>();
             //other navigation items here
+
+            //Collections Page
+            if (winrt::unbox_value_or<winrt::hstring>(invoked.Tag(), L"") == L"CollectionItemPage")
+            {
+                //auto collectionPageViewModel = ViewModelLocator::Current().CollectionPageViewModel();
+                //auto collectionItem = ViewModelLocator::Current().CollectionsNameMap.at(winrt::unbox_value<winrt::hstring>(invoked.Content()));
+                auto collectionPageViewModel = ViewModelLocator::Current().getCollectionPageByName(winrt::unbox_value<winrt::hstring>(invoked.Content()));
+                MyMusic collectionPage;
+                collectionPage.ViewModel(collectionPageViewModel);
+                frame.Content(collectionPage);
+            }
         }
     }
     ViewModel::MyMusicViewModel MainPage::MyMusicViewModel()
     {
         return ViewModelLocator::Current().MyMusicViewModel();
     }
+
+    void MainPage::AddCollectionButton_Click(
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender, 
+        [[maybe_unused]]winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    {
+        winrt::Microsoft::UI::Xaml::Controls::NavigationViewItem newCollectionItem;
+        winrt::Windows::UI::Xaml::Controls::TextBox nameInputBox;
+        auto navigationMenuItems = NavigationViewControl().MenuItems();
+        nameInputBox.Width(CollectionNavigationItem().Width());
+        nameInputBox.KeyDown(
+            [this](winrt::Windows::Foundation::IInspectable sender, winrt::Windows::UI::Xaml::Input::KeyRoutedEventArgs e)
+            {
+                auto inputBox = sender.as<winrt::Windows::UI::Xaml::Controls::TextBox>();
+                if (e.Key() != winrt::Windows::System::VirtualKey::Enter)
+                    return;
+
+                winrt::Microsoft::UI::Xaml::Controls::NavigationViewItem subItem;
+                subItem.Content(winrt::box_value(inputBox.Text()));
+                subItem.ContextFlyout(
+                    Resources()
+                    .Lookup(winrt::box_value(L"CollectionMenu"))
+                    .as<winrt::Windows::UI::Xaml::Controls::MenuFlyout>()
+                );
+                CollectionNavigationItem().MenuItems().Append(subItem);
+                CollectionNavigationItem().IsExpanded(true);
+                CollectionsInfoBadge().Value(CollectionsInfoBadge().Value() + 1);
+                NavigationViewControl().MenuItems().RemoveAtEnd();
+            }
+        );
+        newCollectionItem.Content(nameInputBox);
+        navigationMenuItems.Append(newCollectionItem);
+    }
+
 }

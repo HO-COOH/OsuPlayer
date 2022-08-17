@@ -25,6 +25,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         Mod DefaultMod() const;
         void DefaultMod(Mod mod);
 
+        bool HitsoundGlobalEnabled() { return m_hitsoundGlobalEnabled; }
+        void HitsoundGlobalEnabled(bool enabled);
+
         winrt::Windows::Storage::StorageFolder SelectedSkin();
         void SelectedSkin(winrt::Windows::Storage::StorageFolder selectedSkin);
 
@@ -51,7 +54,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         //Methods
         winrt::Windows::Foundation::IAsyncOperation<AddOsuFolderResult> AddOsuPath();
 
-
+        winrt::hstring ExperimentSettingHeaderText();
 
         
     private:
@@ -64,6 +67,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         int m_jumplistRecentSongs;
         int m_jumplistRecentCollections;
         bool m_allowModifyOsuData;
+        bool m_hitsoundGlobalEnabled;
         static winrt::Windows::Storage::ApplicationDataContainer m_localSettings;
         winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::OsuPathItemViewModel> m_osuPathItems = winrt::single_threaded_observable_vector<ViewModel::OsuPathItemViewModel>();
         void setTheme();

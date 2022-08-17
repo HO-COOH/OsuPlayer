@@ -37,6 +37,8 @@
                 <Setter Property="HorizontalAlignment" Value="Right"/>
             </Style.Setters>
         </Style>
+
+        <local:ReferenceToBoolConverter x:Key="ReferenceToBoolConverter"/>
     </UserControl.Resources>
 
     <Grid HorizontalAlignment="Stretch">
@@ -77,7 +79,7 @@
                                 <EntranceThemeTransition/>
                             </TransitionCollection>
                         </muxc:SplitButton.ContentTransitions>
-                        <FontIcon Glyph="{x:Bind ViewModel.Volume, Converter={StaticResource VolumeToIconConverter}}"/>
+                        <FontIcon Glyph="{x:Bind ViewModel.Volume, Converter={StaticResource VolumeToIconConverter}, Mode=OneWay}"/>
                         <muxc:SplitButton.Flyout>
                             <Flyout Placement="Top" Closed="{x:Bind ViewModel.Save}">
                                 <muxc:Expander x:Name="VolumeFrame" ExpandDirection="Up">
@@ -146,16 +148,20 @@
 
         </RelativePanel>
         <!-- Mods -->
-        <StackPanel VerticalAlignment="Center" Margin="0, 0, 0, 0" Grid.Column="3">
-            <CheckBox x:Name="HalfTimeCheckbox" Content="HT" Checked="HalftimeCheckbox_Checked" Unchecked="HalfTimeCheckbox_Unchecked"
-                      ToolTipService.ToolTip="Less Zoom"/>
-            <CheckBox x:Name="DoubleTimeCheckbox" Content="DT" Checked="DoubleTimeCheckbox_Checked" Unchecked="DoubleTimeCheckbox_Unchecked"
-                      ToolTipService.ToolTip="Zoooooooooom..."/>
-            <CheckBox x:Name="NightCoreCheckbox" Content="NC" Checked="NightCoreCheckbox_Checked" Unchecked="NightCoreCheckbox_Unchecked"
-                      ToolTipService.ToolTip="Uguuuuuuuuuu..."/>
-        </StackPanel>
+        <muxc:ToggleSplitButton x:Name="DefaultModButton" IsChecked="{x:Bind ViewModel.IsModEnabled, Mode=TwoWay}" 
+                                Grid.Column="3" Margin="0,0,100,0" IsEnabled="{x:Bind ViewModel.HasItems, Mode=OneWay}">
+            <TextBlock Text="{x:Bind ViewModel.ModString, Mode=OneWay}"/>
+            <muxc:ToggleSplitButton.Flyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem x:Uid="HalfTimeItem" Click="HalfTimeItem_Click"/>
+                    <MenuFlyoutItem x:Uid="DoubleTimeItem" Click="DoubleTimeItem_Click"/>
+                    <MenuFlyoutItem x:Uid="NightCoreItem" Click="NightCoreItem_Click"/>
+                </MenuFlyout>
+            </muxc:ToggleSplitButton.Flyout>
+        </muxc:ToggleSplitButton>
 
-        <CheckBox x:Name="UseSkinHitsoundCheckbox" Content="Use skin hitsound" Checked="UseSkinHitsoundCheckbox_Checked" Unchecked="UseSkinHitsoundCheckbox_Unchecked" Grid.Column="4"/>
+        <CheckBox x:Name="UseSkinHitsoundCheckbox" Content="Use skin hitsound" Checked="UseSkinHitsoundCheckbox_Checked" 
+                  Unchecked="UseSkinHitsoundCheckbox_Unchecked" Grid.Column="4" IsEnabled="{x:Bind SettingsViewModel.HitsoundGlobalEnabled, Mode=OneWay}"/>
     </Grid>
 
 </UserControl>

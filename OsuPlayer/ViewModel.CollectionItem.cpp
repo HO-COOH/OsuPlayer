@@ -23,6 +23,17 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	void CollectionItem::ModelPointer(winrt::Windows::Foundation::IInspectable modelPointer)
 	{
 		m_modelPointer = reinterpret_cast<Model::CollectionItemModel*>(winrt::unbox_value<size_t>(modelPointer));
+		for (auto songItem : m_modelPointer->m_songItemPtr)
+		{
+			SongItemViewModel viewModel;
+			auto versions = viewModel.Versions();
+			for (auto const& difficulty : songItem->Difficulties())
+			{
+				versions.Append(difficulty);
+			}
+			viewModel.ModelPointer(winrt::box_value<size_t>(reinterpret_cast<size_t>(songItem)));
+			m_songItems.Append(viewModel);
+		}
 	}
 
 	int CollectionItem::Count()

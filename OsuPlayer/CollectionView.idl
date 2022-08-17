@@ -1,4 +1,4 @@
-import "ViewModel.MyMusic.idl";
+import "ViewModel.CollectionItem.idl";
 namespace OsuPlayer
 {
     [default_interface]
@@ -6,6 +6,6 @@ namespace OsuPlayer
     {
         CollectionView();
 
-        OsuPlayer.ViewModel.MyMusicViewModel ViewModel{ get; };
+        Windows.Foundation.Collections.IObservableVector<OsuPlayer.ViewModel.CollectionItem> Collections{ get; };
     }
 }

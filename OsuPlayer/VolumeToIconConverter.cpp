@@ -13,7 +13,7 @@ namespace winrt::OsuPlayer::implementation
         [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& parameter, 
         [[maybe_unused]]winrt::hstring const& language)
     {
-        constexpr wchar_t const* MuteGlyph = L"&#xE74F;";
+        constexpr wchar_t const* MuteGlyph = L"\uE74F";
         constexpr std::array<wchar_t const*, 4> VolumeGlyphs
         {
             L"\uE992",

@@ -5,6 +5,7 @@
 #include <winrt/Windows.Media.Playback.h>
 #include "Utils.PropertyChangeHelper.hpp"
 
+class HitObject;
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
     struct PlayerViewModel : PlayerViewModelT<PlayerViewModel>, Utils::PropertyChangeHelper<PlayerViewModel>
@@ -18,6 +19,11 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         PlayMod Mod();
         void Mod(PlayMod mod);
+        
+        bool IsModEnabled();
+        void IsModEnabled(bool enable);
+
+        winrt::hstring ModString();
 
         bool UseSkinHitsound();
         void UseSkinHitsound(bool useSkinHitsound);
@@ -36,8 +42,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         void Save();
 
-        winrt::Windows::UI::Xaml::Media::ImageSource ImageSource();
+        bool HasItems() { return m_currentItemToPlay != nullptr; }
 
+        winrt::Windows::UI::Xaml::Media::ImageSource ImageSource();
         ~PlayerViewModel();
     private:
         //Update the System Media Transport Controls by directly setting properties to the PlayBackItem
@@ -46,11 +53,23 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         //Update the System Media Transport Controls by directly setting SystemMediaTransportControlsDisplayUpdater
         void updateForSMTC();
 
+        //Play the hitsound of the hitObject
+        void playHitsound(HitObject const& hitObject);
+
         winrt::Windows::Media::Playback::MediaPlayer m_songPlayer;
         winrt::Windows::Media::Playback::MediaPlayer m_hitSoundPlayer;
         ViewModel::SongItemViewModel m_currentItemToPlay{ nullptr };
         int m_progress{};
         int m_length{};
+        PlayMod m_mod{};
+        
+        struct MuteVolumeInfo
+        {
+            int songVolumeBefore{};
+            int hitsoundVolumeBefore{};
+            int globalVolumeBefore{};
+            bool isMute = false;
+        } m_muteInfo;
     };
 }
 

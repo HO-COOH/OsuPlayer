@@ -16,102 +16,56 @@ namespace winrt::OsuPlayer::implementation
         InitializeComponent();
     }
 
-
-    void Player::HalftimeCheckbox_Checked(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        handlePlayMod(ViewModel::PlayMod::HalfTime);
-    }
-
-
-    void Player::DoubleTimeCheckbox_Checked(
-        winrt::Windows::Foundation::IInspectable const& sender,
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        handlePlayMod(ViewModel::PlayMod::DoubleTime);
-    }
-
-
-    void Player::NightCoreCheckbox_Checked(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        handlePlayMod(ViewModel::PlayMod::NightCore);
-    }
-
-
-    void Player::UseSkinHitsoundCheckbox_Checked(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        ViewModel().UseSkinHitsound(true);
-    }
-
     void Player::handlePlayMod(ViewModel::PlayMod newPlayMod)
     {
-        if (newPlayMod == ViewModel().Mod())
-            return;
-
-        switch (newPlayMod)
-        {
-            case ViewModel::PlayMod::HalfTime:
-                HalfTimeCheckbox().IsChecked(true);
-                DoubleTimeCheckbox().IsChecked(false);
-                NightCoreCheckbox().IsChecked(false);
-                break;
-            case ViewModel::PlayMod::DoubleTime:
-                HalfTimeCheckbox().IsChecked(false);
-                DoubleTimeCheckbox().IsChecked(true);
-                NightCoreCheckbox().IsChecked(false);
-                break;
-            case ViewModel::PlayMod::NightCore:
-                HalfTimeCheckbox().IsChecked(false);
-                DoubleTimeCheckbox().IsChecked(false);
-                NightCoreCheckbox().IsChecked(true);
-                break;
-            default:
-                HalfTimeCheckbox().IsChecked(false);
-                DoubleTimeCheckbox().IsChecked(false);
-                NightCoreCheckbox().IsChecked(false);
-                break;
-        }
         ViewModel().Mod(newPlayMod);
-    }
-
-
-    void Player::HalfTimeCheckbox_Unchecked(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        handlePlayMod(ViewModel::PlayMod::Normal);
-    }
-
-
-    void Player::DoubleTimeCheckbox_Unchecked(
-        winrt::Windows::Foundation::IInspectable const& sender,
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        handlePlayMod(ViewModel::PlayMod::Normal);
-    }
-
-
-    void Player::NightCoreCheckbox_Unchecked(
-        winrt::Windows::Foundation::IInspectable const& sender,
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        handlePlayMod(ViewModel::PlayMod::Normal);
-    }
-
-    void Player::UseSkinHitsoundCheckbox_Unchecked(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-    {
-        ViewModel().UseSkinHitsound(false);
     }
 
     OsuPlayer::ViewModel::PlayerViewModel Player::ViewModel()
     {
         return ViewModelLocator::Current().PlayerViewModel();
     }
+    OsuPlayer::ViewModel::SettingsViewModel Player::SettingsViewModel()
+    {
+        return ViewModelLocator::Current().SettingsViewModel();
+    }
+
+    void Player::HalfTimeItem_Click(
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender, 
+        [[maybe_unused]]winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    {
+        handlePlayMod(ViewModel::PlayMod::HalfTime);
+    }
+
+
+    void Player::DoubleTimeItem_Click(
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender, 
+        [[maybe_unused]]winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    {
+        handlePlayMod(ViewModel::PlayMod::DoubleTime);
+    }
+
+    void Player::NightCoreItem_Click(
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender, 
+        [[maybe_unused]]winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    {
+        handlePlayMod(ViewModel::PlayMod::NightCore);
+    }
+
+
+    void winrt::OsuPlayer::implementation::Player::UseSkinHitsoundCheckbox_Checked(
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender, 
+        [[maybe_unused]]winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    {
+
+    }
+
+
+    void winrt::OsuPlayer::implementation::Player::UseSkinHitsoundCheckbox_Unchecked(
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender, 
+        [[maybe_unused]]winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    {
+
+    }
+
 }

@@ -29,6 +29,7 @@ namespace OsuPlayer.ViewModel
         Int32 ThemeIndex{ get; set; };
         Boolean IsModEnabled{ get; set; };
         Mod DefaultMod{ get; set; };
+        Boolean HitsoundGlobalEnabled{ get; set; };
         Windows.Storage.StorageFolder SelectedSkin{ get; set; };
 
         Int32 OsuPathActionIndex{ get; set; };
@@ -41,5 +42,6 @@ namespace OsuPlayer.ViewModel
         Windows.Foundation.Collections.IObservableVector<OsuPlayer.ViewModel.OsuPathItemViewModel> OsuPaths{ get; };
         
         //Windows.Storage.StorageFolder SelectedSkin{ get; set; };
+        String ExperimentSettingHeaderText{ get; };
     }
 }

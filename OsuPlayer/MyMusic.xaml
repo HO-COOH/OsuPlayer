@@ -233,7 +233,7 @@
                 <ColumnDefinition Width="375*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock x:Uid="MyMusicText" FontSize="50" Margin="20,40,20,40" Grid.Column="0" Grid.ColumnSpan="2"/>
+            <TextBlock Text="{x:Bind ViewModel.ListName}" FontSize="50" Margin="20,40,20,40" Grid.Column="0" Grid.ColumnSpan="2"/>
 
             <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,50,0">
                 <ComboBox 
@@ -350,7 +350,7 @@
                                   CanDragItems="True"
                                   CanReorderItems="True"
                                   AllowDrop="True"
-                                  x:Load="False">
+                                  >
                             <ListView.ItemTemplate>
                                 <DataTemplate x:Name="SongItemTemplate" x:DataType="viewModel:SongItemViewModel">
                                     <Grid x:Name="MusicListGrid" Height="30" IsDoubleTapEnabled="True" HorizontalAlignment="Stretch" DoubleTapped="{x:Bind PlayCurrent}" Loaded="MusicListGrid_Loaded">
@@ -400,12 +400,12 @@
 
                                                 <MenuFlyoutSeparator/>
 
-                                                <MenuFlyoutItem x:Uid="MoveToMenuItem" Text="Move to">
-                                                    <MenuFlyoutItem.Icon>
+                                                <MenuFlyoutSubItem x:Name="MoveToMenuItem" x:Uid="MoveToMenuItem" Text="Move to" Loading="MoveToMenuItem_Loading">
+                                                    <MenuFlyoutSubItem.Icon>
                                                         <FontIcon Glyph="{StaticResource MoveToIconGlyph}"/>
-                                                    </MenuFlyoutItem.Icon>
-                                                   
-                                                </MenuFlyoutItem>
+                                                    </MenuFlyoutSubItem.Icon>
+                                                    <MenuFlyoutItem x:Name="NewCollectionMenuItem" Text="New collection" Click="NewCollectionMenuItem_Click"/>
+                                                </MenuFlyoutSubItem>
 
                                                 <MenuFlyoutSeparator/>
 
@@ -423,9 +423,7 @@
                         </ListView>
 
                         <GridView x:Name="MusicAlbumView" Grid.Row="2"
-                                  ItemsSource="{x:Bind ViewModel.Songs, Mode=TwoWay}"
-                                  x:Load="False"
-                                  >
+                                  ItemsSource="{x:Bind ViewModel.Songs, Mode=TwoWay}">
                             <GridView.ItemContainerStyle>
                                 <Style TargetType="GridViewItem">
                                     <Setter Property="Margin" Value="5,5,5,5"/>

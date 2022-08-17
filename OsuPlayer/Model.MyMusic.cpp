@@ -178,38 +178,63 @@ namespace Model
     {
         //handle collections
         {
-            auto const& collectionFile = Folders::GetInstance().m_collectionDbs;
+            auto const& collectionFiles = Folders::GetInstance().m_collectionDbs;
             auto const& osuDbFile = Folders::GetInstance().m_osuDbs;
 
-            assert(collectionFile.size() == osuDbFile.size());
+            assert(collectionFiles.size() == osuDbFile.size());
+
             for (auto i = 0; i < osuDbFile.size(); ++i)
             {
                 Utils::StreambufAdaptor osuDbBuf{ osuDbFile[i] };
                 m_osuDbs.emplace_back(osuDbBuf.getBuffer());
-                auto collections = GetCollectionItemModel(m_osuDbs.back().getBeatmapMd5Map(), collectionFile[i]);
-                std::move(collections.begin(), collections.end(), std::back_inserter(m_collections));
             }
 
-            m_songs.reserve(m_osuDbs.back().beatmaps.size());
-            for (auto const& beatmap : m_osuDbs.back().beatmaps)
+            std::unordered_map<std::string_view, int> md5Maps;
             {
-                if (m_songs.empty() || m_songs.back().m_beatmaps.empty())
+                m_songs.reserve(m_osuDbs.back().beatmaps.size());
+                for (auto const& beatmap : m_osuDbs.back().beatmaps)
                 {
-                    //Make a new song item
-                    m_songs.emplace_back();
-                    m_songs.back().m_beatmaps.emplace_back(&beatmap);
-                }
-                else
-                {
-                    auto& songBeatmap = m_songs.back().m_beatmaps;
-                    if (songBeatmap.back().beatmapPtr->beatmapId == beatmap.beatmapId)
-                        songBeatmap.push_back(BeatmapInfo{ &beatmap });
-                    else
+                    if (m_songs.empty() || m_songs.back().m_beatmaps.empty())
                     {
                         //Make a new song item
                         m_songs.emplace_back();
                         m_songs.back().m_beatmaps.emplace_back(&beatmap);
                     }
+                    else
+                    {
+                        auto& songBeatmap = m_songs.back().m_beatmaps;
+                        if (songBeatmap.back().beatmapPtr->beatmapId == beatmap.beatmapId)
+                        {
+                            songBeatmap.push_back(BeatmapInfo{ &beatmap });
+                        }
+                        else
+                        {
+                            //Make a new song item
+                            m_songs.emplace_back();
+                            m_songs.back().m_beatmaps.emplace_back(&beatmap);
+                        }
+                    }
+                    md5Maps[beatmap.md5] = m_songs.size() - 1;
+                }
+            }
+
+            for (auto const& collectionFile : collectionFiles)
+            {
+                Utils::StreambufAdaptor buf{ collectionFile };
+                Db::Collections collectionDb{ buf.getBuffer() };
+                for (auto const& collection : collectionDb.collections)
+                {
+                    CollectionItemModel model
+                    {
+                        .m_name = collection.name,
+                    };
+                    for (auto const& beatmap : collection.md5s)
+                    {
+                        auto iter = md5Maps.find(beatmap);
+                        if(iter != md5Maps.cend())
+                            model.m_songItemPtr.emplace_back(&m_songs[iter->second]);
+                    }
+                    m_collections.emplace_back(model);
                 }
             }
         }

@@ -165,11 +165,20 @@
   <data name="DefaultSkinText.Text" xml:space="preserve">
     <value>Use the hitsound from this skin:</value>
   </data>
+  <data name="DeleteAllMenuItem.Text" xml:space="preserve">
+    <value>Delete All</value>
+  </data>
   <data name="DeleteMenuItem.Text" xml:space="preserve">
     <value>Delete this beatmap</value>
   </data>
+  <data name="DisableText" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
   <data name="DoubleTimeItem.Text" xml:space="preserve">
     <value>DoubleTime</value>
+  </data>
+  <data name="EnableText" xml:space="preserve">
+    <value>Enabled</value>
   </data>
   <data name="ExperimentalSetting.HelpText" xml:space="preserve">
     <value>!You are on your own risk!</value>
@@ -255,7 +264,7 @@
   <data name="MyMusicNavigationItem.Content" xml:space="preserve">
     <value>My Music</value>
   </data>
-  <data name="MyMusicText.Text" xml:space="preserve">
+  <data name="MyMusicTitle" xml:space="preserve">
     <value>My Music</value>
   </data>
   <data name="NavigationSearch.PlaceholderText" xml:space="preserve">

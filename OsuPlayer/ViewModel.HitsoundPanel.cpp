@@ -10,9 +10,16 @@
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Media.Core.h>
 #include <Utils.Log.hpp>
+#include <Utils.h>
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
+	HitsoundSample::HitsoundSample(winrt::hstring name) : 
+		m_name{ name },
+		m_volume{ winrt::unbox_value_or<int>(Utils::GetSettings().Values().TryLookup(m_name), 100)}
+	{
+	}
+
 	HitsoundSampleSet::HitsoundSampleSet(winrt::hstring sampleSetName) :
 		m_hitNormal{sampleSetName + L"-hitnormal"},
 		m_hitFinish{sampleSetName + L"-hitfinish"},
@@ -27,6 +34,12 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		s_player.Source(nullptr);
 		s_player.Source(winrt::Windows::Media::Core::MediaSource::CreateFromStorageFile(m_hitsoundFile));
 		s_player.Play();
+	}
+
+	void HitsoundSample::Save()
+	{
+		assert(!m_name.empty());
+		Utils::GetSettings().Values().Insert(m_name, winrt::box_value(m_volume));
 	}
 
 	winrt::Windows::Foundation::IAsyncAction HitsoundSample::Update()
@@ -47,6 +60,8 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		}
 		raisePropertyChange(L"IsAvailable");
 	}
+
+
 
 	winrt::Windows::Foundation::IAsyncAction HitsoundPanelViewModel::Update()
 	{

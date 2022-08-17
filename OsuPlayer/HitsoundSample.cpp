@@ -38,16 +38,11 @@ namespace winrt::OsuPlayer::implementation
     {
         return m_sampleProperty;
     }
-}
 
 
-void winrt::OsuPlayer::implementation::HitsoundSample::PlayButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-{
+    void HitsoundSample::FileButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    {
 
-}
-
-
-void winrt::OsuPlayer::implementation::HitsoundSample::FileButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
-{
+    }
 
 }

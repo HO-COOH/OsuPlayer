@@ -165,11 +165,20 @@
   <data name="DefaultSkinText.Text" xml:space="preserve">
     <value>使用这个皮肤中的打击音效</value>
   </data>
+  <data name="DeleteAllMenuItem.Text" xml:space="preserve">
+    <value>删除全部</value>
+  </data>
   <data name="DeleteMenuItem.Text" xml:space="preserve">
     <value>删除</value>
   </data>
+  <data name="DisableText" xml:space="preserve">
+    <value>禁用</value>
+  </data>
   <data name="DoubleTimeItem.Text" xml:space="preserve">
     <value>DoubleTime</value>
+  </data>
+  <data name="EnableText" xml:space="preserve">
+    <value>启用</value>
   </data>
   <data name="ExperimentalSetting.HelpText" xml:space="preserve">
     <value>！开启后果自负！</value>
@@ -255,7 +264,7 @@
   <data name="MyMusicNavigationItem.Content" xml:space="preserve">
     <value>我的音乐</value>
   </data>
-  <data name="MyMusicText.Text" xml:space="preserve">
+  <data name="MyMusicTitle" xml:space="preserve">
     <value>我的音乐</value>
   </data>
   <data name="NavigationSearch.PlaceholderText" xml:space="preserve">

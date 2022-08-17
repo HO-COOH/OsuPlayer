@@ -19,4 +19,4 @@
 #include <winrt/Microsoft.UI.Xaml.Controls.h>
 #include <winrt/Microsoft.UI.Xaml.Controls.Primitives.h>
 #include <winrt/Microsoft.Graphics.Canvas.Effects.h>
-
+#include <winrt/Windows.UI.Xaml.Input.h>

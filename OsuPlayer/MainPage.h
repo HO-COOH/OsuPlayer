@@ -18,6 +18,7 @@ namespace winrt::OsuPlayer::implementation
         Player player() { return {}; }
         ViewModel::MyMusicViewModel MyMusicViewModel();
         void CollectionNavigationItem_PointerPressed(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::Input::PointerRoutedEventArgs const& e);
+        void AddCollectionButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
     };
 }
 

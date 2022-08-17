@@ -112,6 +112,9 @@ namespace winrt::OsuPlayer::implementation
         winrt::Windows::UI::Xaml::Documents::Paragraph paragraph;
         for (auto tag : Split(std::wstring_view{ str }, L' '))
         {
+            if (tag == L"")
+                continue;   //otherwise exception on constructing empty uri
+
             winrt::Windows::UI::Xaml::Documents::Hyperlink link;
             winrt::Windows::UI::Xaml::Documents::Run run[2];
             run[0].Text(tag);   //This is for showing the link's text
@@ -141,12 +144,19 @@ namespace winrt::OsuPlayer::implementation
         
         winrt::Windows::UI::Xaml::Documents::Hyperlink link;
 
-        switch (ViewModelLocator::Current().SettingsViewModel().LinkActionIndex())
+        try
         {
-            case 1: link.Click({ this, &SongItemDialog::CopyOnLinkClick }); break;
-            case 2: link.NavigateUri(MakeSearchLink(title, true)); break;
-            case 3: link.NavigateUri(MakeSearchLink(title, false)); break;
-            default: break;
+            switch (ViewModelLocator::Current().SettingsViewModel().LinkActionIndex())
+            {
+                case 1: link.Click({ this, &SongItemDialog::CopyOnLinkClick }); break;
+                case 2: link.NavigateUri(MakeSearchLink(title, true)); break;
+                case 3: link.NavigateUri(MakeSearchLink(title, false)); break;
+                default: break;
+            }
+        }
+        catch (winrt::hresult_invalid_argument const& e)
+        {
+            //Custom search link may be invalid, causing an exception in the 2 and 3 case
         }
         link.Inlines().Append(run);
         
@@ -188,6 +198,10 @@ namespace winrt::OsuPlayer::implementation
 
                     co_await winrt::Windows::System::ProcessLauncher::RunToCompletionAsync( L"D:\\osu\\osu!.exe", L"");
                 */
+                Tip().IsOpen(true);
+                co_await std::chrono::seconds{ 1 };
+                co_await winrt::resume_foreground(this->Dispatcher());
+                Tip().IsOpen(false);
             }
         }
     }

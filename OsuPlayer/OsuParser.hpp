@@ -1236,10 +1236,6 @@ struct Circle final: HitObject
         }
     {}
 
-    void printObjectParam(std::ostream& os) const override
-    {
-    }
-
     std::unique_ptr<HitObject> clone() const override
     {
         return std::unique_ptr<HitObject>(new Circle(*this));
@@ -1248,6 +1244,11 @@ struct Circle final: HitObject
     static auto MakeManiaHitObject(int columnIndex, int totalColumns, int time, HitSound hitSound = HitSound::Normal, HitSample hitSample = HitSample{})
     {
         return std::make_unique<Circle>(HitObject::ColumnToX(columnIndex, totalColumns), 0, time, hitSound, std::move(hitSample));
+    }
+
+    void printObjectParam(std::ostream&) const override
+    {
+        //Circles do not have additional params to HitObjects, so we do nothing
     }
 };
 
@@ -1514,9 +1515,9 @@ struct Colors
         {
             auto const result = details::SplitString<3>(colorString);
 
-            r = std::stoi(result[0].data());
-            g = std::stoi(result[1].data());
-            b = std::stoi(result[2].data());
+            r = static_cast<unsigned char>(std::stoi(result[0].data()));
+            g = static_cast<unsigned char>(std::stoi(result[1].data()));
+            b = static_cast<unsigned char>(std::stoi(result[2].data()));
         }
 
         Color(unsigned char r, unsigned char g, unsigned char b) : r{ r }, g{ g }, b{ b }{}

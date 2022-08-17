@@ -15,15 +15,16 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         int SortByIndex();
         winrt::Windows::Foundation::IAsyncAction SortByIndex(int index);
 
+        winrt::hstring ListName() { return m_name; }
+        void ListName(winrt::hstring name) { m_name = name; }
+
         winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> Songs();
         void Songs(winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> songs);
-
-        winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::CollectionItem> Collections() { return s_collections; }
     private:
         void updateList();
         void updateCollection();
-        static winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> s_songItems;
-        static winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::CollectionItem> s_collections;
+        winrt::hstring m_name;
+        winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> s_songItems = winrt::single_threaded_observable_vector<ViewModel::SongItemViewModel>();
         static Model::MyMusicModel& GetModel() { return Model::MyMusicModel().GetInstance(); }
     };
 }

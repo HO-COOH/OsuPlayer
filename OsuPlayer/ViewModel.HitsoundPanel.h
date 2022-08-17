@@ -10,7 +10,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 {
     struct HitsoundSample : HitsoundSampleT<HitsoundSample>, Utils::PropertyChangeHelper<HitsoundSample>
     {
-        HitsoundSample(winrt::hstring name) : m_name{ name } {}
+        HitsoundSample(winrt::hstring name);
 
         int Volume() { return m_volume; }
         void Volume(int volume) { m_volume = volume; }
@@ -20,6 +20,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         bool IsAvailable() { return m_hitsoundFile != nullptr; }
         
         void Play();
+        void Save();
         winrt::Windows::Foundation::IAsyncAction Update();
     private:
         static inline winrt::Windows::Media::Playback::MediaPlayer s_player;

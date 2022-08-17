@@ -327,7 +327,7 @@
                     <FontIcon Glyph="{StaticResource SkinIconGlyph}"/>
                 </local:SettingContainer.Symbol>
                 <local:SettingContainer.HeaderContent>
-                    <ToggleSwitch x:Name="HitsoundGlobalSwitch" x:Uid="HitsoundToggle"/>
+                    <ToggleSwitch x:Name="HitsoundGlobalSwitch" x:Uid="HitsoundToggle" IsOn="{x:Bind ViewModel.HitsoundGlobalEnabled, Mode=TwoWay}"/>
                 </local:SettingContainer.HeaderContent>
                 
                 <local:SettingContainer.ExpanderContent>
@@ -440,6 +440,9 @@
                 <local:SettingContainer.Symbol>
                     <FontIcon Glyph="{StaticResource ExperimentalIconGlyph}"/>
                 </local:SettingContainer.Symbol>
+                <local:SettingContainer.HeaderContent>
+                    <TextBlock Text="{x:Bind ViewModel.ExperimentSettingHeaderText, Mode=OneWay}"/>
+                </local:SettingContainer.HeaderContent>
                 <local:SettingContainer.ExpanderContent>
                     <StackPanel Orientation="Vertical">
                         <CheckBox x:Uid="AllowModifyOsuDataCheckbox" IsChecked="{x:Bind ViewModel.AllowModifyOsuData, Mode=TwoWay}"/>

@@ -5,7 +5,10 @@
 #include <utility>
 #include <chrono>
 #include <winrt/Windows.ApplicationModel.Core.h>
-#include <Generated Files/winrt/Windows.UI.Core.h>
+#include <winrt/Windows.Storage.h>
+#include <winrt/Windows.UI.Notifications.h>
+#include <winrt/Windows.Data.Xml.Dom.h>
+#include <winrt/Windows.UI.Core.h>
 
 namespace Utils
 {
@@ -105,5 +108,21 @@ namespace Utils
 	{
 		if (object)
 			vec.push_back(std::forward<T>(object));
+	}
+
+	inline auto GetSettings()
+	{
+		static auto settings = winrt::Windows::Storage::ApplicationData::Current().LocalSettings();
+		return settings;
+	}
+
+	inline auto SetBadge(int value)
+	{
+		auto xml = winrt::Windows::UI::Notifications::BadgeUpdateManager::GetTemplateContent(winrt::Windows::UI::Notifications::BadgeTemplateType::BadgeNumber);
+		xml.SelectSingleNode(L"/badge")
+			.as<winrt::Windows::Data::Xml::Dom::XmlElement>()
+			.SetAttribute(L"value", winrt::to_hstring(value));
+		winrt::Windows::UI::Notifications::BadgeNotification badge{ xml };
+		winrt::Windows::UI::Notifications::BadgeUpdateManager::CreateBadgeUpdaterForApplication().Update(badge);
 	}
 }

@@ -11,6 +11,7 @@
 #include "ColumnHeaderSettingDialog.g.h"
 #include <winrt/Windows.UI.Xaml.Media.Animation.h>
 #include <winrt/Windows.ApplicationModel.Resources.h>
+#include "Utils.h"
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -55,7 +56,14 @@ namespace winrt::OsuPlayer::implementation
 
     OsuPlayer::ViewModel::MyMusicViewModel MyMusic::ViewModel()
     {
-        return ViewModelLocator::Current().MyMusicViewModel();
+        return m_viewModel == nullptr? 
+            ViewModelLocator::Current().MyMusicViewModel() : 
+            m_viewModel;    
+    }
+
+    void MyMusic::ViewModel(ViewModel::MyMusicViewModel viewModel)
+    {
+        m_viewModel = viewModel;
     }
 
     void MyMusic::OnNavigatedTo([[maybe_unused]]Windows::UI::Xaml::Navigation::NavigationEventArgs const& e)
@@ -99,7 +107,7 @@ namespace winrt::OsuPlayer::implementation
     }
 
     void MyMusic::ListViewMode_Click(
-        winrt::Windows::Foundation::IInspectable const& sender, 
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender, 
         [[maybe_unused]]winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
         m_showList = !m_showList;
@@ -112,8 +120,16 @@ namespace winrt::OsuPlayer::implementation
         AlbumIcon().Visibility(winrt::Windows::UI::Xaml::Visibility::Collapsed);
         MusicListHeaderGrid().Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
 
-        UnloadObject(MusicAlbumView());
-        FindName(L"MusicList");
+        if (m_saveMemory)
+        {
+            UnloadObject(MusicAlbumView());
+            FindName(L"MusicList");
+        }
+        else
+        {
+            MusicList().Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
+            MusicAlbumView().Visibility(winrt::Windows::UI::Xaml::Visibility::Collapsed);
+        }
     }
 
     void MyMusic::showAlbumView()
@@ -122,8 +138,16 @@ namespace winrt::OsuPlayer::implementation
         AlbumIcon().Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
         MusicListHeaderGrid().Visibility(winrt::Windows::UI::Xaml::Visibility::Collapsed);
 
-        UnloadObject(MusicList());
-        FindName(L"MusicAlbumView");
+        if (m_saveMemory)
+        {
+            UnloadObject(MusicList());
+            FindName(L"MusicAlbumView");
+        }
+        else
+        {
+            MusicList().Visibility(winrt::Windows::UI::Xaml::Visibility::Collapsed);
+            MusicAlbumView().Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
+        }
     }
 
     void MyMusic::ShowAlbumViewInfo(winrt::Windows::UI::Xaml::Controls::Grid subGrid, bool isForEvent)
@@ -166,8 +190,8 @@ namespace winrt::OsuPlayer::implementation
     }
 
     void MyMusic::SongImage_ImageFailed(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::ExceptionRoutedEventArgs const& e)
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender, 
+        [[maybe_unused]]winrt::Windows::UI::Xaml::ExceptionRoutedEventArgs const& e)
     {
 
     }
@@ -178,7 +202,8 @@ namespace winrt::OsuPlayer::implementation
     {
         auto infoGrid = sender.as<winrt::Windows::UI::Xaml::Controls::Grid>();
         auto item = infoGrid.DataContext().as<ViewModel::SongItemViewModel>();
-        m_events.emplace_back(item.IsPlayingChanged(
+        if(item != nullptr)
+            m_events.emplace_back(item.IsPlayingChanged(
             winrt::auto_revoke,
             [infoGrid](auto, bool isPlaying)
             {
@@ -202,20 +227,42 @@ namespace winrt::OsuPlayer::implementation
             winrt::auto_revoke,
             [infoGridChildren, this](auto, bool isPlaying)
             {
-                for (int i = 0; i < 4; ++i)
+                for (auto children : infoGridChildren)
                 {
-                    infoGridChildren.GetAt(i).as<winrt::Windows::UI::Xaml::Controls::TextBlock>().Foreground(
-                        winrt::Windows::UI::Xaml::Media::SolidColorBrush{
-                            Resources().Lookup(
-                                isPlaying ?
-                                winrt::box_value(L"SystemAccentColor") :
-                                winrt::box_value(L"SystemBaseHighColor")
-                            ).as<winrt::Windows::UI::Color>()
-                        }
-                    );
+                    if (auto textbox = children.try_as<winrt::Windows::UI::Xaml::Controls::TextBlock>(); textbox != nullptr)
+                    {
+                        textbox.Foreground(
+                            winrt::Windows::UI::Xaml::Media::SolidColorBrush{
+                                Resources().Lookup(
+                                    isPlaying ?
+                                    winrt::box_value(L"SystemAccentColor") :
+                                    winrt::box_value(L"SystemBaseHighColor")
+                                ).as<winrt::Windows::UI::Color>()
+                            }
+                        );
+                    }
                 }
             }
         ));
     }
 
+    void MyMusic::NewCollectionMenuItem_Click(
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender,
+        [[maybe_unused]]winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    {
+
+    }
+
+    void MyMusic::MoveToMenuItem_Loading(
+        winrt::Windows::UI::Xaml::FrameworkElement const& sender, 
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& args)
+    {
+        auto items = sender.as<winrt::Windows::UI::Xaml::Controls::MenuFlyoutSubItem>().Items();
+        for (auto collection : ViewModelLocator::Current().Collections())
+        {
+            winrt::Windows::UI::Xaml::Controls::MenuFlyoutItem item;
+            item.Text(collection.Name());
+            items.Append(item);
+        }
+    }
 }

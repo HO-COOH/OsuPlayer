@@ -12,6 +12,7 @@
 #include "Utils.ThemeHelper.h"
 #include <ppltasks.h>
 #include <pplawait.h>
+#include <winrt/Windows.ApplicationModel.Resources.h>
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
 	winrt::Windows::Storage::ApplicationDataContainer SettingsViewModel::m_localSettings = winrt::Windows::Storage::ApplicationData::Current().LocalSettings();
@@ -24,7 +25,8 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		m_mod(static_cast<Mod>(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"Mod"), 0))),
 		m_jumplistRecentSongs(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"RecentSongs"), 0)),
 		m_jumplistRecentCollections(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"RecentCollections"), 0)),
-		m_allowModifyOsuData(winrt::unbox_value_or<bool>(m_localSettings.Values().TryLookup(L"AllowModifyOsuData"), false))
+		m_allowModifyOsuData(winrt::unbox_value_or<bool>(m_localSettings.Values().TryLookup(L"AllowModifyOsuData"), false)),
+		m_hitsoundGlobalEnabled(winrt::unbox_value_or<bool>(m_localSettings.Values().TryLookup(L"HitsoundEnable"), false))
 	{
 		loadOsuPaths();
 	}
@@ -55,6 +57,12 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 			co_return AddOsuFolderResult::Success;
 		}
 		co_return AddOsuFolderResult::Invalid;
+	}
+
+	winrt::hstring SettingsViewModel::ExperimentSettingHeaderText()
+	{
+		return winrt::Windows::ApplicationModel::Resources::ResourceLoader::GetForCurrentView().GetString(
+			m_allowModifyOsuData ? L"EnableText" : L"DisableText");
 	}
 
 	void implementation::SettingsViewModel::setTheme()
@@ -127,6 +135,16 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 			m_mod = mod;
 			m_localSettings.Values().Insert(L"Mod", winrt::box_value(static_cast<int>(m_mod)));
 			raisePropertyChange(L"IsModEnabled");
+		}
+	}
+
+	void SettingsViewModel::HitsoundGlobalEnabled(bool enabled)
+	{
+		if (m_hitsoundGlobalEnabled != enabled)
+		{
+			m_hitsoundGlobalEnabled = enabled;
+			m_localSettings.Values().Insert(L"HitsoundEnable", winrt::box_value(enabled));
+			raisePropertyChange(L"HitsoundGlobalEnabled");
 		}
 	}
 
@@ -220,6 +238,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		{
 			m_allowModifyOsuData = allow;
 			m_localSettings.Values().Insert(L"AllowModifyOsuData", winrt::box_value(allow));
+			raisePropertyChange(L"ExperimentSettingHeaderText");
 		}
 	}
 }

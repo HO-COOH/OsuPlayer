@@ -8,6 +8,7 @@ namespace OsuPlayer.ViewModel
         Boolean IsAvailable{ get; };
 
         void Play();
+        void Save(); //Save settings
         Windows.Foundation.IAsyncAction Update();
     };
 

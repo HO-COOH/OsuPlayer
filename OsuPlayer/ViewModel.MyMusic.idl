@@ -7,10 +7,12 @@ namespace OsuPlayer.ViewModel
     runtimeclass MyMusicViewModel : Windows.UI.Xaml.Data.INotifyPropertyChanged
     {
         MyMusicViewModel();
+
+        String ListName{ get; set; };
         
         Int32 SortByIndex{ get; set; };
 
         Windows.Foundation.Collections.IObservableVector<OsuPlayer.ViewModel.SongItemViewModel> Songs{ get; set; };
-        Windows.Foundation.Collections.IObservableVector<OsuPlayer.ViewModel.CollectionItem> Collections{ get; };
+        //Windows.Foundation.Collections.IObservableVector<OsuPlayer.ViewModel.CollectionItem> Collections{ get; };
     }
 }

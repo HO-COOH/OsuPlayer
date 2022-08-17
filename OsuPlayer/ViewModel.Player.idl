@@ -33,8 +33,12 @@ namespace OsuPlayer.ViewModel
         Int32 HitsoundVolume{ get; set; };
         void Save();
         
+        //Playing info
         PlayMod Mod{ get; set; };
+        Boolean IsModEnabled{ get; set; };
+        String ModString{ get; };
         Boolean UseSkinHitsound{ get; set; };
+        Boolean HasItems{ get; };
 
         Windows.UI.Xaml.Media.ImageSource ImageSource{ get; };
 

@@ -10,12 +10,13 @@
     mc:Ignorable="d">
 
     <Page.Resources>
+        <x:String x:Key="MoveToIconGlyph">&#xE8DE;</x:String>
         <!--<CollectionViewSource x:Name="CollectionsCVS" IsSourceGrouped="False" Source="{x:Bind CollectionItems}"/>-->
 
         <DataTemplate x:Key="CollectionItemTemplate" x:DataType="local:CollectionItem">
             <muxc:Expander IsExpanded="True"
                            ExpandDirection="Down"
-                           HorizontalAlignment="Stretch">
+                           HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
                 
                 <muxc:Expander.HeaderTemplate>
                     <DataTemplate x:DataType="local:CollectionItem">
@@ -29,12 +30,12 @@
                         </Grid>
                     </DataTemplate>
                 </muxc:Expander.HeaderTemplate>
-                
+
                 <muxc:Expander.Content>
-                    <ListView ItemsSource="{x:Bind SongItems}">
+                    <ListView ItemsSource="{x:Bind SongItems}" HorizontalAlignment="Stretch">
                         <ListView.ItemTemplate>
                             <DataTemplate x:Name="SongItemTemplate" x:DataType="local:SongItemViewModel">
-                                <Grid Height="30" IsDoubleTapEnabled="True" HorizontalAlignment="Stretch" DoubleTapped="{x:Bind PlayCurrent}">
+                                <Grid IsDoubleTapEnabled="True" HorizontalAlignment="Stretch" DoubleTapped="{x:Bind PlayCurrent}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="50"/>
                                         <ColumnDefinition Width="*"/>
@@ -110,12 +111,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <TextBlock x:Uid="MyCollectionText" FontSize="50" Margin="20,40,20,40"/>
 
-        <ListView ItemsSource="{x:Bind ViewModel.Collections}" 
+        <ListView ItemsSource="{x:Bind Collections}" 
               ItemTemplate="{StaticResource CollectionItemTemplate}" Grid.Row="1">
         <!--<ListView.ItemsPanel>
             <ItemsPanelTemplate>
@@ -131,6 +132,6 @@
                 </GroupStyle.HeaderTemplate>
             </GroupStyle>
         </ListView.GroupStyle>-->
-    </ListView>
+        </ListView>
     </Grid>
 </Page>

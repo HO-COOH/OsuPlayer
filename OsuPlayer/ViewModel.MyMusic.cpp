@@ -13,12 +13,10 @@
 #include <ppltasks.h>
 #include <pplawait.h>
 #include "Utils.h"
+#include "ViewModelLocator.h"
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
-    winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> MyMusicViewModel::s_songItems = winrt::single_threaded_observable_vector<ViewModel::SongItemViewModel>();
-    winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::CollectionItem> MyMusicViewModel::s_collections = winrt::single_threaded_observable_vector<ViewModel::CollectionItem>();
-
     MyMusicViewModel::MyMusicViewModel()
     {
         //After finished indexing, transform the song items to Views
@@ -53,7 +51,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         s_songItems = songs;
     }
 
-
     void MyMusicViewModel::updateList()
     {
         s_songItems.Clear();
@@ -72,13 +69,14 @@ namespace winrt::OsuPlayer::ViewModel::implementation
     }
     void MyMusicViewModel::updateCollection()
     {
-        s_collections.Clear();
-        int i = 0;
+        auto collections = ViewModelLocator::Current().Collections();
+        collections.Clear();
         for (auto& collection : GetModel().m_collections)
         {
             CollectionItem item;
             item.ModelPointer(winrt::box_value(reinterpret_cast<size_t>(&collection)));
-            s_collections.Append(item);
+            collections.Append(item);
+            ViewModelLocator::Current().updateCollectionItem(item);
         }
     }
 }
