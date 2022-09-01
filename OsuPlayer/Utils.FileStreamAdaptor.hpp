@@ -19,7 +19,7 @@ namespace Utils
 			std::basic_streambuf<Char>::setg(beginPtr, beginPtr, beginPtr + Length() / sizeof(Char));
 		}
 
-		std::streampos seekoff(typename std::basic_streambuf<Char>::off_type off, std::ios_base::seekdir dir, std::ios_base::openmode _) override
+		std::streampos seekoff(typename std::basic_streambuf<Char>::off_type off, std::ios_base::seekdir dir, std::ios_base::openmode) override
 		{
 			auto const beginPtr = reinterpret_cast<Char*>(data());
 			auto const endPtr = beginPtr + Length() / sizeof(Char);

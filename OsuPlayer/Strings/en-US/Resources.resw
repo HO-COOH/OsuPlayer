@@ -132,6 +132,9 @@
   <data name="AppDisplayName" xml:space="preserve">
     <value>OsuPlayerEN</value>
   </data>
+  <data name="CancelText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="CollectionNavigationItemText.Text" xml:space="preserve">
     <value>Collection</value>
   </data>
@@ -177,6 +180,9 @@
   <data name="DoubleTimeItem.Text" xml:space="preserve">
     <value>DoubleTime</value>
   </data>
+  <data name="DuplicateOsuPathPrompt" xml:space="preserve">
+    <value>Duplicate osu! folder!</value>
+  </data>
   <data name="EnableText" xml:space="preserve">
     <value>Enabled</value>
   </data>
@@ -206,6 +212,9 @@
   </data>
   <data name="HitsoundVolumeTextBlock.Text" xml:space="preserve">
     <value>Hitsound volume</value>
+  </data>
+  <data name="InvalidOsuPathPrompt" xml:space="preserve">
+    <value>Invalid osu! folder!</value>
   </data>
   <data name="JumpListCollectionDescription.Text" xml:space="preserve">
     <value>Number of collections</value>
@@ -302,6 +311,9 @@
   </data>
   <data name="RemoveFromListMenuItem.Text" xml:space="preserve">
     <value>Remove from list</value>
+  </data>
+  <data name="RetryText" xml:space="preserve">
+    <value>Retry</value>
   </data>
   <data name="SearchNoResult.Text" xml:space="preserve">
     <value>Check your spelling, or search for somgthing else</value>

@@ -12,12 +12,6 @@ namespace winrt::OsuPlayer::implementation
 
         OsuPlayer::ViewModel::SettingsViewModel ViewModel();
 
-
-        void DefaultHitsoundButton_Click(
-            winrt::Microsoft::UI::Xaml::Controls::SplitButton const& sender, 
-            winrt::Microsoft::UI::Xaml::Controls::SplitButtonClickEventArgs const& args
-        );
-
         winrt::hstring DefaultModString();
         void HalfTimeItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
         void DoubleTimeItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);

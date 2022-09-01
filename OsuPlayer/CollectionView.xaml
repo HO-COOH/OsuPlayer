@@ -18,7 +18,7 @@
                            ExpandDirection="Down"
                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
                 
-                <muxc:Expander.HeaderTemplate>
+                <!--<muxc:Expander.HeaderTemplate>
                     <DataTemplate x:DataType="local:CollectionItem">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -29,7 +29,17 @@
                             <muxc:InfoBadge Value="{x:Bind Count}" Grid.Column="1" HorizontalAlignment="Right"/>
                         </Grid>
                     </DataTemplate>
-                </muxc:Expander.HeaderTemplate>
+                </muxc:Expander.HeaderTemplate>-->
+                <muxc:Expander.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{x:Bind Name}" Grid.Column="0" HorizontalAlignment="Left"/>
+                        <muxc:InfoBadge Value="{x:Bind Count}" Grid.Column="1" HorizontalAlignment="Right"/>
+                    </Grid>
+                </muxc:Expander.Header>
 
                 <muxc:Expander.Content>
                     <ListView ItemsSource="{x:Bind SongItems}" HorizontalAlignment="Stretch">
@@ -116,7 +126,7 @@
 
         <TextBlock x:Uid="MyCollectionText" FontSize="50" Margin="20,40,20,40"/>
 
-        <ListView ItemsSource="{x:Bind Collections}" 
+        <muxc:ItemsRepeater ItemsSource="{x:Bind Collections}" 
               ItemTemplate="{StaticResource CollectionItemTemplate}" Grid.Row="1">
         <!--<ListView.ItemsPanel>
             <ItemsPanelTemplate>
@@ -132,6 +142,6 @@
                 </GroupStyle.HeaderTemplate>
             </GroupStyle>
         </ListView.GroupStyle>-->
-        </ListView>
+        </muxc:ItemsRepeater>
     </Grid>
 </Page>

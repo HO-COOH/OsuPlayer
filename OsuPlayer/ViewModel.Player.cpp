@@ -44,6 +44,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		auto& songItemModel = *reinterpret_cast<SongItemModel*>(winrt::unbox_value<size_t>(item.ModelPointer()));
 		co_await songItemModel.fillDataAsync();
 		co_await songItemModel.Source().OpenAsync();
+		co_await m_hitSoundPlayer.init();
 		m_songPlayer.Pause();
 		m_songPlayer.Source(nullptr);
 		item.IsPlaying(true);
@@ -52,23 +53,39 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		co_await updateForSMTC(playbackItem);
 
 		//Add timed metadata
-		//winrt::Windows::Media::Core::TimedMetadataTrack hitObjectsMeta{ L"0", L"en-US", winrt::Windows::Media::Core::TimedMetadataKind::Data };
-		//hitObjectsMeta.Label(L"Custom data track");
-		//hitObjectsMeta.CueEntered([](auto, auto) {});
-		//for (auto const& hitObject : songItemModel.m_beatmaps[item.SelectedVersionIndex()].originalFile->hitObjects)
-		//{
-		//	//...
-		//}
-		////Test
-		//winrt::Windows::Media::Core::DataCue cue;
-		//cue.StartTime(std::chrono::seconds{1 });
-		//cue.Duration(std::chrono::seconds{ 1 });
-		//cue.Data(winrt::hstring{ L"Me" });
+		winrt::Windows::Media::Core::TimedMetadataTrack hitObjectsMeta{ L"0", L"en-US", winrt::Windows::Media::Core::TimedMetadataKind::Data };
+		hitObjectsMeta.Label(L"Custom data track");
+		hitObjectsMeta.CueEntered([this, &songItemModel](winrt::Windows::Media::Core::TimedMetadataTrack const& track, winrt::Windows::Media::Core::MediaCueEventArgs args) -> winrt::Windows::Foundation::IAsyncAction
+		{
+			auto hitObjectPtr = *reinterpret_cast<int*>(
+				args
+				.Cue()
+				.as<winrt::Windows::Media::Core::DataCue>()
+				.Data()
+				.data());
 
-		//playbackItem.Source().ExternalTimedMetadataTracks().Append(hitObjectsMeta);
-		//playbackItem.TimedMetadataTracks().SetPresentationMode(
-		//	0, 
-		//	winrt::Windows::Media::Playback::TimedMetadataTrackPresentationMode::ApplicationPresented);
+			co_await m_hitSoundPlayer.playHitsound(*songItemModel.m_beatmaps[m_currentItemToPlay.SelectedVersionIndex()].originalFile->hitObjects[hitObjectPtr]);
+		});
+
+		
+		//Maybe try using index instead of using pointers to hit object
+		int i = 0;
+		for (auto const& hitObject : songItemModel.m_beatmaps[item.SelectedVersionIndex()].originalFile->hitObjects)
+		{
+			winrt::Windows::Media::Core::DataCue cue;
+			cue.StartTime(std::chrono::milliseconds{ hitObject->time });
+			cue.Duration(std::chrono::milliseconds{ 100 });
+			auto hitObjectRawPtr = hitObject.get();
+			winrt::Windows::Storage::Streams::Buffer b{ sizeof(int) };
+			*(int*)(b.data()) = i++;
+			cue.Data(b);
+			hitObjectsMeta.AddCue(cue);
+		}
+
+		playbackItem.Source().ExternalTimedMetadataTracks().Append(hitObjectsMeta);
+		playbackItem.TimedMetadataTracks().SetPresentationMode(
+			0, 
+			winrt::Windows::Media::Playback::TimedMetadataTrackPresentationMode::ApplicationPresented);
 
 		m_songPlayer.Source(playbackItem);
 		m_songPlayer.Play();
@@ -95,6 +112,11 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	{
 	}
 
+	winrt::Windows::Foundation::IAsyncAction PlayerViewModel::PlayList(winrt::Windows::Media::Playback::MediaPlaybackList list)
+	{
+		co_return;
+	}
+
 	PlayMod PlayerViewModel::Mod()
 	{
 		return m_mod;
@@ -115,8 +137,10 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		return m_mod != PlayMod::Normal;
 	}
 
-	void PlayerViewModel::IsModEnabled(bool enable)
+	void PlayerViewModel::IsModEnabled(bool)
 	{
+		//this property should not be set
+		assert(false);
 	}
 
 	winrt::hstring PlayerViewModel::ModString()
@@ -155,13 +179,13 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
 	int PlayerViewModel::Volume()
 	{
-		return m_songPlayer.Volume() * 100.0;
+		return static_cast<int>(m_songPlayer.Volume() * 100.0);
 	}
 
 	void PlayerViewModel::Volume(int volume)
 	{
 		m_songPlayer.Volume(static_cast<double>(volume) / 100.0);
-		m_hitSoundPlayer.Volume(static_cast<double>(volume) / 100.0);
+		m_hitSoundPlayer.Volume(volume);
 		raisePropertyChange(L"Volume");
 	}
 
@@ -227,19 +251,17 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		musicProperty.Title(m_currentItemToPlay.SongName());
 		musicProperty.Artist(m_currentItemToPlay.Singer());
 
-		auto stream = winrt::Windows::Storage::Streams::RandomAccessStreamReference::CreateFromFile(co_await m_currentItemToPlay.SongImageFile());
-		//co_await stream.OpenReadAsync();
-		properties.Thumbnail(stream);
+		auto songImageFile = co_await m_currentItemToPlay.SongImageFile();
+		if (songImageFile != nullptr)
+		{
+			//co_await stream.OpenReadAsync();
+			properties.Thumbnail(winrt::Windows::Storage::Streams::RandomAccessStreamReference::CreateFromFile(songImageFile));
+		}
 		properties.Type(winrt::Windows::Media::MediaPlaybackType::Music);
 		item.ApplyDisplayProperties(properties);
 		co_return;
 	}
 	void PlayerViewModel::updateForSMTC()
-	{
-
-	}
-
-	void PlayerViewModel::playHitsound(HitObject const& hitObject)
 	{
 
 	}

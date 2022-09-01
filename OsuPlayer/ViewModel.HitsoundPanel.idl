@@ -10,6 +10,10 @@ namespace OsuPlayer.ViewModel
         void Play();
         void Save(); //Save settings
         Windows.Foundation.IAsyncAction Update();
+        Windows.Foundation.IAsyncAction Replace();
+
+        Windows.Media.Playback.IMediaPlaybackSource Source{ get; };
+        Windows.Storage.StorageFile File{ get; };
     };
 
     runtimeclass HitsoundSampleSet

@@ -127,6 +127,7 @@
     <ClCompile Include="Model.Recent.cpp">
       <Filter>Models</Filter>
     </ClCompile>
+    <ClCompile Include="HitsoundPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Model.Recent.h">
       <Filter>Models</Filter>
     </ClInclude>
+    <ClInclude Include="HitsoundPlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

@@ -27,7 +27,7 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="{x:Bind Sample.Name}"/>
-        <Button x:Name="FileButton" Click="FileButton_Click" Grid.Row="0" Grid.Column="1">
+        <Button x:Name="FileButton" Click="{x:Bind Sample.Replace}" Grid.Row="0" Grid.Column="1">
             <FontIcon Glyph="{StaticResource FileIconGlyph}"/>
         </Button>
 

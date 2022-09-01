@@ -13,7 +13,7 @@
     <Page.Resources>
         <x:String x:Key="AddIconGlyph">&#xE710;</x:String>
         <MenuFlyout x:Key="CollectionMenu">
-            <MenuFlyoutItem Text="Play"/>
+            <MenuFlyoutItem x:Name="CollectionPlayMenuItem" Text="Play" Click="CollectionPlayMenuItem_Click"/>
             <MenuFlyoutItem Text="Rename"/>
             <MenuFlyoutItem Text="Delete"/>
         </MenuFlyout>

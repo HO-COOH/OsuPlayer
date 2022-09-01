@@ -243,7 +243,7 @@
                     <FontIcon Glyph="{StaticResource OsuPathIconGlyph}"/>
                 </local:SettingContainer.Symbol>
                 <local:SettingContainer.HeaderContent>
-                    <Button x:Name="NewFolderButton" Click="NewFolderButton_Click">
+                    <Button x:Name="NewFolderButton" Click="NewFolderButton_Click" Background="DarkOrange">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon Glyph="{StaticResource NewFolderIconGlyph}"/>
                             <TextBlock x:Uid="AddFolderButton" Margin="10,0,0,0"/>

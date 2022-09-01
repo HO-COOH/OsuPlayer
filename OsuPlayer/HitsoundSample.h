@@ -17,8 +17,6 @@ namespace winrt::OsuPlayer::implementation
         static winrt::Windows::UI::Xaml::DependencyProperty SampleProperty();
     private:
         static winrt::Windows::UI::Xaml::DependencyProperty m_sampleProperty;
-    public:
-        void FileButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
     };
 }
 

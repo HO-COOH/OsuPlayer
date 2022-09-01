@@ -20,6 +20,8 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> Songs();
         void Songs(winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> songs);
+
+        winrt::Windows::Foundation::IAsyncAction PlayCollection();
     private:
         void updateList();
         void updateCollection();

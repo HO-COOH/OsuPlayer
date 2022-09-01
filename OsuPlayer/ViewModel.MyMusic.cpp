@@ -10,6 +10,7 @@
 #include <winrt/Windows.ApplicationModel.Core.h>
 #include <Generated Files/winrt/Windows.UI.Core.h>
 #include <winrt/Windows.UI.Xaml.Media.Animation.h>
+#include <winrt/Windows.Media.Playback.h>
 #include <ppltasks.h>
 #include <pplawait.h>
 #include "Utils.h"
@@ -21,7 +22,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
     {
         //After finished indexing, transform the song items to Views
         GetModel().onIndexingFinished(
-            [this](std::vector<Model::SongItemModel> const& songs)
+            [this](std::vector<Model::SongItemModel> const&)
             {
                 updateList();
                 updateCollection();
@@ -49,6 +50,18 @@ namespace winrt::OsuPlayer::ViewModel::implementation
     void MyMusicViewModel::Songs(winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::SongItemViewModel> songs)
     {
         s_songItems = songs;
+    }
+
+    winrt::Windows::Foundation::IAsyncAction MyMusicViewModel::PlayCollection()
+    {
+        winrt::Windows::Media::Playback::MediaPlaybackList list;
+        for (auto item : s_songItems)
+        {
+            list.Items().Append(
+                winrt::Windows::Media::Playback::MediaPlaybackItem{ reinterpret_cast<Model::SongItemModel*>(winrt::unbox_value<size_t>(item.ModelPointer()))->Source() }
+            );
+        }
+        co_await ViewModelLocator::Current().PlayerViewModel().PlayList(list);
     }
 
     void MyMusicViewModel::updateList()

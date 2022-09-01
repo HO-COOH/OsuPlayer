@@ -22,10 +22,14 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         void Play();
         void Save();
         winrt::Windows::Foundation::IAsyncAction Update();
+        winrt::Windows::Foundation::IAsyncAction Replace();
+        winrt::Windows::Media::Playback::IMediaPlaybackSource Source();
+        winrt::Windows::Storage::StorageFile File() { return m_hitsoundFile; }
     private:
         static inline winrt::Windows::Media::Playback::MediaPlayer s_player;
         winrt::hstring m_name;
         winrt::Windows::Storage::StorageFile m_hitsoundFile{ nullptr };
+        winrt::Windows::Media::Core::MediaSource m_source{ nullptr };
         int m_volume{};
     };
 

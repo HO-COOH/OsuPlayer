@@ -18,6 +18,7 @@ namespace OsuPlayer.ViewModel
         PlayerViewModel();
 
         Windows.Foundation.IAsyncAction Play(OsuPlayer.ViewModel.SongItemViewModel item);
+        Windows.Foundation.IAsyncAction PlayList(Windows.Media.Playback.MediaPlaybackList list);
 
         //Control buttons
         void PlayCurrent();

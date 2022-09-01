@@ -8,6 +8,7 @@
 
 #include <ViewModelLocator.h>
 #include <winrt/Windows.Storage.h>
+#include <winrt/Windows.Storage.Pickers.h>
 #include <winrt/Windows.Media.Core.h>
 #include <Utils.Log.hpp>
 #include <Utils.h>
@@ -32,7 +33,10 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	{
 		s_player.Pause();
 		s_player.Source(nullptr);
-		s_player.Source(winrt::Windows::Media::Core::MediaSource::CreateFromStorageFile(m_hitsoundFile));
+		s_player.Volume(static_cast<double>(m_volume) / 100.0);
+		if (!m_source)
+			m_source = winrt::Windows::Media::Core::MediaSource::CreateFromStorageFile(m_hitsoundFile);
+		s_player.Source(m_source);
 		s_player.Play();
 	}
 
@@ -61,7 +65,23 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		raisePropertyChange(L"IsAvailable");
 	}
 
+	winrt::Windows::Foundation::IAsyncAction HitsoundSample::Replace()
+	{
+		winrt::Windows::Storage::Pickers::FileOpenPicker picker;
+		picker.FileTypeFilter().Append(L"*");
+		auto newFile = co_await picker.PickSingleFileAsync();
+		if (newFile == nullptr)
+			co_return;
 
+		m_hitsoundFile = newFile;
+	}
+
+	winrt::Windows::Media::Playback::IMediaPlaybackSource HitsoundSample::Source()
+	{
+		if (!m_source)
+			m_source = winrt::Windows::Media::Core::MediaSource::CreateFromStorageFile(m_hitsoundFile);
+		return m_source;
+	}
 
 	winrt::Windows::Foundation::IAsyncAction HitsoundPanelViewModel::Update()
 	{

@@ -133,6 +133,7 @@
       <DependentUpon>HitsoundPanel.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="HitsoundPlayer.h" />
     <ClInclude Include="HitsoundSample.h">
       <DependentUpon>HitsoundSample.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -327,6 +328,7 @@
       <DependentUpon>HitsoundPanel.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
+    <ClCompile Include="HitsoundPlayer.cpp" />
     <ClCompile Include="HitsoundSample.cpp">
       <DependentUpon>HitsoundSample.xaml</DependentUpon>
       <SubType>Code</SubType>

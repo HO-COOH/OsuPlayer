@@ -105,8 +105,6 @@ namespace winrt::OsuPlayer::implementation
             //Collections Page
             if (winrt::unbox_value_or<winrt::hstring>(invoked.Tag(), L"") == L"CollectionItemPage")
             {
-                //auto collectionPageViewModel = ViewModelLocator::Current().CollectionPageViewModel();
-                //auto collectionItem = ViewModelLocator::Current().CollectionsNameMap.at(winrt::unbox_value<winrt::hstring>(invoked.Content()));
                 auto collectionPageViewModel = ViewModelLocator::Current().getCollectionPageByName(winrt::unbox_value<winrt::hstring>(invoked.Content()));
                 MyMusic collectionPage;
                 collectionPage.ViewModel(collectionPageViewModel);
@@ -130,10 +128,10 @@ namespace winrt::OsuPlayer::implementation
         nameInputBox.KeyDown(
             [this](winrt::Windows::Foundation::IInspectable sender, winrt::Windows::UI::Xaml::Input::KeyRoutedEventArgs e)
             {
-                auto inputBox = sender.as<winrt::Windows::UI::Xaml::Controls::TextBox>();
                 if (e.Key() != winrt::Windows::System::VirtualKey::Enter)
                     return;
 
+                auto inputBox = sender.as<winrt::Windows::UI::Xaml::Controls::TextBox>();
                 winrt::Microsoft::UI::Xaml::Controls::NavigationViewItem subItem;
                 subItem.Content(winrt::box_value(inputBox.Text()));
                 subItem.ContextFlyout(
@@ -149,6 +147,13 @@ namespace winrt::OsuPlayer::implementation
         );
         newCollectionItem.Content(nameInputBox);
         navigationMenuItems.Append(newCollectionItem);
+    }
+
+    winrt::Windows::Foundation::IAsyncAction MainPage::CollectionPlayMenuItem_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    {
+        co_await ViewModelLocator::Current().getCollectionPageByName(
+            winrt::unbox_value<winrt::hstring>(sender.as<winrt::Microsoft::UI::Xaml::Controls::NavigationViewItem>().Content())
+        ).PlayCollection();
     }
 
 }

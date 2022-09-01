@@ -20,10 +20,10 @@ namespace winrt::OsuPlayer::implementation
 	}
 
 	winrt::Windows::Foundation::IInspectable ReferenceToVisibilityConverter::ConvertBack(
-		[[maube_unused]]winrt::Windows::Foundation::IInspectable const& value, 
-		[[maube_unused]]winrt::Windows::UI::Xaml::Interop::TypeName const& targetType, 
-		[[maube_unused]]winrt::Windows::Foundation::IInspectable const& parameter, 
-		[[maube_unused]]winrt::hstring const& language)
+		[[maybe_unused]]winrt::Windows::Foundation::IInspectable const& value, 
+		[[maybe_unused]]winrt::Windows::UI::Xaml::Interop::TypeName const& targetType, 
+		[[maybe_unused]]winrt::Windows::Foundation::IInspectable const& parameter, 
+		[[maybe_unused]]winrt::hstring const& language)
 	{
 		throw std::exception{ "Not implemented" };
 	}
