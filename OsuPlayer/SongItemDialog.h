@@ -1,11 +1,15 @@
 ﻿#pragma once
 #include "SongItemDialog.g.h"
+#include "ViewModel.SongItemViewModel.g.h"
 
 namespace winrt::OsuPlayer::implementation
 {
     struct SongItemDialog : SongItemDialogT<SongItemDialog>
     {
         SongItemDialog();
+
+        OsuPlayer::ViewModel::SongItemViewModel SongItemViewModel() { return{}; }
+        void SongItemViewModel(OsuPlayer::ViewModel::SongItemViewModel viewModel) { m_songItemViewModel = viewModel; }
 
         winrt::hstring Title() { return {}; }
         void Title(winrt::hstring title);
@@ -25,6 +29,7 @@ namespace winrt::OsuPlayer::implementation
         winrt::hstring SongPath() { return {}; }
         void SongPath(winrt::hstring songPath);
     public:
+        OsuPlayer::ViewModel::SongItemViewModel m_songItemViewModel{ nullptr };
         winrt::hstring m_title;
         winrt::Windows::Foundation::IAsyncAction SongPathButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
         winrt::Windows::UI::Xaml::Documents::Paragraph HandleTagsRichText(winrt::hstring const& tags);

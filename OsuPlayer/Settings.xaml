@@ -218,6 +218,8 @@
 
             <local:ComboBoxToStringConverter x:Key="ComboBoxToStringConverter"/>
             <local:ReferenceToVisibilityConverter x:Key="ReferenceToVisibilityConverter"/>
+
+            <SolidColorBrush x:Key="ExpanderHeaderTextBrush" Color="{ThemeResource SystemBaseMediumColor}"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -347,12 +349,24 @@
                         <muxc:ToggleSplitButton x:Name="SkinButton" Grid.Row="0" Grid.Column="1" Margin="0,-3,0,3" HorizontalAlignment="Right" 
                                                 IsEnabled="{x:Bind HitsoundGlobalSwitch.IsOn, Mode=OneWay}"
                                                 IsChecked="{x:Bind HitsoundGlobalSwitch.IsOn, Mode=OneWay}">
-                            <TextBlock x:Name="SkinButtonText" Text="Default"/>
+                            <TextBlock x:Name="SkinButtonText" Text="Default" Loaded="SkinButtonText_Loaded"/>
                             <muxc:ToggleSplitButton.Flyout>
                                 <MenuFlyout x:Name="SkinFlyout"/>
                             </muxc:ToggleSplitButton.Flyout>
                         </muxc:ToggleSplitButton>
-
+                        
+                        <TextBlock x:Uid="OffsetText" Grid.Row="1" Grid.Column="0" Visibility="{x:Bind ViewModel.SelectedSkin, Mode=OneWay, Converter={StaticResource ReferenceToVisibilityConverter}}"/>
+                        <Grid Grid.Row="1" Grid.Column="1" Visibility="{x:Bind ViewModel.SelectedSkin, Mode=OneWay, Converter={StaticResource ReferenceToVisibilityConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider x:Name="OffsetSlider" Minimum="-100" Maximum="100" Value="{x:Bind ViewModel.Offset, Mode=TwoWay}" Grid.Column="0" Margin="0,0,15,0"/>
+                            <TextBlock Grid.Column="1">
+                                <Run Text="{x:Bind OffsetSlider.Value, Mode=OneWay}"/>
+                                <Run x:Uid="OffsetUnitText"/>
+                            </TextBlock>
+                        </Grid>
                         <local:HitsoundPanel x:Name="HitsoundPanel" Grid.Row="2" Grid.ColumnSpan="2" 
                                              Visibility="{x:Bind ViewModel.SelectedSkin, Mode=OneWay, Converter={StaticResource ReferenceToVisibilityConverter}}"/>
                     </Grid>
@@ -366,8 +380,8 @@
                     <FontIcon Glyph="{StaticResource LinkIconGlyph}"/>
                 </local:SettingContainer.Symbol>
                 <local:SettingContainer.HeaderContent>
-                    <TextBlock Text="{x:Bind LinkClickBehaviorBox.SelectedItem, Mode=OneWay, Converter={StaticResource ComboBoxToStringConverter}}">
-                    </TextBlock>
+                    <TextBlock Text="{x:Bind LinkClickBehaviorBox.SelectedItem, Mode=OneWay, Converter={StaticResource ComboBoxToStringConverter}}"
+                               Foreground="{StaticResource ExpanderHeaderTextBrush}"/>
                 </local:SettingContainer.HeaderContent>
                 <local:SettingContainer.ExpanderContent>
                     <Grid>
@@ -441,7 +455,7 @@
                     <FontIcon Glyph="{StaticResource ExperimentalIconGlyph}"/>
                 </local:SettingContainer.Symbol>
                 <local:SettingContainer.HeaderContent>
-                    <TextBlock Text="{x:Bind ViewModel.ExperimentSettingHeaderText, Mode=OneWay}"/>
+                    <TextBlock Text="{x:Bind ViewModel.ExperimentSettingHeaderText, Mode=OneWay}" Foreground="{StaticResource ExpanderHeaderTextBrush}"/>
                 </local:SettingContainer.HeaderContent>
                 <local:SettingContainer.ExpanderContent>
                     <StackPanel Orientation="Vertical">

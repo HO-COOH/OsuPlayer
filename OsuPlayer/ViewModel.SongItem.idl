@@ -14,6 +14,7 @@ namespace OsuPlayer.ViewModel
         String LengthString{ get; };
 
         IInspectable ModelPointer{ get; set; };
+        Windows.Storage.StorageFolder Folder{ get; };
 
         Windows.Foundation.Collections.IObservableVector<String> Versions{ get; };
 
@@ -23,6 +24,8 @@ namespace OsuPlayer.ViewModel
         event Windows.Foundation.EventHandler<Boolean> IsPlayingChanged;
 
         Windows.Foundation.IAsyncAction ShowProperty();
+        Windows.Foundation.IAsyncAction OpenFile();
+        Windows.Foundation.IAsyncAction OpenFolder();
 
         void PlayCurrent();
 

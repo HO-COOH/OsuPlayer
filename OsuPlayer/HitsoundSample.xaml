@@ -26,14 +26,15 @@
             <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="{x:Bind Sample.Name}"/>
-        <Button x:Name="FileButton" Click="{x:Bind Sample.Replace}" Grid.Row="0" Grid.Column="1">
+        <HyperlinkButton Content="{x:Bind Sample.Name}" Foreground="{ThemeResource SystemBaseHighColor}" Click="HyperlinkButton_Click"
+                         IsEnabled="{x:Bind Sample.IsAvailable, Mode=OneWay}"/>
+        <Button x:Uid="FileButton" x:Name="FileButton" Click="{x:Bind Sample.Replace}" Grid.Row="0" Grid.Column="1">
             <FontIcon Glyph="{StaticResource FileIconGlyph}"/>
         </Button>
 
         <Slider Orientation="Horizontal" Grid.Row="1" Value="{x:Bind Sample.Volume, Mode=TwoWay}" 
                 IsEnabled="{x:Bind Sample.IsAvailable, Mode=OneWay}"/>
-        <Button x:Name="PlayButton" Click="{x:Bind Sample.Play}" Grid.Row="1" Grid.Column="1"
+        <Button x:Uid="PlayButton" x:Name="PlayButton" Click="{x:Bind Sample.Play}" Grid.Row="1" Grid.Column="1"
                 IsEnabled="{x:Bind Sample.IsAvailable, Mode=OneWay}">
             <FontIcon Glyph="{StaticResource PlayIconGlyph}"/>
         </Button>

@@ -192,6 +192,9 @@
   <data name="ExperimentalSetting.Title" xml:space="preserve">
     <value>Experimental features</value>
   </data>
+  <data name="FileButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Replace file</value>
+  </data>
   <data name="GlobalVolumeTextBlock.Text" xml:space="preserve">
     <value>Global volume</value>
   </data>
@@ -282,6 +285,18 @@
   <data name="NightCoreItem.Text" xml:space="preserve">
     <value>NightCore</value>
   </data>
+  <data name="OffsetText.Text" xml:space="preserve">
+    <value>Hitsound Offset</value>
+  </data>
+  <data name="OffsetUnitText.Text" xml:space="preserve">
+    <value>ms</value>
+  </data>
+  <data name="OpenFileMenuItem.Text" xml:space="preserve">
+    <value>Open file</value>
+  </data>
+  <data name="OpenFolderMenuItem.Text" xml:space="preserve">
+    <value>Open folder</value>
+  </data>
   <data name="OsuPathClickActionDescription.Text" xml:space="preserve">
     <value>Actions when clicking on an osu file path:</value>
   </data>
@@ -299,6 +314,9 @@
   </data>
   <data name="OsuPathsSettings.Title" xml:space="preserve">
     <value>osu! Paths</value>
+  </data>
+  <data name="PlayButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Play</value>
   </data>
   <data name="PlayMenuItem.Text" xml:space="preserve">
     <value>Play</value>

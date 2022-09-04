@@ -22,6 +22,8 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         int SelectedVersionIndex();
         winrt::hstring SelectedVersion();
 
+        winrt::Windows::Storage::StorageFolder Folder() { return getModel().getFolder(); }
+
         void SelectedVersionIndex(int index);
 
         void ModelPointer(winrt::Windows::Foundation::IInspectable modelPointer) { m_modelPointer = modelPointer; }
@@ -38,6 +40,8 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         void PlayCurrent();
 
         winrt::Windows::Foundation::IAsyncAction ShowProperty();
+        winrt::Windows::Foundation::IAsyncAction OpenFile();
+        winrt::Windows::Foundation::IAsyncAction OpenFolder();
 
         winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage SongImage();
 

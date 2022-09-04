@@ -31,6 +31,7 @@ namespace OsuPlayer.ViewModel
         Mod DefaultMod{ get; set; };
         Boolean HitsoundGlobalEnabled{ get; set; };
         Windows.Storage.StorageFolder SelectedSkin{ get; set; };
+        Int32 Offset{ get; set; };
 
         Int32 OsuPathActionIndex{ get; set; };
         Int32 LinkActionIndex{ get; set; };

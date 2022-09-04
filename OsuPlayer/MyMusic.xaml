@@ -400,7 +400,7 @@
 
                                                 <MenuFlyoutSeparator/>
 
-                                                <MenuFlyoutSubItem x:Name="MoveToMenuItem" x:Uid="MoveToMenuItem" Text="Move to" Loading="MoveToMenuItem_Loading">
+                                                <MenuFlyoutSubItem x:Name="MoveToMenuItem" x:Uid="MoveToMenuItem" Loading="MoveToMenuItem_Loading">
                                                     <MenuFlyoutSubItem.Icon>
                                                         <FontIcon Glyph="{StaticResource MoveToIconGlyph}"/>
                                                     </MenuFlyoutSubItem.Icon>
@@ -408,7 +408,19 @@
                                                 </MenuFlyoutSubItem>
 
                                                 <MenuFlyoutSeparator/>
+                                                
+                                                <MenuFlyoutItem x:Uid="OpenFileMenuItem" Click="{x:Bind OpenFile}">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <SymbolIcon Symbol="OpenFile"/>
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
 
+                                                <MenuFlyoutItem x:Uid="OpenFolderMenuItem" Click="{x:Bind OpenFolder}">
+                                                    <MenuFlyoutItem.Icon>
+                                                        <SymbolIcon Symbol="Folder"/>
+                                                    </MenuFlyoutItem.Icon>
+                                                </MenuFlyoutItem>
+                                                
                                                 <MenuFlyoutItem x:Uid="PropertyMenuItem" Click="{x:Bind ShowProperty}">
                                                     <MenuFlyoutItem.Icon>
                                                         <SymbolIcon Symbol="MusicInfo"/>

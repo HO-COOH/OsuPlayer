@@ -38,9 +38,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         int Volume();
         void Volume(int volume);
         int SongVolume();
-        void SongVolume(int songVolume);
+        void SongVolume(int songVolume, bool writeToSetting = true);
         int HitsoundVolume();
-        void HitsoundVolume(int hitsoundVolume);
+        void HitsoundVolume(int hitsoundVolume, bool writeToSetting = true);
         void Mute();
 
         void Save();
@@ -62,6 +62,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         int m_progress{};
         int m_length{};
         PlayMod m_mod{};
+        int m_mixedVolume{};
         
         struct MuteVolumeInfo
         {
@@ -70,6 +71,8 @@ namespace winrt::OsuPlayer::ViewModel::implementation
             double globalVolumeBefore{};
             bool isMute = false;
         } m_muteInfo;
+
+        std::vector<TimingPoint>::const_iterator m_timingPointIter{};
     };
 }
 

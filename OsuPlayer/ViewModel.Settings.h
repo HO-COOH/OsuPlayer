@@ -34,6 +34,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         int OsuPathActionIndex();
         void OsuPathActionIndex(int osuPathAction);
 
+        int Offset();
+        void Offset(int offset);
+
         int LinkActionIndex();
         void LinkActionIndex(int linkAction);
 
@@ -68,6 +71,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         int m_jumplistRecentCollections;
         bool m_allowModifyOsuData;
         bool m_hitsoundGlobalEnabled;
+        int m_offset;
         static winrt::Windows::Storage::ApplicationDataContainer m_localSettings;
         winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::OsuPathItemViewModel> m_osuPathItems = winrt::single_threaded_observable_vector<ViewModel::OsuPathItemViewModel>();
         void setTheme();

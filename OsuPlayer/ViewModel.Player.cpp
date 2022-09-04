@@ -16,6 +16,16 @@ using namespace Model;
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
+	static inline double NormalizeVolume(int volume)
+	{
+		return volume / 100.0;
+	}
+
+	static inline int UnnormalizeVolume(double volume)
+	{
+		return static_cast<int>(round(volume * 100.0));
+	}
+
 	PlayerViewModel::PlayerViewModel()
 	{
 		m_songPlayer.PlaybackSession().PositionChanged(
@@ -28,10 +38,11 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		);
 
 		auto settings = winrt::Windows::Storage::ApplicationData::Current().LocalSettings().Values();
-		Volume(winrt::unbox_value_or<int>(settings.TryLookup(L"GlobalVolume"), 100));
-		SongVolume(winrt::unbox_value_or<int>(settings.TryLookup(L"SongVolume"), 100));
-		HitsoundVolume(winrt::unbox_value_or<int>(settings.TryLookup(L"HitsoundVolume"), 100));
-
+		m_mixedVolume = winrt::unbox_value_or<int>(settings.TryLookup(L"GlobalVolume"), 100);
+		SongVolume(winrt::unbox_value_or<int>(settings.TryLookup(L"SongVolume"), 100), false);
+		HitsoundVolume(winrt::unbox_value_or<int>(settings.TryLookup(L"HitsoundVolume"), 100), false);
+		
+		
 		raisePropertyChange(L"Volume");
 		raisePropertyChange(L"SongVolume");
 		raisePropertyChange(L"HitsoundVolume");
@@ -45,6 +56,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		co_await songItemModel.fillDataAsync();
 		co_await songItemModel.Source().OpenAsync();
 		co_await m_hitSoundPlayer.init();
+		m_hitSoundPlayer.setFolder(item.Folder());
 		m_songPlayer.Pause();
 		m_songPlayer.Source(nullptr);
 		item.IsPlaying(true);
@@ -53,9 +65,10 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		co_await updateForSMTC(playbackItem);
 
 		//Add timed metadata
+		auto const offset = ViewModelLocator::Current().SettingsViewModel().Offset();
 		winrt::Windows::Media::Core::TimedMetadataTrack hitObjectsMeta{ L"0", L"en-US", winrt::Windows::Media::Core::TimedMetadataKind::Data };
 		hitObjectsMeta.Label(L"Custom data track");
-		hitObjectsMeta.CueEntered([this, &songItemModel](winrt::Windows::Media::Core::TimedMetadataTrack const& track, winrt::Windows::Media::Core::MediaCueEventArgs args) -> winrt::Windows::Foundation::IAsyncAction
+		hitObjectsMeta.CueEntered([this, &songItemModel](winrt::Windows::Media::Core::TimedMetadataTrack const& track, winrt::Windows::Media::Core::MediaCueEventArgs args)
 		{
 			auto hitObjectPtr = *reinterpret_cast<int*>(
 				args
@@ -64,16 +77,27 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 				.Data()
 				.data());
 
-			co_await m_hitSoundPlayer.playHitsound(*songItemModel.m_beatmaps[m_currentItemToPlay.SelectedVersionIndex()].originalFile->hitObjects[hitObjectPtr]);
+			auto const& beatmap = songItemModel.m_beatmaps[m_currentItemToPlay.SelectedVersionIndex()].originalFile;
+			auto const& hitObject = *beatmap->hitObjects[hitObjectPtr];
+			while (m_timingPointIter < beatmap->timingPoints.cend() - 1)
+			{
+				if (hitObject.time >= (m_timingPointIter + 1)->time)
+					++m_timingPointIter;
+				else
+					break;
+			}
+			m_hitSoundPlayer.playHitsound(hitObject, std::addressof(*m_timingPointIter));
 		});
 
 		
 		//Maybe try using index instead of using pointers to hit object
+		auto const& beatmapFile = songItemModel.m_beatmaps[item.SelectedVersionIndex()].originalFile;
+		m_timingPointIter = beatmapFile->timingPoints.begin();
 		int i = 0;
-		for (auto const& hitObject : songItemModel.m_beatmaps[item.SelectedVersionIndex()].originalFile->hitObjects)
+		for (auto const& hitObject : beatmapFile->hitObjects)
 		{
 			winrt::Windows::Media::Core::DataCue cue;
-			cue.StartTime(std::chrono::milliseconds{ hitObject->time });
+			cue.StartTime(std::chrono::milliseconds{ hitObject->time - offset });
 			cue.Duration(std::chrono::milliseconds{ 100 });
 			auto hitObjectRawPtr = hitObject.get();
 			winrt::Windows::Storage::Streams::Buffer b{ sizeof(int) };
@@ -179,32 +203,59 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
 	int PlayerViewModel::Volume()
 	{
-		return static_cast<int>(m_songPlayer.Volume() * 100.0);
+		return m_mixedVolume;
 	}
 
 	void PlayerViewModel::Volume(int volume)
 	{
-		m_songPlayer.Volume(static_cast<double>(volume) / 100.0);
-		m_hitSoundPlayer.Volume(volume);
+		static auto Settings = winrt::Windows::Storage::ApplicationData::Current()
+			.LocalSettings()
+			.Values();
+		auto songVolumeBefore = SongVolume();
+		auto hitsoundVolumeBefore = HitsoundVolume();
+		m_mixedVolume = volume;
+		SongVolume(songVolumeBefore, false);
+		HitsoundVolume(hitsoundVolumeBefore, false);
+		raisePropertyChange(L"SongVolume");
+		raisePropertyChange(L"HitsoundVolume");
 		raisePropertyChange(L"Volume");
+		Settings.Insert(L"GlobalVolume", winrt::box_value(volume));
 	}
 
 	int PlayerViewModel::SongVolume()
 	{
-		return 0;
+		return UnnormalizeVolume(m_songPlayer.Volume() / NormalizeVolume(m_mixedVolume));
 	}
 
-	void PlayerViewModel::SongVolume(int songVolume)
+	void PlayerViewModel::SongVolume(int songVolume, bool writeToSetting)
 	{
+		static auto Settings = winrt::Windows::Storage::ApplicationData::Current()
+			.LocalSettings()
+			.Values();
+		m_songPlayer.Volume(
+			NormalizeVolume(songVolume) * NormalizeVolume(m_mixedVolume)
+		);
+
+		if(writeToSetting)
+			Settings.Insert(L"SongVolume", winrt::box_value(songVolume));
 	}
 
 	int PlayerViewModel::HitsoundVolume()
 	{
-		return 0;
+		return UnnormalizeVolume(m_hitSoundPlayer.NormalizedVolume() / NormalizeVolume(m_mixedVolume));
 	}
 
-	void PlayerViewModel::HitsoundVolume(int hitsoundVolume)
+	void PlayerViewModel::HitsoundVolume(int hitsoundVolume, bool writeToSetting)
 	{
+		static auto Settings = winrt::Windows::Storage::ApplicationData::Current()
+			.LocalSettings()
+			.Values();
+		m_hitSoundPlayer.NormalizedVolume(
+			NormalizeVolume(hitsoundVolume) * NormalizeVolume(m_mixedVolume)
+		);
+
+		if(writeToSetting)
+			Settings.Insert(L"HitsoundVolume", winrt::box_value(hitsoundVolume));
 	}
 
 	void PlayerViewModel::Mute()
@@ -212,7 +263,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		if (m_muteInfo.isMute)
 		{
 			m_muteInfo.songVolumeBefore = m_songPlayer.Volume();
-			m_muteInfo.hitsoundVolumeBefore = m_hitSoundPlayer.Volume();
+			m_muteInfo.hitsoundVolumeBefore = m_hitSoundPlayer.NormalizedVolume();
 			m_muteInfo.globalVolumeBefore = Volume();
 			Volume(0);
 			m_muteInfo.isMute = true;
@@ -220,7 +271,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		else
 		{
 			m_songPlayer.Volume(m_muteInfo.songVolumeBefore);
-			m_hitSoundPlayer.Volume(m_muteInfo.hitsoundVolumeBefore);
+			m_hitSoundPlayer.NormalizedVolume(m_muteInfo.hitsoundVolumeBefore);
 			Volume(m_muteInfo.globalVolumeBefore);
 			m_muteInfo.isMute = false;
 		}
@@ -228,7 +279,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
 	void PlayerViewModel::Save()
 	{
-		auto settings = winrt::Windows::Storage::ApplicationData::Current().LocalSettings().Values();
+		static auto settings = winrt::Windows::Storage::ApplicationData::Current().LocalSettings().Values();
 		settings.Insert(L"GlobalVolume", winrt::box_value(Volume()));
 		settings.Insert(L"SongVolume", winrt::box_value(SongVolume()));
 		settings.Insert(L"HitsoundVolume", winrt::box_value(HitsoundVolume()));

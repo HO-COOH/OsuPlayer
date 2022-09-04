@@ -26,7 +26,8 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		m_jumplistRecentSongs(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"RecentSongs"), 0)),
 		m_jumplistRecentCollections(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"RecentCollections"), 0)),
 		m_allowModifyOsuData(winrt::unbox_value_or<bool>(m_localSettings.Values().TryLookup(L"AllowModifyOsuData"), false)),
-		m_hitsoundGlobalEnabled(winrt::unbox_value_or<bool>(m_localSettings.Values().TryLookup(L"HitsoundEnable"), false))
+		m_hitsoundGlobalEnabled(winrt::unbox_value_or<bool>(m_localSettings.Values().TryLookup(L"HitsoundEnable"), false)),
+		m_offset(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"Offset"), 0))
 	{
 		loadOsuPaths();
 	}
@@ -170,6 +171,20 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		{
 			m_osuPathAction = osuPathAction;
 			m_localSettings.Values().Insert(L"OsuPathAction", winrt::box_value(osuPathAction));
+		}
+	}
+
+	int SettingsViewModel::Offset()
+	{
+		return m_offset;
+	}
+
+	void SettingsViewModel::Offset(int offset)
+	{
+		if (offset != m_offset)
+		{
+			m_offset = offset;
+			m_localSettings.Values().Insert(L"Offset", winrt::box_value(offset));
 		}
 	}
 

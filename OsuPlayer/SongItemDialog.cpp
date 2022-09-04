@@ -174,15 +174,12 @@ namespace winrt::OsuPlayer::implementation
         {
             case 0: //Open the file
             {
-                auto file = co_await winrt::Windows::Storage::StorageFile::GetFileFromPathAsync(SongPathText().Text());
-                co_await winrt::Windows::System::Launcher::LaunchFileAsync(file);
+                co_await m_songItemViewModel.OpenFile();
                 break;
             }
             case 1: //Open folder
             {
-                auto file = co_await winrt::Windows::Storage::StorageFile::GetFileFromPathAsync(SongPathText().Text());
-                auto folder = co_await file.GetParentAsync();
-                co_await winrt::Windows::System::Launcher::LaunchFolderAsync(folder);
+                co_await m_songItemViewModel.OpenFolder();
                 break;
             }
             case 2: //Open osu! and copy the song name

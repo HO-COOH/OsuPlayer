@@ -51,6 +51,8 @@ namespace Model
 
 		//Return the file of a beatmap
 		winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile> getFileOf(BeatmapInfo const& info);
+
+		winrt::Windows::Storage::StorageFolder getFolder() const { return m_folder; }
 	private:
 		int m_length{};	//in milliseconds
 		int m_bitrate{};

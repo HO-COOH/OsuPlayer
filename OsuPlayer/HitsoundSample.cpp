@@ -5,6 +5,8 @@
 #endif
 
 #include "ViewModel.HitsoundSample.g.h"
+#include <winrt/Windows.System.h>
+#include <winrt/Windows.Storage.h>
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -38,4 +40,12 @@ namespace winrt::OsuPlayer::implementation
     {
         return m_sampleProperty;
     }
+
+    winrt::Windows::Foundation::IAsyncAction HitsoundSample::HyperlinkButton_Click(
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender, 
+        [[maybe_unused]]winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    {
+        co_await winrt::Windows::System::Launcher::LaunchFolderAsync(co_await Sample().File().GetParentAsync());
+    }
+
 }

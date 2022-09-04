@@ -192,6 +192,9 @@
   <data name="ExperimentalSetting.Title" xml:space="preserve">
     <value>实验性功能</value>
   </data>
+  <data name="FileButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>更换音效文件</value>
+  </data>
   <data name="GlobalVolumeTextBlock.Text" xml:space="preserve">
     <value>全局音量</value>
   </data>
@@ -282,6 +285,18 @@
   <data name="NightCoreItem.Text" xml:space="preserve">
     <value>NightCore</value>
   </data>
+  <data name="OffsetText.Text" xml:space="preserve">
+    <value>打击音效偏移</value>
+  </data>
+  <data name="OffsetUnitText.Text" xml:space="preserve">
+    <value>毫秒</value>
+  </data>
+  <data name="OpenFileMenuItem.Text" xml:space="preserve">
+    <value>打开文件</value>
+  </data>
+  <data name="OpenFolderMenuItem.Text" xml:space="preserve">
+    <value>打开文件夹</value>
+  </data>
   <data name="OsuPathClickActionDescription.Text" xml:space="preserve">
     <value>点击osu文件地址的动作</value>
   </data>
@@ -299,6 +314,9 @@
   </data>
   <data name="OsuPathsSettings.Title" xml:space="preserve">
     <value>osu!路径</value>
+  </data>
+  <data name="PlayButton.ToolTipService.ToolTip" xml:space="preserve">
+    <value>播放</value>
   </data>
   <data name="PlayMenuItem.Text" xml:space="preserve">
     <value>播放</value>

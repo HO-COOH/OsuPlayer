@@ -9,6 +9,7 @@
 #include "ViewModelLocator.h"
 #include <ppltasks.h>
 #include <pplawait.h>
+#include <winrt/Windows.System.h>
 
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
@@ -106,6 +107,27 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         propertyDialog.CloseButtonText(L"Close");
 
         co_await propertyDialog.ShowAsync();
+    }
+
+    winrt::Windows::Foundation::IAsyncAction SongItemViewModel::OpenFile()
+    {
+        auto& songItem = getModel();
+        if (!songItem.isDataFilled())
+            co_await songItem.fillDataAsync();
+        co_await winrt::Windows::System::Launcher::LaunchFileAsync(
+            co_await songItem.getFileOf(songItem.m_beatmaps[SelectedVersionIndex()])
+        );
+    }
+
+    winrt::Windows::Foundation::IAsyncAction SongItemViewModel::OpenFolder()
+    {
+        auto& songItem = getModel();
+        if (!songItem.isDataFilled())
+            co_await songItem.fillDataAsync();
+        auto file = co_await songItem.getFileOf(songItem.m_beatmaps[SelectedVersionIndex()]);
+        
+        auto folder = co_await file.GetParentAsync();
+        co_await winrt::Windows::System::Launcher::LaunchFolderAsync(folder);
     }
 
     winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage SongItemViewModel::SongImage()

@@ -1,3 +1,5 @@
+import "ViewModel.SongItem.idl";
+
 namespace OsuPlayer
 {
     [default_interface]
@@ -5,6 +7,7 @@ namespace OsuPlayer
     {
         SongItemDialog();
 
+        OsuPlayer.ViewModel.SongItemViewModel SongItemViewModel{ get; set; };
         String Title{ get; set; };
         String Singer{ get; set; };
         String Tags{ get; set; };
