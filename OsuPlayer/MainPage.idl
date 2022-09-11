@@ -9,5 +9,6 @@ namespace OsuPlayer
 
         Player player{ get; };
         OsuPlayer.ViewModel.MyMusicViewModel MyMusicViewModel{ get; };
+        static Microsoft.UI.Xaml.Controls.WebView2 Browser{get;};
     }
 }

@@ -37,6 +37,9 @@ namespace OsuPlayer.ViewModel
         Int32 LinkActionIndex{ get; set; };
         String CustomSearchPrefix{ get; set; };
         Windows.UI.Xaml.Visibility CustomSearchTextBoxVisibility{ get; };
+        Boolean UseInternalBrowser{get; set;};
+        Windows.UI.Xaml.Visibility UseInternalBrowserVisibility{get;};       
+
         Int32 JumpListRecentSongs{ get; set; };
         Int32 JumpListRecentCollections{ get; set; };
         Boolean AllowModifyOsuData{ get; set; };
@@ -44,5 +47,6 @@ namespace OsuPlayer.ViewModel
         
         //Windows.Storage.StorageFolder SelectedSkin{ get; set; };
         String ExperimentSettingHeaderText{ get; };
+        Boolean UseOriginalLanguage{get; set; };
     }
 }

@@ -48,7 +48,7 @@
                     </muxc:NavigationViewItem.InfoBadge>
                 </muxc:NavigationViewItem>
 
-                <muxc:NavigationViewItem Icon="Clock" x:Uid="RecentNavigationItem">
+                <muxc:NavigationViewItem x:Name="RecentNavigationItem" Icon="Clock" x:Uid="RecentNavigationItem" PointerPressed="RecentNavigationItem_PointerPressed">
                     <muxc:NavigationViewItem.InfoBadge>
                         <muxc:InfoBadge x:Name="RecentInfoBadge" Value="2"/>
                     </muxc:NavigationViewItem.InfoBadge>
@@ -100,6 +100,9 @@
         <Frame x:Name="PlayerFrame" Grid.Row="1" Background="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}">
             <local:Player x:Name="SongPlayer"></local:Player>
         </Frame>
+
+        <muxc:WebView2 x:Name="GlobalBrowser" Height="500" 
+            Visibility="Collapsed" Source="https://osu.ppy.sh"/>
     </Grid>
 
 </Page>

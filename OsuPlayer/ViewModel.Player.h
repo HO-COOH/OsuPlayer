@@ -6,7 +6,7 @@
 #include "Utils.PropertyChangeHelper.hpp"
 #include "HitsoundPlayer.h"
 
-class HitObject;
+struct HitObject;
 namespace winrt::OsuPlayer::ViewModel::implementation
 {
     struct PlayerViewModel : PlayerViewModelT<PlayerViewModel>, Utils::PropertyChangeHelper<PlayerViewModel>
@@ -26,7 +26,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         bool IsModEnabled();
         void IsModEnabled(bool enable);
 
-        winrt::hstring ModString();
 
         bool UseSkinHitsound();
         void UseSkinHitsound(bool useSkinHitsound);
@@ -61,7 +60,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         ViewModel::SongItemViewModel m_currentItemToPlay{ nullptr };
         int m_progress{};
         int m_length{};
-        PlayMod m_mod{};
         int m_mixedVolume{};
         
         struct MuteVolumeInfo

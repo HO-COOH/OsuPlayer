@@ -9,6 +9,7 @@
 #include <winrt/Windows.Foundation.Collections.h>
 #include "ViewModel.CollectionItem.g.h"
 #include <unordered_map>
+#include "ViewModel.RecentViewModel.g.h"
 
 class ViewModelLocator
 {
@@ -16,6 +17,7 @@ class ViewModelLocator
 	winrt::OsuPlayer::ViewModel::MyMusicViewModel m_myMusicViewModel{ nullptr };
 	winrt::OsuPlayer::ViewModel::SettingsViewModel m_settingsViewModel{ nullptr };
 	winrt::OsuPlayer::ViewModel::ColumnSettings m_columnSettingsViewModel{ nullptr };
+	winrt::OsuPlayer::ViewModel::RecentViewModel m_recentViewModel{ nullptr };
 	//winrt::OsuPlayer::ViewModel::HitsoundPanelViewModel m_hitsoundPanelViewModel;
 	winrt::Windows::Foundation::Collections::IObservableVector<winrt::OsuPlayer::ViewModel::CollectionItem> m_collections = winrt::single_threaded_observable_vector< winrt::OsuPlayer::ViewModel::CollectionItem>();
 	std::unordered_map<winrt::hstring, winrt::OsuPlayer::ViewModel::MyMusicViewModel> CollectionsPageMap;
@@ -27,6 +29,7 @@ public:
 	winrt::OsuPlayer::ViewModel::SettingsViewModel SettingsViewModel();
 	winrt::OsuPlayer::ViewModel::ColumnSettings ColumnSettings();
 	winrt::OsuPlayer::ViewModel::HitsoundPanelViewModel HitsoundPanelViewModel();
+	winrt::OsuPlayer::ViewModel::RecentViewModel RecentViewModel();
 	winrt::Windows::Foundation::Collections::IObservableVector<winrt::OsuPlayer::ViewModel::CollectionItem> Collections() { return m_collections; }
 	winrt::OsuPlayer::ViewModel::MyMusicViewModel getCollectionPageByCollectionItem(winrt::OsuPlayer::ViewModel::CollectionItem collectionItem);
 	winrt::OsuPlayer::ViewModel::MyMusicViewModel getCollectionPageByName(winrt::hstring collectionName);

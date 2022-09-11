@@ -51,7 +51,6 @@
         </Grid.ColumnDefinitions>
 
         <Image x:Name="CoverImage" Grid.Column="0" Source="{x:Bind ViewModel.ImageSource}" Width="150" Height="150"/>
-
         <!--Player control area-->
         <RelativePanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch">
             <StackPanel x:Name="PlayerControls" Orientation="Vertical" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" VerticalAlignment="Center" HorizontalAlignment="Stretch">
@@ -150,7 +149,7 @@
         <!-- Mods -->
         <muxc:ToggleSplitButton x:Name="DefaultModButton" IsChecked="{x:Bind ViewModel.IsModEnabled, Mode=TwoWay}" 
                                 Grid.Column="3" Margin="0,0,100,0" IsEnabled="{x:Bind ViewModel.HasItems, Mode=OneWay}">
-            <TextBlock Text="{x:Bind ViewModel.ModString, Mode=OneWay}"/>
+            <TextBlock Text="{x:Bind ViewModel.Mod, Mode=OneWay, Converter={StaticResource ModToStringConverter}}"/>
             <muxc:ToggleSplitButton.Flyout>
                 <MenuFlyout>
                     <MenuFlyoutItem x:Uid="HalfTimeItem" Click="HalfTimeItem_Click"/>
@@ -160,7 +159,7 @@
             </muxc:ToggleSplitButton.Flyout>
         </muxc:ToggleSplitButton>
 
-        <CheckBox x:Name="UseSkinHitsoundCheckbox" Content="Use skin hitsound" Checked="UseSkinHitsoundCheckbox_Checked" 
+        <CheckBox x:Uid="UseSkinHitsoundCheckbox" x:Name="UseSkinHitsoundCheckbox" Checked="UseSkinHitsoundCheckbox_Checked" 
                   Unchecked="UseSkinHitsoundCheckbox_Unchecked" Grid.Column="4" IsEnabled="{x:Bind SettingsViewModel.HitsoundGlobalEnabled, Mode=OneWay}"/>
     </Grid>
 

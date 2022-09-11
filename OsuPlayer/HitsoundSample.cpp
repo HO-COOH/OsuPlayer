@@ -7,6 +7,7 @@
 #include "ViewModel.HitsoundSample.g.h"
 #include <winrt/Windows.System.h>
 #include <winrt/Windows.Storage.h>
+#include "Utils.h"
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -45,7 +46,20 @@ namespace winrt::OsuPlayer::implementation
         [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender, 
         [[maybe_unused]]winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
-        co_await winrt::Windows::System::Launcher::LaunchFolderAsync(co_await Sample().File().GetParentAsync());
+        auto file = Sample().File();
+        if (auto folder = co_await file.GetParentAsync(); folder)
+            co_await winrt::Windows::System::Launcher::LaunchFolderAsync(folder);
+        else
+        {
+            winrt::Microsoft::UI::Xaml::Controls::TeachingTip tip;
+            tip.Title(L"Title");
+            //auto tip = Application::Current().Resources().Lookup(winrt::box_value(L"tip")).as<winrt::Microsoft::UI::Xaml::Controls::TeachingTip>();
+            tip.Subtitle(Utils::GetFileOpenFailedFormatString(file.Path()));
+            tip.ShouldConstrainToRootBounds(true);
+            tip.IsOpen(true);
+
+            //TODO: here
+        }
     }
 
 }

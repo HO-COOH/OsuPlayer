@@ -41,15 +41,43 @@ std::vector<std::basic_string<Char>> Split(const std::basic_string_view<Char> st
     return result;
 }
 
+/**
+ * @brief Returns the search URL prefix for searching a beatmap
+ * @param isOsuSearch Whether to search on osu! official website
+ * @return A string of search URL prefix
+*/
 static auto GetSearchPrefix(bool isOsuSearch = true)
 {
     constexpr auto OsuSearchPrefix = L"https://osu.ppy.sh/beatmapsets?q=";
     return isOsuSearch ? winrt::hstring{ OsuSearchPrefix } : ViewModelLocator::Current().SettingsViewModel().CustomSearchPrefix();
 }
 
+/**
+ * @brief Returns the search URL for searching a beatmap
+ * @param text The name/search content
+ * @param isOsuSearch Whether to search on osu! official website
+ * @return A WinRT URL
+*/
 static auto MakeSearchLink(std::wstring_view text, bool isOsuSearch = true)
 {
     return winrt::Windows::Foundation::Uri(GetSearchPrefix(isOsuSearch) + text);
+}
+#include "MainPage.g.h"
+static void OpenInternalBrowser(winrt::Windows::Foundation::Uri url)
+{
+    static auto browser = winrt::OsuPlayer::MainPage::Browser();
+    browser.Source(url);
+    browser.Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
+}
+
+static void AddOpenInternalBrowserHandler(winrt::Windows::UI::Xaml::Documents::Hyperlink link, std::wstring_view tag, bool isOsuSearch)
+{
+    if (ViewModelLocator::Current().SettingsViewModel().UseInternalBrowser())
+        link.Click([url = MakeSearchLink(tag, isOsuSearch)](
+            winrt::Windows::UI::Xaml::Documents::Hyperlink link,
+            winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs){ OpenInternalBrowser(url); });
+    else
+        link.NavigateUri(MakeSearchLink(tag, true));
 }
 
 namespace winrt::OsuPlayer::implementation
@@ -58,7 +86,6 @@ namespace winrt::OsuPlayer::implementation
     {
         InitializeComponent();
     }
-
 
     void SongItemDialog::Title(winrt::hstring title)
     {
@@ -93,7 +120,9 @@ namespace winrt::OsuPlayer::implementation
     }
 
  
-    winrt::Windows::Foundation::IAsyncAction SongItemDialog::CopyOnLinkClick(winrt::Windows::UI::Xaml::Documents::Hyperlink link, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs args)
+    winrt::Windows::Foundation::IAsyncAction SongItemDialog::CopyOnLinkClick(
+        winrt::Windows::UI::Xaml::Documents::Hyperlink link, 
+        winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs args)
     {
         winrt::Windows::ApplicationModel::DataTransfer::DataPackage package;
         package.SetText(link.Inlines().GetAt(0).as<winrt::Windows::UI::Xaml::Documents::Run>().Text());
@@ -123,8 +152,8 @@ namespace winrt::OsuPlayer::implementation
             switch (linkAction)
             {
                 case 1: link.Click({ this, &SongItemDialog::CopyOnLinkClick }); break;
-                case 2: link.NavigateUri(MakeSearchLink(tag, true)); break;
-                case 3: link.NavigateUri(MakeSearchLink(tag, false)); break;
+                case 2: AddOpenInternalBrowserHandler(link, tag, true);         break;
+                case 3: AddOpenInternalBrowserHandler(link, tag, false);        break;
                 default: break;
             }
             
@@ -154,7 +183,7 @@ namespace winrt::OsuPlayer::implementation
                 default: break;
             }
         }
-        catch (winrt::hresult_invalid_argument const& e)
+        catch (winrt::hresult_invalid_argument const&)
         {
             //Custom search link may be invalid, causing an exception in the 2 and 3 case
         }

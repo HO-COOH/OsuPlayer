@@ -4,6 +4,10 @@
 
 namespace winrt::OsuPlayer::implementation
 {
+    /**
+     * @brief This class convert bool -> Visibility
+     * @details true -> Visible, false -> Collapsed
+    */
     struct BoolToVisibilityConverter : BoolToVisibilityConverterT<BoolToVisibilityConverter>
     {
         BoolToVisibilityConverter() = default;

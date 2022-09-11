@@ -7,12 +7,10 @@
 #include "winrt/Windows.Storage.Pickers.h"
 #include "ViewModel.SettingsViewModel.g.h"
 #include "ViewModelLocator.h"
-#include <winrt/Windows.UI.ViewManagement.h>
 #include "Model.MyMusic.h"
 #include "Model.Skin.h"
 #include "HitsoundPanel.g.h"
 #include <algorithm>
-#include <winrt/Windows.ApplicationModel.Resources.h>
 
 
 using namespace winrt;
@@ -124,7 +122,9 @@ namespace winrt::OsuPlayer::implementation
         }
     }
 
-    void Settings::SkinButtonText_Loaded(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
+    void Settings::SkinButtonText_Loaded(
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender,
+        [[maybe_unused]]winrt::Windows::UI::Xaml::RoutedEventArgs const& e)
     {
         fillSkinMenuFlyout();
         auto const& selectedSkin = ViewModelLocator::Current().SettingsViewModel().SelectedSkin();

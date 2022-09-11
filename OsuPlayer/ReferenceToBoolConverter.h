@@ -4,6 +4,10 @@
 
 namespace winrt::OsuPlayer::implementation
 {
+    /**
+     * @brief This class convert a WinRT reference -> bool
+     * @details null -> false, otherwise true
+    */
     struct ReferenceToBoolConverter : ReferenceToBoolConverterT<ReferenceToBoolConverter>
     {
         ReferenceToBoolConverter() = default;

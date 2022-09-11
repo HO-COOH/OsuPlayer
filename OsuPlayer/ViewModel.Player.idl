@@ -37,7 +37,6 @@ namespace OsuPlayer.ViewModel
         //Playing info
         PlayMod Mod{ get; set; };
         Boolean IsModEnabled{ get; set; };
-        String ModString{ get; };
         Boolean UseSkinHitsound{ get; set; };
         Boolean HasItems{ get; };
 

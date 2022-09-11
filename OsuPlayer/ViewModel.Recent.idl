@@ -1,3 +1,6 @@
+import "ViewModel.SongItem.idl";
+import "ViewModel.CollectionItem.idl";
+
 namespace OsuPlayer.ViewModel
 {
     [bindable]
@@ -5,5 +8,10 @@ namespace OsuPlayer.ViewModel
     runtimeclass RecentViewModel 
     {
         RecentViewModel();
+
+        Windows.Foundation.Collections.IObservableVector<Object> RecentItems{get;};
+
+        void addSongRecord(OsuPlayer.ViewModel.SongItemViewModel songItem);
+        void addCollectionRecord(OsuPlayer.ViewModel.CollectionItem songItem);
     }
 }

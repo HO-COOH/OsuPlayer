@@ -82,7 +82,9 @@ namespace Utils
         titleBar.ButtonForegroundColor(IsDarkTheme() ? winrt::Windows::UI::Colors::White() : winrt::Windows::UI::Colors::Black());
     }
 
-    void ThemeHelper::UiSettings_ColorValuesChanged(winrt::Windows::UI::ViewManagement::UISettings sender, winrt::Windows::Foundation::IInspectable const& args)
+    void ThemeHelper::UiSettings_ColorValuesChanged(
+        [[maybe_unused]]winrt::Windows::UI::ViewManagement::UISettings sender, 
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& args)
     {
         if (CurrentApplicationWindow)
         {

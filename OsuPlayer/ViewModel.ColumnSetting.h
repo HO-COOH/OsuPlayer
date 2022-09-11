@@ -46,7 +46,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         void Save();
     private:
         int m_selectedIndex = -1;
-        void assertIndexValid() const { assert(m_selectedIndex != -1 && m_selectedIndex < m_items.Size()); }
+        void assertIndexValid() const { assert(m_selectedIndex != -1 && m_selectedIndex < static_cast<int>(m_items.Size())); }
         winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::ColumnSettingItem> m_items = winrt::single_threaded_observable_vector<ViewModel::ColumnSettingItem>();
         static winrt::Windows::Storage::ApplicationDataContainer m_localSettings;
     };

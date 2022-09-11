@@ -4,6 +4,9 @@
 
 namespace winrt::OsuPlayer::implementation
 {
+    /**
+     * @brief This class returns the string inside ComboBoxItem.Content
+    */
     struct ComboBoxToStringConverter : ComboBoxToStringConverterT<ComboBoxToStringConverter>
     {
         ComboBoxToStringConverter() = default;

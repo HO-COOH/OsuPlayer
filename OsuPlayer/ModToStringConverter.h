@@ -1,17 +1,15 @@
 ﻿#pragma once
 
-#include "LengthToStringConverter.g.h"
+#include "ModToStringConverter.g.h"
 
 namespace winrt::OsuPlayer::implementation
 {
     /**
-     * @brief This class convert milliseconds to a string in "<min>:<sec>" format
-     * @details Used in the Player control and various other places which needs a
-     * string representation of the length of a song
+     * @brief This class convert PlayMod enum -> string
     */
-    struct LengthToStringConverter : LengthToStringConverterT<LengthToStringConverter>
+    struct ModToStringConverter : ModToStringConverterT<ModToStringConverter>
     {
-        LengthToStringConverter() = default;
+        ModToStringConverter() = default;
 
         winrt::Windows::Foundation::IInspectable Convert(
             winrt::Windows::Foundation::IInspectable const& value,
@@ -31,7 +29,7 @@ namespace winrt::OsuPlayer::implementation
 
 namespace winrt::OsuPlayer::factory_implementation
 {
-    struct LengthToStringConverter : LengthToStringConverterT<LengthToStringConverter, implementation::LengthToStringConverter>
+    struct ModToStringConverter : ModToStringConverterT<ModToStringConverter, implementation::ModToStringConverter>
     {
     };
 }

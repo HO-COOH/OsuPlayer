@@ -37,6 +37,9 @@
     <Page Include="HitsoundSample.xaml">
       <Filter>Views\Controls</Filter>
     </Page>
+    <Page Include="RecentPage.xaml">
+      <Filter>Views</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
@@ -89,6 +92,12 @@
       <Filter>Converter</Filter>
     </Midl>
     <Midl Include="BoolToVisibilityConverter.idl">
+      <Filter>Converter</Filter>
+    </Midl>
+    <Midl Include="RecentListTemplateSelector.idl">
+      <Filter>Utility</Filter>
+    </Midl>
+    <Midl Include="ModToStringConverter.idl">
       <Filter>Converter</Filter>
     </Midl>
   </ItemGroup>

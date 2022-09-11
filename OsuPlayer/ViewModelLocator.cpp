@@ -41,6 +41,13 @@ winrt::OsuPlayer::ViewModel::HitsoundPanelViewModel ViewModelLocator::HitsoundPa
     return model;
 }
 
+winrt::OsuPlayer::ViewModel::RecentViewModel ViewModelLocator::RecentViewModel()
+{
+    if (m_recentViewModel == nullptr)
+        m_recentViewModel = winrt::OsuPlayer::ViewModel::RecentViewModel{};
+    return m_recentViewModel;
+}
+
 winrt::OsuPlayer::ViewModel::MyMusicViewModel ViewModelLocator::getCollectionPageByCollectionItem(winrt::OsuPlayer::ViewModel::CollectionItem collectionItem)
 {
     return getCollectionPageByName(collectionItem.Name());

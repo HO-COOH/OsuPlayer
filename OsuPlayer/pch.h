@@ -21,3 +21,6 @@
 #include <winrt/Microsoft.UI.Xaml.Controls.Primitives.h>
 #include <winrt/Microsoft.Graphics.Canvas.Effects.h>
 #include <winrt/Windows.UI.Xaml.Input.h>
+#include <winrt/Microsoft.Web.WebView2.Core.h>
+#include <winrt/Windows.ApplicationModel.Resources.h>
+#include <winrt/Windows.UI.ViewManagement.h>

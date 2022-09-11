@@ -27,7 +27,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		m_jumplistRecentCollections(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"RecentCollections"), 0)),
 		m_allowModifyOsuData(winrt::unbox_value_or<bool>(m_localSettings.Values().TryLookup(L"AllowModifyOsuData"), false)),
 		m_hitsoundGlobalEnabled(winrt::unbox_value_or<bool>(m_localSettings.Values().TryLookup(L"HitsoundEnable"), false)),
-		m_offset(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"Offset"), 0))
+		m_offset(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"Offset"), 0)),
+		m_useOriginalLanguage(winrt::unbox_value_or<int>(m_localSettings.Values().TryLookup(L"UseOriginalLanguage"), 0)),
+		m_useInternalBrowser(winrt::unbox_value_or<bool>(m_localSettings.Values().TryLookup(L"UseInternalBrowser"), true))
 	{
 		loadOsuPaths();
 	}
@@ -106,12 +108,12 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		}
 	}
 
-	bool implementation::SettingsViewModel::IsModEnabled()
+	bool SettingsViewModel::IsModEnabled()
 	{
 		return m_mod != Mod::Normal;
 	}
 
-	void implementation::SettingsViewModel::IsModEnabled(bool enable)
+	void SettingsViewModel::IsModEnabled(bool enable)
 	{
 		if (!enable)
 			m_mod = Mod::Normal;
@@ -199,6 +201,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 			m_linkAction = linkAction;
 			m_localSettings.Values().Insert(L"LinkAction", winrt::box_value(m_linkAction));
 			raisePropertyChange(L"CustomSearchTextBoxVisibility");
+			raisePropertyChange(L"UserInternalBrowserVisibility");
 		}
 	}
 	winrt::hstring SettingsViewModel::CustomSearchPrefix()
@@ -253,7 +256,36 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		{
 			m_allowModifyOsuData = allow;
 			m_localSettings.Values().Insert(L"AllowModifyOsuData", winrt::box_value(allow));
-			raisePropertyChange(L"ExperimentSettingHeaderText");
+			raisePropertyChange(L"ExperimentSettingHeaderText");	//because there is a header text that binds to this property
 		}
+	}
+	bool SettingsViewModel::UseOriginalLanguage()
+	{
+		return m_useOriginalLanguage;
+	}
+
+	void SettingsViewModel::UseOriginalLanguage(bool value)
+	{
+		if (m_useOriginalLanguage != value)
+		{
+			m_useOriginalLanguage = value;
+			m_localSettings.Values().Insert(L"UseOriginalLanguage", winrt::box_value(value));
+		}
+	}
+
+	void SettingsViewModel::UseInternalBrowser(bool value)
+	{
+		if (value != m_useInternalBrowser)
+		{
+			m_useInternalBrowser = value;
+			m_localSettings.Values().Insert(L"UseInternalBrowser", winrt::box_value(value));
+		}
+	}
+
+	winrt::Windows::UI::Xaml::Visibility SettingsViewModel::UseInternalBrowserVisibility()
+	{
+		return m_linkAction == 0 || m_linkAction == 1 ?
+			winrt::Windows::UI::Xaml::Visibility::Collapsed :
+			winrt::Windows::UI::Xaml::Visibility::Visible;
 	}
 }

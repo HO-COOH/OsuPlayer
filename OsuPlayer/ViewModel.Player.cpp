@@ -7,10 +7,10 @@
 #include "Model.MyMusic.h"
 #include "Utils.h"
 #include "Model.Recent.h"
-
 #include "OsuParser.hpp"
 #include "ViewModelLocator.h"
 #include <chrono>
+#include "DataLoader.h"
 
 using namespace Model;
 
@@ -29,7 +29,8 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 	PlayerViewModel::PlayerViewModel()
 	{
 		m_songPlayer.PlaybackSession().PositionChanged(
-			[this](winrt::Windows::Media::Playback::MediaPlaybackSession session, winrt::Windows::Foundation::IInspectable _)->winrt::Windows::Foundation::IAsyncAction
+			[this](winrt::Windows::Media::Playback::MediaPlaybackSession session, 
+				winrt::Windows::Foundation::IInspectable) -> winrt::Windows::Foundation::IAsyncAction
 			{
 				m_progress = session.Position().count() / 10'000ll;
 				co_await winrt::resume_foreground(winrt::Windows::ApplicationModel::Core::CoreApplication::MainView().CoreWindow().Dispatcher());
@@ -68,7 +69,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		auto const offset = ViewModelLocator::Current().SettingsViewModel().Offset();
 		winrt::Windows::Media::Core::TimedMetadataTrack hitObjectsMeta{ L"0", L"en-US", winrt::Windows::Media::Core::TimedMetadataKind::Data };
 		hitObjectsMeta.Label(L"Custom data track");
-		hitObjectsMeta.CueEntered([this, &songItemModel](winrt::Windows::Media::Core::TimedMetadataTrack const& track, winrt::Windows::Media::Core::MediaCueEventArgs args)
+		hitObjectsMeta.CueEntered([this, &songItemModel](
+			winrt::Windows::Media::Core::TimedMetadataTrack const&, 
+			winrt::Windows::Media::Core::MediaCueEventArgs args)
 		{
 			auto hitObjectPtr = *reinterpret_cast<int*>(
 				args
@@ -99,7 +102,6 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 			winrt::Windows::Media::Core::DataCue cue;
 			cue.StartTime(std::chrono::milliseconds{ hitObject->time - offset });
 			cue.Duration(std::chrono::milliseconds{ 100 });
-			auto hitObjectRawPtr = hitObject.get();
 			winrt::Windows::Storage::Streams::Buffer b{ sizeof(int) };
 			*(int*)(b.data()) = i++;
 			cue.Data(b);
@@ -119,9 +121,9 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		raisePropertyChange(L"HasItems");
 
 		//update recent data
-		auto& recentInstance = Model::Recent::GetInstance();
-		recentInstance.addRecordForSong(songItemModel);
-		recentInstance.updateJumpList();
+		static auto recentInstance = ViewModelLocator::Current().RecentViewModel();
+		recentInstance.addSongRecord(item);
+		//recentInstance.updateJumpList();
 	}
 
 	void PlayerViewModel::PlayCurrent()
@@ -143,14 +145,20 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
 	PlayMod PlayerViewModel::Mod()
 	{
-		return m_mod;
+		if (m_currentItemToPlay)
+		{
+			if (auto value = OverrideLoader::GetInstance().getMod(*reinterpret_cast<SongItemModel*>(winrt::unbox_value<size_t>(m_currentItemToPlay.ModelPointer()))); 
+				value.has_value())
+				return *value;
+		}
+		return static_cast<PlayMod>(ViewModelLocator::Current().SettingsViewModel().DefaultMod());
 	}
 
 	void PlayerViewModel::Mod(PlayMod mod)
 	{
-		if (mod != m_mod)
+		if (m_currentItemToPlay)
 		{
-			m_mod = mod;
+			OverrideLoader::GetInstance().setMod(*reinterpret_cast<SongItemModel*>(winrt::unbox_value<size_t>(m_currentItemToPlay.ModelPointer())), mod);
 			raisePropertyChange(L"ModString");
 			raisePropertyChange(L"IsModEnabled");
 		}
@@ -158,7 +166,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
 	bool PlayerViewModel::IsModEnabled()
 	{
-		return m_mod != PlayMod::Normal;
+		return Mod() != PlayMod::Normal;
 	}
 
 	void PlayerViewModel::IsModEnabled(bool)
@@ -167,25 +175,17 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		assert(false);
 	}
 
-	winrt::hstring PlayerViewModel::ModString()
-	{
-		switch (m_mod)
-		{
-			case PlayMod::HalfTime:		return L"HalfTime";
-			case PlayMod::DoubleTime:	return L"DoubleTime";
-			case PlayMod::NightCore:	return L"NightCore";
-			default:					return L"NoMod";
-		}
-	}
-
-
 	bool PlayerViewModel::UseSkinHitsound()
 	{
-		return false;
+		if (auto value = OverrideLoader::GetInstance().getUseSkinHitsound(*reinterpret_cast<SongItemModel*>(winrt::unbox_value<size_t>(m_currentItemToPlay.ModelPointer())));
+			value.has_value())
+			return *value;
+		return {};
 	}
 
 	void PlayerViewModel::UseSkinHitsound(bool useSkinHitsound)
 	{
+		OverrideLoader::GetInstance().setUseSkinHitsound(*reinterpret_cast<SongItemModel*>(winrt::unbox_value<size_t>(m_currentItemToPlay.ModelPointer())));
 	}
 
 	int PlayerViewModel::Progress()
@@ -272,7 +272,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		{
 			m_songPlayer.Volume(m_muteInfo.songVolumeBefore);
 			m_hitSoundPlayer.NormalizedVolume(m_muteInfo.hitsoundVolumeBefore);
-			Volume(m_muteInfo.globalVolumeBefore);
+			Volume(UnnormalizeVolume(m_muteInfo.globalVolumeBefore));
 			m_muteInfo.isMute = false;
 		}
 	}

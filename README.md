@@ -27,8 +27,9 @@ you don't see such organizations when you don't open the project in Visual Studi
 - [x] Song lists
 - [x] Property page
 - [x] Sort
-- [ ] View collections
+- [x] View collections
 - [ ] View Singers
+- [x] Integrate osu! web 
 - [ ] IRC 
 
 MainPage:
@@ -40,8 +41,6 @@ AlbumView:
 Settings:
 ![](screenshots/Settings.png)
 
-Collections:
-![](screenshots/Collections.png)
 
 Currently I am limited by the unresolved WinUI related bugs:
 - [CollectionViewSource ItemsPath binding not working with public fields](https://github.com/microsoft/microsoft-ui-xaml/issues/6619)

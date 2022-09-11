@@ -23,7 +23,6 @@ namespace Utils
 		{
 			auto const beginPtr = reinterpret_cast<Char*>(data());
 			auto const endPtr = beginPtr + Length() / sizeof(Char);
-			auto const size = Length() / sizeof(Char);
 
 			switch (dir)
 			{

@@ -7,7 +7,6 @@
 #include "MainPage.g.cpp"
 #endif
 #include "ViewModelLocator.h"
-#include <winrt/Windows.ApplicationModel.Resources.h>
 
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -15,6 +14,8 @@ using namespace Model;
 
 namespace winrt::OsuPlayer::implementation
 {
+    winrt::Microsoft::UI::Xaml::Controls::WebView2 MainPage::s_browser{ nullptr };
+
     MainPage::MainPage()
     {
         InitializeComponent();
@@ -34,7 +35,6 @@ namespace winrt::OsuPlayer::implementation
                 CollectionsInfoBadge().Value(MyMusicModel::GetInstance().m_collections.size());
 
                 auto collectionNavigationItem = CollectionNavigationItem();
-                collectionNavigationItem.MenuItems();
                 auto children = collectionNavigationItem.MenuItems();
                 for (auto collection : MyMusicModel::GetInstance().m_collections)
                 {
@@ -54,10 +54,12 @@ namespace winrt::OsuPlayer::implementation
         ViewModelLocator::Current().MyMusicViewModel().ListName(
             winrt::Windows::ApplicationModel::Resources::ResourceLoader::GetForCurrentView().GetString(L"MyMusicTitle")
         );
+
+        s_browser = GlobalBrowser();
     }
 
     void MainPage::SearchBox_QuerySubmitted(
-        winrt::Windows::UI::Xaml::Controls::AutoSuggestBox const& sender, 
+        [[maybe_unused]]winrt::Windows::UI::Xaml::Controls::AutoSuggestBox const& sender, 
         winrt::Windows::UI::Xaml::Controls::AutoSuggestBoxQuerySubmittedEventArgs const& args)
     {
         auto text = args.QueryText();
@@ -67,16 +69,22 @@ namespace winrt::OsuPlayer::implementation
 
 
     void MainPage::NavigationViewItem_PointerPressed(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::Input::PointerRoutedEventArgs const& e)
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender, 
+        [[maybe_unused]]winrt::Windows::UI::Xaml::Input::PointerRoutedEventArgs const& e)
     {
         ContentFrame().Navigate(::xaml_typename<OsuPlayer::MyMusic>());
     }
 
+    void MainPage::RecentNavigationItem_PointerPressed(
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender, 
+        [[maybe_unused]]winrt::Windows::UI::Xaml::Input::PointerRoutedEventArgs const& e)
+    {
+        ContentFrame().Navigate(::xaml_typename<OsuPlayer::RecentPage>());
+    }
 
     void MainPage::CollectionNavigationItem_PointerPressed(
-        winrt::Windows::Foundation::IInspectable const& sender, 
-        winrt::Windows::UI::Xaml::Input::PointerRoutedEventArgs const& e)
+        [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& sender, 
+        [[maybe_unused]]winrt::Windows::UI::Xaml::Input::PointerRoutedEventArgs const& e)
     {
         ContentFrame().Navigate(xaml_typename<OsuPlayer::CollectionView>());
     }
@@ -157,3 +165,5 @@ namespace winrt::OsuPlayer::implementation
     }
 
 }
+
+

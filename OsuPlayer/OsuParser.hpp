@@ -1316,8 +1316,8 @@ struct Slider final: HitObject
         curveType = static_cast<CurveType>(curveTypeChar.front());
         for (auto const& curvePointStr : details::SplitString(curvePointsStr, '|'))
         {
-            auto [x, y] = details::SplitKeyVal(curvePointStr);
-            curvePoints.push_back(Coord{ std::stoi(x.data()), std::stoi(y.data()) });
+            auto [x_str, y_str] = details::SplitKeyVal(curvePointStr);
+            curvePoints.push_back(Coord{ std::stoi(x_str.data()), std::stoi(y_str.data()) });
         }
 
         slides = std::stoi(result[6].data());
@@ -1402,7 +1402,7 @@ public:
 
     std::unique_ptr<HitObject> clone() const override
     {
-        return std::unique_ptr<Slider>(new Slider(*this));
+        return std::unique_ptr<HitObject>(new Slider(*this));
     }
 };
 
@@ -1811,8 +1811,8 @@ struct Video final : EventBase
      */
     int yOffset;
 
-    Video(std::string_view video, std::string_view startTime, std::string_view fileName, int xOffset, int yOffset)
-        : EventBase{ 1, std::stoi(startTime.data()) }, xOffset{ xOffset }, yOffset{ yOffset }
+    Video(std::string_view, std::string_view startTime, std::string_view fileName, int xOffset, int yOffset)
+        : EventBase{ 1, std::stoi(startTime.data()) }, fileName{fileName}, xOffset{xOffset}, yOffset{yOffset}
     {}
 private:
     Video(std::array<std::string_view, 5> const& data)
@@ -2125,7 +2125,7 @@ struct OsuFile
         if(iter != hitObjects.cend())
         {
             auto const iter2 = std::find_if(iter, hitObjects.cend(), [endTime](auto const& obj) { return obj->time >= endTime; });
-            return std::distance(iter, iter2);
+            return static_cast<int>(std::distance(iter, iter2));
         }
 
         return 0;
@@ -2142,7 +2142,7 @@ struct OsuFile
         return std::count_if(
             hitObjects.cbegin(),
             hitObjects.cend(),
-            [columnIndex, totalColumn = difficulty.circleSize](auto const& obj)
+            [columnIndex, totalColumn = static_cast<int>(difficulty.circleSize)](auto const& obj)
             {
                 return obj->getColumnIndex(totalColumn) == columnIndex;
             }

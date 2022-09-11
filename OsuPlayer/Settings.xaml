@@ -389,6 +389,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -412,6 +413,8 @@
                         <TextBox Visibility="{x:Bind ViewModel.CustomSearchTextBoxVisibility, Mode=OneWay}" 
                                  x:Uid="CustomSearchTextBox" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0"
                                  Text="{x:Bind ViewModel.CustomSearchPrefix, Mode=TwoWay}"/>
+                        <CheckBox x:Uid="UseInternalBrowserCheckBox" IsChecked="{x:Bind ViewModel.UseInternalBrowser, Mode=TwoWay}"
+                                  Grid.Row="3" Margin="0,10,0,0" Visibility="{x:Bind ViewModel.UseInternalBrowserVisibility, Mode=OneWay}"/>
                     </Grid>
 
                 </local:SettingContainer.ExpanderContent>
@@ -471,6 +474,7 @@
                 </local:SettingContainer.Symbol>
                 <local:SettingContainer.ExpanderContent>
                     <StackPanel Orientation="Vertical">
+                        <ToggleSwitch x:Uid="OriginalLanguageToggle" IsOn="{x:Bind ViewModel.UseOriginalLanguage, Mode=TwoWay}"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -486,13 +490,13 @@
                                 </RichTextBlock>
                             </StackPanel>
                         </Grid>
-                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                            <TextBlock x:Uid="LanguageText"/>
-                            <ComboBox Margin="10,0,0,0">
-                                <ComboBoxItem Content="English"/>
-                                <ComboBoxItem Content="中文"/>
-                            </ComboBox>
-                        </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <TextBlock x:Uid="LanguageText"/>
+                                <ComboBox Margin="10,0,0,0">
+                                    <ComboBoxItem Content="English"/>
+                                    <ComboBoxItem Content="中文"/>
+                                </ComboBox>
+                            </StackPanel>
                     </StackPanel>
                 </local:SettingContainer.ExpanderContent>
             </local:SettingContainer>

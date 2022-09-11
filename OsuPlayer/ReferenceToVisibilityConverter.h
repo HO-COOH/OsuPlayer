@@ -4,6 +4,10 @@
 
 namespace winrt::OsuPlayer::implementation
 {
+    /**
+     * @brief This class convert WinRT reference -> Visibility
+     * @details null -> Collapsed, otherwise Visible
+    */
     struct ReferenceToVisibilityConverter : ReferenceToVisibilityConverterT<ReferenceToVisibilityConverter>
     {
         ReferenceToVisibilityConverter() = default;

@@ -10,21 +10,8 @@ namespace Model
         return s_recent;
     }
 
-    void Model::Recent::addRecordForSong(SongItemModel const& songItem)
-    {
-        //the song is in the recent list
-        if (auto mapIter = m_recentMap.find(&songItem); mapIter != m_recentMap.cend())
-        {
-            m_recentList.erase(mapIter->second);
-            m_recentList.push_front(&songItem);
-            mapIter->second = m_recentList.begin();
-        }
-        else
-        {
-            m_recentList.push_front(&songItem);
-            m_recentMap[&songItem] = m_recentList.begin();
-        }
-    }
+    template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+    template<class... Ts> overloaded(Ts...)->overloaded<Ts...>;
 
     winrt::fire_and_forget Recent::updateJumpList()
     {
@@ -36,19 +23,35 @@ namespace Model
         std::for_each_n(
             m_recentList.cbegin(),
             min(m_recentList.size(), numJumpListSongs),
-            [&items](SongItemModel const* songItem)
+            [&items](auto const& songOrCollection)
             {
-                auto item = winrt::Windows::UI::StartScreen::JumpListItem::CreateWithArguments(
-                    L"",
-                    songItem->SongName() + L" - " + songItem->Singer()
+                std::visit(
+                    overloaded
+                    {
+                        [&items](SongItemModel const* song) 
+                        {
+                            auto item = winrt::Windows::UI::StartScreen::JumpListItem::CreateWithArguments(
+                                 L"",
+                                 song->SongName() + L" - " + song->Singer()
+                            );
+                            item.GroupName(L"Songs");
+                            items.Append(item);
+                        },
+                        [&items](CollectionItemModel const* collection)
+                        {
+                            auto item = winrt::Windows::UI::StartScreen::JumpListItem::CreateWithArguments(
+                                L"",
+                                winrt::to_hstring(collection->m_name)
+                            );
+                            item.GroupName(L"Collections");
+                            items.Append(item);
+                        }
+                    },
+                    songOrCollection
                 );
-                item.GroupName(L"Songs");
-                items.Append(item);
             }
         );
 
-        //Add collections
-        //...
         co_await jumpList.SaveAsync();
     }
 }

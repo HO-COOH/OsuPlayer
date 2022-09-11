@@ -4,8 +4,6 @@
 #include "ReferenceToVisibilityConverter.g.cpp"
 #endif
 
-#include <winrt/Windows.UI.Xaml.h>
-
 namespace winrt::OsuPlayer::implementation
 {
 	winrt::Windows::Foundation::IInspectable ReferenceToVisibilityConverter::Convert(

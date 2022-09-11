@@ -349,8 +349,7 @@
                                   Grid.Row="2"
                                   CanDragItems="True"
                                   CanReorderItems="True"
-                                  AllowDrop="True"
-                                  >
+                                  AllowDrop="True">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:Name="SongItemTemplate" x:DataType="viewModel:SongItemViewModel">
                                     <Grid x:Name="MusicListGrid" Height="30" IsDoubleTapEnabled="True" HorizontalAlignment="Stretch" DoubleTapped="{x:Bind PlayCurrent}" Loaded="MusicListGrid_Loaded">

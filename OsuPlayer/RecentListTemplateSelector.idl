@@ -1,0 +1,15 @@
+namespace OsuPlayer
+{
+    [bindable]
+    [default_interface]
+    runtimeclass RecentListTemplateSelector : Windows.UI.Xaml.Controls.DataTemplateSelector
+    {
+        RecentListTemplateSelector();
+        
+        Windows.UI.Xaml.DataTemplate SongTemplate{get; set;};
+        Windows.UI.Xaml.DataTemplate CollectionTemplate{get; set;};
+
+        Windows.UI.Xaml.DataTemplate SelectTemplateCore(Object object);
+        Windows.UI.Xaml.DataTemplate SelectTemplateCore(Object object, Windows.UI.Xaml.DependencyObject container);
+    }
+}

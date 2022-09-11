@@ -291,11 +291,20 @@
   <data name="OffsetUnitText.Text" xml:space="preserve">
     <value>毫秒</value>
   </data>
+  <data name="OpenFileFailed" xml:space="preserve">
+    <value>打开失败：</value>
+  </data>
   <data name="OpenFileMenuItem.Text" xml:space="preserve">
     <value>打开文件</value>
   </data>
   <data name="OpenFolderMenuItem.Text" xml:space="preserve">
     <value>打开文件夹</value>
+  </data>
+  <data name="OriginalLanguageToggle.OffContent" xml:space="preserve">
+    <value>使用英语和罗马音显示歌曲信息</value>
+  </data>
+  <data name="OriginalLanguageToggle.OnContent" xml:space="preserve">
+    <value>以原始语言显示歌曲信息</value>
   </data>
   <data name="OsuPathClickActionDescription.Text" xml:space="preserve">
     <value>点击osu文件地址的动作</value>
@@ -326,6 +335,9 @@
   </data>
   <data name="RecentNavigationItem.Content" xml:space="preserve">
     <value>最近项目</value>
+  </data>
+  <data name="RecentText.Text" xml:space="preserve">
+    <value>最近</value>
   </data>
   <data name="RemoveFromListMenuItem.Text" xml:space="preserve">
     <value>从列表中移除</value>
@@ -374,6 +386,9 @@
   </data>
   <data name="ThemeSetting.Title" xml:space="preserve">
     <value>主题</value>
+  </data>
+  <data name="UseSkinHitsoundCheckbox.Content" xml:space="preserve">
+    <value>使用皮肤的打击音效</value>
   </data>
   <data name="VersionColumnHeaderText" xml:space="preserve">
     <value>版本</value>

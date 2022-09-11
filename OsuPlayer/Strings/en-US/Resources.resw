@@ -291,11 +291,20 @@
   <data name="OffsetUnitText.Text" xml:space="preserve">
     <value>ms</value>
   </data>
+  <data name="OpenFileFailed" xml:space="preserve">
+    <value>Failed to open:</value>
+  </data>
   <data name="OpenFileMenuItem.Text" xml:space="preserve">
     <value>Open file</value>
   </data>
   <data name="OpenFolderMenuItem.Text" xml:space="preserve">
     <value>Open folder</value>
+  </data>
+  <data name="OriginalLanguageToggle.OffContent" xml:space="preserve">
+    <value>Use English and Romaji</value>
+  </data>
+  <data name="OriginalLanguageToggle.OnContent" xml:space="preserve">
+    <value>Use original language for meta</value>
   </data>
   <data name="OsuPathClickActionDescription.Text" xml:space="preserve">
     <value>Actions when clicking on an osu file path:</value>
@@ -325,6 +334,9 @@
     <value>Properties</value>
   </data>
   <data name="RecentNavigationItem.Content" xml:space="preserve">
+    <value>Recent</value>
+  </data>
+  <data name="RecentText.Text" xml:space="preserve">
     <value>Recent</value>
   </data>
   <data name="RemoveFromListMenuItem.Text" xml:space="preserve">
@@ -374,6 +386,9 @@
   </data>
   <data name="ThemeSetting.Title" xml:space="preserve">
     <value>Theme</value>
+  </data>
+  <data name="UseSkinHitsoundCheckbox.Content" xml:space="preserve">
+    <value>Use skin hitsound</value>
   </data>
   <data name="VersionColumnHeaderText" xml:space="preserve">
     <value>Version</value>

@@ -53,6 +53,8 @@ namespace Model
 		winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile> getFileOf(BeatmapInfo const& info);
 
 		winrt::Windows::Storage::StorageFolder getFolder() const { return m_folder; }
+
+		auto const& getId() const { return m_beatmaps.front().originalFile->metaData.beatmapId; }
 	private:
 		int m_length{};	//in milliseconds
 		int m_bitrate{};

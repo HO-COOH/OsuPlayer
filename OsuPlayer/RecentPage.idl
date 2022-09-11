@@ -1,0 +1,11 @@
+import "ViewModel.Recent.idl";
+
+namespace OsuPlayer
+{
+    [default_interface]
+    runtimeclass RecentPage : Windows.UI.Xaml.Controls.Page
+    {
+        RecentPage();
+        OsuPlayer.ViewModel.RecentViewModel ViewModel{get;};
+    }
+}

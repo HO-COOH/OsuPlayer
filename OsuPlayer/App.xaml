@@ -11,8 +11,9 @@
                 <!--<ResourceDictionary Source="/Styles/Styles.xaml"/>-->
                 <ResourceDictionary>
                     <local:LengthToStringConverter x:Key="Converter2">
-                        
+
                     </local:LengthToStringConverter>
+                    <local:ModToStringConverter x:Key="ModToStringConverter"/>
                 </ResourceDictionary>
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>

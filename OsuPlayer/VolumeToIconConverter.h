@@ -4,6 +4,9 @@
 
 namespace winrt::OsuPlayer::implementation
 {
+    /**
+     * @brief This class convert Unnormalized volume (ranging 0~100) -> Icon(represented as a glyph string) 
+    */
     struct VolumeToIconConverter : VolumeToIconConverterT<VolumeToIconConverter>
     {
         VolumeToIconConverter() = default;

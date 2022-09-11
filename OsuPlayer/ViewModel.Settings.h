@@ -53,6 +53,14 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 
         bool AllowModifyOsuData();
         void AllowModifyOsuData(bool allow);
+
+        bool UseOriginalLanguage();
+        void UseOriginalLanguage(bool value);
+
+        bool UseInternalBrowser() { return m_useInternalBrowser; }
+        void UseInternalBrowser(bool value);
+
+        winrt::Windows::UI::Xaml::Visibility UseInternalBrowserVisibility();
         
         //Methods
         winrt::Windows::Foundation::IAsyncOperation<AddOsuFolderResult> AddOsuPath();
@@ -72,8 +80,13 @@ namespace winrt::OsuPlayer::ViewModel::implementation
         bool m_allowModifyOsuData;
         bool m_hitsoundGlobalEnabled;
         int m_offset;
+        bool m_useOriginalLanguage;
+        bool m_useInternalBrowser;
         static winrt::Windows::Storage::ApplicationDataContainer m_localSettings;
-        winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::OsuPathItemViewModel> m_osuPathItems = winrt::single_threaded_observable_vector<ViewModel::OsuPathItemViewModel>();
+        
+        winrt::Windows::Foundation::Collections::IObservableVector<ViewModel::OsuPathItemViewModel> m_osuPathItems = 
+            winrt::single_threaded_observable_vector<ViewModel::OsuPathItemViewModel>();
+        
         void setTheme();
         void loadOsuPaths();
         static Model::Folders& GetFolderData() { return Model::Folders::GetInstance(); }

@@ -4,11 +4,8 @@
 #include "ComboBoxToStringConverter.g.cpp"
 #endif
 
-#include <winrt/Windows.UI.Xaml.Controls.h>
-
 namespace winrt::OsuPlayer::implementation
 {
-
     winrt::Windows::Foundation::IInspectable ComboBoxToStringConverter::Convert(
         winrt::Windows::Foundation::IInspectable const& value, 
         [[maybe_unused]]winrt::Windows::UI::Xaml::Interop::TypeName const& targetType, 
@@ -19,6 +16,7 @@ namespace winrt::OsuPlayer::implementation
             return comboBoxItem.Content();
         return winrt::box_value(L"");
     }
+
     winrt::Windows::Foundation::IInspectable ComboBoxToStringConverter::ConvertBack(
         [[maybe_unused]]winrt::Windows::Foundation::IInspectable const& value, 
         [[maybe_unused]]winrt::Windows::UI::Xaml::Interop::TypeName const& targetType, 

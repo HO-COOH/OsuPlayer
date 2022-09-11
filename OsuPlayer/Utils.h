@@ -5,6 +5,7 @@
 #include <utility>
 #include <chrono>
 #include <winrt/Windows.ApplicationModel.Core.h>
+#include <winrt/Windows.ApplicationModel.Resources.h>
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.UI.Notifications.h>
 #include <winrt/Windows.Data.Xml.Dom.h>
@@ -12,6 +13,13 @@
 
 namespace Utils
 {
+	template<typename T>
+	auto GetFileOpenFailedFormatString(T const& path)
+	{
+		return winrt::Windows::ApplicationModel::Resources::ResourceLoader::GetForCurrentView()
+			.GetString(L"OpenFileFailed") + path;
+	}
+
 	template<typename T>
 	T FindParent(winrt::Windows::UI::Xaml::DependencyObject const& control)
 	{
