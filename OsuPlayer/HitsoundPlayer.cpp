@@ -53,30 +53,24 @@ winrt::Windows::Foundation::IAsyncAction HitsoundPlayer::init()
 
 winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile> HitsoundPlayer::getHitsoundFile(
     HitObject const& hitObject, 
-    bool isNormalSampleSet,
+    HitObject::HitSound sound,
     TimingPoint const* timingPoint)
 {
     static auto hitsoundPanelViewModel = ViewModelLocator::Current().HitsoundPanelViewModel();
 
-    auto const normalSampleSet = isNormalSampleSet? 
-            (
-                hitObject.hitSample.normalSet == SampleSet::Auto ?
-                timingPoint->sampleSet : //use timing point's sample set
-                hitObject.hitSample.normalSet
-            ) : 
-            (
-                hitObject.hitSample.additionSet == SampleSet::Auto ? 
-                hitObject.hitSample.normalSet :
-                hitObject.hitSample.additionSet
-            );
+    auto const sampleSet = sound == HitObject::HitSound::Normal
+        ? (hitObject.hitSample.normalSet == SampleSet::None ? timingPoint->sampleSet : hitObject.hitSample.normalSet)
+        : (hitObject.hitSample.additionSet == SampleSet::None
+            ? (hitObject.hitSample.normalSet == SampleSet::None ? timingPoint->sampleSet : hitObject.hitSample.normalSet)
+            : hitObject.hitSample.additionSet);
 
-    if(hitObject.hitSample.index == 0)
+    if (hitObject.hitSample.index == 0)
     { 
         //use skin hitsound
-        switch (normalSampleSet)
+        switch (sampleSet)
         {
             case SampleSet::Normal:
-                switch (hitObject.hitSound)
+                switch (sound)
                 {
                     case HitObject::HitSound::Normal:	co_return hitsoundPanelViewModel.Normal().Hitnormal().File();
                     case HitObject::HitSound::Whistle:	co_return hitsoundPanelViewModel.Normal().Hitwhistle().File();
@@ -84,7 +78,7 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile
                     case HitObject::HitSound::Clap:		co_return hitsoundPanelViewModel.Normal().Hitclap().File();
                 }
             case SampleSet::Soft:
-                switch (hitObject.hitSound)
+                switch (sound)
                 {
                     case HitObject::HitSound::Normal:	co_return hitsoundPanelViewModel.Soft().Hitnormal().File();
                     case HitObject::HitSound::Whistle:	co_return hitsoundPanelViewModel.Soft().Hitwhistle().File();
@@ -93,7 +87,7 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile
                 }
 
             case SampleSet::Drum:
-                switch (hitObject.hitSound)
+                switch (sound)
                 {
                     case HitObject::HitSound::Normal:	co_return hitsoundPanelViewModel.Drum().Hitnormal().File();
                     case HitObject::HitSound::Whistle:	co_return hitsoundPanelViewModel.Drum().Hitwhistle().File();
@@ -107,14 +101,14 @@ winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile
     {
         //use beatmap hitsound
         std::wstring name;
-        switch (normalSampleSet)
+        switch (sampleSet)
         {
             case SampleSet::Normal: name += L"normal-hit";  break;
             case SampleSet::Soft:   name += L"soft-hit";    break;
             case SampleSet::Drum:   name += L"drum-hit";    break;
             default:    assert(false);  //Auto should be handled before!
         }
-        switch (hitObject.hitSound)
+        switch (sound)
         {
             case HitObject::HitSound::Normal:   name += L"normal";  break;
             case HitObject::HitSound::Whistle:  name += L"whistle"; break;
@@ -142,21 +136,26 @@ static inline void AssertVolumeRange(int volume)
 */
 void HitsoundPlayer::playHitsound(HitObject const& hitObject, TimingPoint const* timingPoint)
 {
-    getHitsoundFile(hitObject, true, timingPoint).Completed(
-            [this](winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile> normalHitsoundAsync, winrt::Windows::Foundation::AsyncStatus status)
-            {
-                if (auto file = normalHitsoundAsync.GetResults(); file && status == winrt::Windows::Foundation::AsyncStatus::Completed)
-                    addInputNode(file);
-            }
-    );
-    getHitsoundFile(hitObject, false, timingPoint).Completed(
+    if (!hitObject.hitSample.filename.empty())
+    {
+        addInputNode(m_beatmapFolder.GetFileAsync(winrt::to_hstring(hitObject.hitSample.filename)).get());
+        return;
+    }
+
+    auto const hitsounds = hitObject.effectiveHitSounds();
+    for (auto const sound : { HitObject::HitSound::Normal, HitObject::HitSound::Whistle, HitObject::HitSound::Finish, HitObject::HitSound::Clap })
+    {
+        if (!hitsounds.test(sound))
+            continue;
+
+        getHitsoundFile(hitObject, sound, timingPoint).Completed(
         [this](winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile> normalHitsoundAsync, winrt::Windows::Foundation::AsyncStatus status)
         {
             if (auto file = normalHitsoundAsync.GetResults(); file && status == winrt::Windows::Foundation::AsyncStatus::Completed)
                 addInputNode(file);
         }
-    );
-
+        );
+    }
 }
 
 double HitsoundPlayer::NormalizedVolume()

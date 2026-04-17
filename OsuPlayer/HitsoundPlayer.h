@@ -3,9 +3,7 @@
 #include <winrt/Windows.Media.Audio.h>
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Storage.h>
-
-struct HitObject;
-struct TimingPoint;
+#include "OsuParser.hpp"
 
 class HitsoundPlayer
 {
@@ -26,7 +24,7 @@ class HitsoundPlayer
 	*/
 	winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::StorageFile> getHitsoundFile(
 		HitObject const& hitObject, 
-		bool isNormalSampleSet = true,
+		HitObject::HitSound sound,
 		TimingPoint const* timingPoint = nullptr
 	);
 	

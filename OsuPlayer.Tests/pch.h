@@ -8,5 +8,9 @@
 #define PCH_H
 
 // add headers that you want to pre-compile here
+#include "CppUnitTest.h"
+#include <filesystem>
+#include <fstream>
+#include <memory>
 
 #endif //PCH_H

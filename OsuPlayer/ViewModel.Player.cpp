@@ -81,7 +81,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 				.data());
 
 			auto const& beatmap = songItemModel.m_beatmaps[m_currentItemToPlay.SelectedVersionIndex()].originalFile;
-			auto const& hitObject = *beatmap->hitObjects[hitObjectPtr];
+			auto const& hitObject = HitObject::base(beatmap->hitObjects[hitObjectPtr]);
 			while (m_timingPointIter < beatmap->timingPoints.cend() - 1)
 			{
 				if (hitObject.time >= (m_timingPointIter + 1)->time)
@@ -100,7 +100,7 @@ namespace winrt::OsuPlayer::ViewModel::implementation
 		for (auto const& hitObject : beatmapFile->hitObjects)
 		{
 			winrt::Windows::Media::Core::DataCue cue;
-			cue.StartTime(std::chrono::milliseconds{ hitObject->time - offset });
+			cue.StartTime(std::chrono::milliseconds{ HitObject::base(hitObject).time - offset });
 			cue.Duration(std::chrono::milliseconds{ 100 });
 			winrt::Windows::Storage::Streams::Buffer b{ sizeof(int) };
 			*(int*)(b.data()) = i++;

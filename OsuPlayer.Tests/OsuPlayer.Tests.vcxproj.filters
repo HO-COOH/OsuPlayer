@@ -26,5 +26,13 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ToStringHelper.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Koda Kumi - Guess Who Is Back (TV Size) (Sotarks) [Fiery%27s Extreme].osu">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

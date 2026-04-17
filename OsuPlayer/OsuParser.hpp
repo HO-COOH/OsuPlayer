@@ -1,4 +1,4 @@
-/*****************************************************************//**
+﻿/*****************************************************************//**
  * \file   OsuParser.hpp
  * \brief  A simple header-only library for parsing osu file
  * 
@@ -22,10 +22,11 @@
 #include <numeric>
 #include <variant>
 #include <cassert>
-#include <iterator>
 #include <cstring>
+#include <charconv>
+#include <type_traits>
 
-#define ifstream istream
+//#define ifstream istream
 //#include <queue>
 
 /**
@@ -43,12 +44,47 @@ namespace PlayField
 
 namespace details 
 {
-    //template<typename T>
-    //class SortedArrayMerge
-    //{
-    //    std::priority_queue<T*> queue;
+    template <typename EnumT>
+    class Flags 
+    {
+        using U = std::underlying_type_t<EnumT>;
+        U value_ = 0;
+    public:
+        constexpr Flags() = default;
 
-    //};
+        template <typename... EnumType> requires (std::same_as<EnumType, EnumT> && ...)
+        constexpr Flags(EnumType... flags) : value_((static_cast<U>(flags) | ...))
+        {
+        }
+
+        static constexpr Flags fromRaw(U raw) { return Flags{ raw }; }
+
+        constexpr Flags operator|(Flags other) const { return Flags{ value_ | other.value_ }; }
+        constexpr Flags operator&(Flags other) const { return Flags{ value_ & other.value_ }; }
+        constexpr Flags operator~() const { return Flags{ ~value_ }; }
+        constexpr Flags& operator|=(Flags other) { value_ |= other.value_; return *this; }
+        constexpr Flags& operator&=(Flags other) { value_ &= other.value_; return *this; }
+
+        // ---- The key API: no bit ops for the user ----
+        constexpr void set(EnumT flag) { value_ |= static_cast<U>(flag); }
+        constexpr void clear(EnumT flag) { value_ &= ~static_cast<U>(flag); }
+        constexpr void toggle(EnumT flag) { value_ ^= static_cast<U>(flag); }
+        constexpr bool test(EnumT flag) const { return (value_ & static_cast<U>(flag)) == static_cast<U>(flag); }
+        constexpr bool any() const { return value_ != 0; }
+        constexpr bool none() const { return value_ == 0; }
+        constexpr U raw() const { return value_; }
+
+        // Contextual bool conversion
+        constexpr explicit operator bool() const { return any(); }
+        constexpr auto operator<=>(const Flags&) const = default;
+
+        friend std::ostream& operator<<(std::ostream& os, Flags flags)
+        {
+            return os << flags.raw();
+        }
+    private:
+        constexpr explicit Flags(U raw) : value_(raw) {}
+    };
 
     /**
      * @brief Remove spacing or specified characters of both side of the string
@@ -70,8 +106,32 @@ namespace details
     static inline auto TrimStr(std::string_view s, const char* contentToTrim = "\t\n\v\f\r ")
     {
         auto const start = s.find_first_not_of(contentToTrim);
+        if (start == std::string_view::npos)
+            return std::string_view{};
         auto const end = s.find_last_not_of(contentToTrim);
         return s.substr(start, end - start + 1);
+    }
+
+    template<typename T, std::enable_if_t<std::is_integral_v<T>, int> = 0>
+    static inline T ParseNumber(std::string_view s)
+    {
+        auto const trimmed = TrimStr(s);
+        T value{};
+        auto const [ptr, ec] = std::from_chars(trimmed.data(), trimmed.data() + trimmed.size(), value);
+        if (ec != std::errc{} || ptr != trimmed.data() + trimmed.size())
+            throw std::invalid_argument{ "Invalid integer value" };
+        return value;
+    }
+
+    template<typename T, std::enable_if_t<std::is_floating_point_v<T>, int> = 0>
+    static inline T ParseNumber(std::string_view s)
+    {
+        auto const trimmed = TrimStr(s);
+        T value{};
+        auto const [ptr, ec] = std::from_chars(trimmed.data(), trimmed.data() + trimmed.size(), value, std::chars_format::general);
+        if (ec != std::errc{} || ptr != trimmed.data() + trimmed.size())
+            throw std::invalid_argument{ "Invalid floating-point value" };
+        return value;
     }
 
     /**
@@ -98,30 +158,62 @@ namespace details
      * @brief Split a space separated string into individual elements (usually words)
      * @tparam T the element type of the vector
      * @return A vector of splited element
+     * @example:
+        Tags:Black Clover KODAKUMINET DNA AND FAN rhythm
      */
     template<typename T = std::string>
-    static inline auto SplitWords(std::string_view s)
+    static inline std::vector<T> SplitWords(std::string_view s)
     {
-        std::stringstream ss{ s.data() };
-        return std::vector(std::istream_iterator<T>{ss}, std::istream_iterator<T>{});
+        std::vector<T> result;
+        size_t i = 0;
+        while (i < s.size())
+        {
+            while (i < s.size() && s[i] == ' ')
+                ++i;
+            
+            size_t const start = i;
+
+            while (i < s.size() && s[i] != ' ')
+                ++i;
+
+            if (start < i)
+                result.emplace_back(s.substr(start, i - start));
+        }
+
+        return result;
     }
 
     /**
      * @brief Split a comma separated string
      * @return Splited inidividual sub-strings
      */
-    static inline auto SplitCommaSeparatedString(std::string_view s)
+    static inline std::vector<int> SplitCommaSeparatedIntString(std::string_view s)
     {
         std::vector<int> result;
-        std::stringstream ss{ s.data() };
-
-        for (int i{}; ss >> i; )
+        size_t start = 0;
+        while (start < s.size())
         {
-            result.push_back(i);
-            if (ss.peek() == ',' || ss.peek() == ' ')
-                ss.ignore();
-        }
+            size_t end = s.find(',', start);
+            if (end == std::string_view::npos)
+                end = s.size();  //only one token for entire string
 
+            auto token = s.substr(start, end - start);
+
+            while (!token.empty() && token.front() == ' ')
+                token.remove_prefix(1);
+
+            while (!token.empty() && token.back() == ' ')
+                token.remove_suffix(1);
+
+            if (!token.empty())
+            {
+                int value = 0;
+                auto [ptr, ec] = std::from_chars(token.data(), token.data() + token.size(), value);
+                if (ec == std::errc{})
+                    result.push_back(value);
+            }
+            start = end + 1;
+        }
         return result;
     }
 
@@ -209,7 +301,7 @@ namespace details
                     continue;
             }
 
-            if (line[0] == '/' && line[1] == '/')
+            if (line.starts_with("//"))
                 continue;
 
             else if (auto const pos = line.find("//") != std::string::npos)
@@ -341,7 +433,7 @@ enum class Countdown : int
 
 enum class SampleSet
 {
-    Auto,
+    None,
     Normal,
     Soft,
     Drum
@@ -349,23 +441,6 @@ enum class SampleSet
 
 inline std::ostream& operator<<(std::ostream& os, SampleSet sampleSet)
 {
-    //switch (sampleSet)
-    //{
-    //    case SampleSet::Auto:
-    //        os << "Auto";
-    //        break;
-    //    case SampleSet::Normal:
-    //        os << "Normal";
-    //        break;
-    //    case SampleSet::Soft:
-    //        os << "Soft";
-    //        break;
-    //    case SampleSet::Drum:
-    //        os << "Drum";
-    //        break;
-    //    default:
-    //        break;
-    //}
     os << static_cast<int>(sampleSet);
     return os;
 }
@@ -515,19 +590,19 @@ struct General
             auto [key, value] = details::SplitKeyVal(line);
 
             if (key == "AudioFilename")  audioFile = value;
-            else if (key == "AudioLeadIn") audioLeanIn = std::stoi(value.data());
-            else if (key == "PreviewTime") previewTime = std::stoi(value.data());
-            else if (key == "Countdown") countdown = static_cast<Countdown>(std::stoi(value.data()));
+            else if (key == "AudioLeadIn") audioLeanIn = details::ParseNumber<int>(value);
+            else if (key == "PreviewTime") previewTime = details::ParseNumber<int>(value);
+            else if (key == "Countdown") countdown = static_cast<Countdown>(details::ParseNumber<int>(value));
             else if (key == "SampleSet")
             {
                 if (value == "Soft") sampleSet = SampleSet::Soft;
                 else if (value == "Normal") sampleSet = SampleSet::Normal;
                 else if (value == "Drum") sampleSet = SampleSet::Drum;
             }
-            else if (key == "StackLeniency") stackLeniency = std::stof(value.data());
-            else if (key == "Mode") mode = static_cast<Mode>(std::stoi(value.data()));
-            else if (key == "LetterboxInBreaks") letterboxInBreaks = std::stoi(value.data());
-            else if (key == "UseSkinSprites") useSkinSprites = std::stoi(value.data());
+            else if (key == "StackLeniency") stackLeniency = details::ParseNumber<float>(value);
+            else if (key == "Mode") mode = static_cast<Mode>(details::ParseNumber<int>(value));
+            else if (key == "LetterboxInBreaks") letterboxInBreaks = details::ParseNumber<int>(value);
+            else if (key == "UseSkinSprites") useSkinSprites = details::ParseNumber<int>(value);
             else if (key == "OverlayPosition")
             {
                 if (value == "NoChange") overlayPosition = OverlayPosition::NoChange;
@@ -535,11 +610,11 @@ struct General
                 else if (value == "Above") overlayPosition = OverlayPosition::Above;
             }
             else if (key == "SkinPreference") skinPreference = value;
-            else if (key == "EpilepsyWarning") epilepsyWarning = std::stoi(value.data());
-            else if (key == "CountdownOffset") countdownOffset = std::stoi(value.data());
-            else if (key == "SpecialStyle") specialStyle = std::stoi(value.data());
-            else if (key == "WidescreenStoryboard") wideScreenStoryboard = std::stoi(value.data());
-            else if (key == "SamplesMatchPlaybackRate") samplesMatchPlaybackRate = std::stoi(value.data());
+            else if (key == "EpilepsyWarning") epilepsyWarning = details::ParseNumber<int>(value);
+            else if (key == "CountdownOffset") countdownOffset = details::ParseNumber<int>(value);
+            else if (key == "SpecialStyle") specialStyle = details::ParseNumber<int>(value);
+            else if (key == "WidescreenStoryboard") wideScreenStoryboard = details::ParseNumber<int>(value);
+            else if (key == "SamplesMatchPlaybackRate") samplesMatchPlaybackRate = details::ParseNumber<int>(value);
         }
     }
 
@@ -582,12 +657,12 @@ struct Editor
     /**
      * @brief Distance snap multiplier
      */
-    float distanceSpacing{};
+    float distanceSpacing = 1.f;
 
     /**
      * @brief Beat snap divisor
      */
-    float beatDivisor{};
+    float beatDivisor = 1.f;
 
     /**
      * @brief Grid size
@@ -597,7 +672,7 @@ struct Editor
     /**
      * @brief Scale factor for the object timeline
      */
-    std::optional<float> timelineZoom;
+    float timelineZoom = 1.0f;
 
     /**
      * @brief Parse Editor info from osu file
@@ -617,11 +692,11 @@ struct Editor
         {
             auto [key, value] = details::SplitKeyVal(line);
             
-            if (key == "Bookmarks")             bookmarks = details::SplitCommaSeparatedString(value);
-            else if (key == "DistanceSpacing")  distanceSpacing = std::stof(value.data());
-            else if (key == "BeatDivisor")      beatDivisor = std::stof(value.data());
-            else if (key == "GridSize")         gridSize = std::stoi(value.data());
-            else if (key == "TimelineZoom")     timelineZoom = std::stof(value.data());
+            if (key == "Bookmarks")             bookmarks = details::SplitCommaSeparatedIntString(value);
+            else if (key == "DistanceSpacing")  distanceSpacing = details::ParseNumber<float>(value);
+            else if (key == "BeatDivisor")      beatDivisor = details::ParseNumber<float>(value);
+            else if (key == "GridSize")         gridSize = details::ParseNumber<int>(value);
+            else if (key == "TimelineZoom")     timelineZoom = details::ParseNumber<float>(value);
         }
     }
 
@@ -634,7 +709,7 @@ struct Editor
             .printLn("Bookmarks: ", editor.bookmarks)
             .printLn("DistanceSpacing: ", editor.distanceSpacing)
             .printLn("BeatDivisor: ", editor.beatDivisor)
-            .printIfValueNotEmpty("TimelineZoom: ", editor.timelineZoom);
+            .printLn("TimelineZoom: ", editor.timelineZoom);
         return os;
     }
 };
@@ -670,7 +745,7 @@ struct Difficulty
     /**
      * @brief Base slider velocity in hecto-osu! pixels per beat
      */
-    float sliderMultiplier{};
+    float sliderMultiplier = 1.f;
 
     /**
      * @brief Amount of slider ticks per beat
@@ -694,12 +769,12 @@ struct Difficulty
         {
             auto [key, value] = details::SplitKeyVal(line);
 
-            if (key == "HPDrainRate") HPDrainRate = std::stof(value.data());
-            else if (key == "CircleSize") circleSize = std::stof(value.data());
-            else if (key == "OverallDifficulty") overallDifficulty = std::stof(value.data());
-            else if (key == "ApproachRate") approachRate = std::stof(value.data());
-            else if (key == "SliderMultiplier") sliderMultiplier = std::stof(value.data());
-            else if (key == "SliderTickRate") sliderTickRate = std::stoi(value.data());
+            if (key == "HPDrainRate") HPDrainRate = details::ParseNumber<float>(value);
+            else if (key == "CircleSize") circleSize = details::ParseNumber<float>(value);
+            else if (key == "OverallDifficulty") overallDifficulty = details::ParseNumber<float>(value);
+            else if (key == "ApproachRate") approachRate = details::ParseNumber<float>(value);
+            else if (key == "SliderMultiplier") sliderMultiplier = details::ParseNumber<float>(value);
+            else if (key == "SliderTickRate") sliderTickRate = details::ParseNumber<int>(value);
         }
     }
 
@@ -770,7 +845,11 @@ struct TimingPoint
      *
      * @example For example, -50 would make all sliders in this timing section twice as fast as SliderMultiplier.
      */
-    float beatLength{};
+    float beatLength = 1.f;
+    constexpr float GetSliderVelocity(Difficulty const& difficulty) const
+    {
+        return difficulty.sliderMultiplier * (-100.f / beatLength);
+    }
 
     /**
      * @brief Amount of beats in a measure. Inherited timing points ignore this property.
@@ -813,14 +892,14 @@ struct TimingPoint
      *      time,beatLength,meter,sampleSet,sampleIndex,volume,uninherited,effects
      */
     TimingPoint(std::array<std::string_view, 8> const& result)
-        : time{ std::stoi(result[0].data()) },
-        beatLength{ std::stof(result[1].data()) },
-        meter{ std::stoi(result[2].data()) },
-        sampleSet{ static_cast<SampleSet>(std::stoi(result[3].data())) },
-        sampleIndex{ std::stoi(result[4].data()) },
-        volume{ std::atoi(result[5].data()) },
-        uninherited{ static_cast<bool>(std::atoi(result[6].data())) },
-        effects{ static_cast<unsigned>(std::atoll(result[7].data())) }
+        : time{ details::ParseNumber<int>(result[0]) },
+        beatLength{ details::ParseNumber<float>(result[1]) },
+        meter{ details::ParseNumber<int>(result[2]) },
+        sampleSet{ static_cast<SampleSet>(details::ParseNumber<int>(result[3])) },
+        sampleIndex{ details::ParseNumber<int>(result[4]) },
+        volume{ details::ParseNumber<int>(result[5]) },
+        uninherited{ static_cast<bool>(details::ParseNumber<int>(result[6])) },
+        effects{ details::ParseNumber<unsigned>(result[7]) }
     {
     }
 
@@ -874,62 +953,52 @@ struct Circle;
 struct Slider;
 struct Spinner;
 struct Hold;
+using HitObjectVariant = std::variant<Circle, Slider, Spinner, Hold>;
 
 /**
- * @brief Base class of all hit objects in osu
- * @details Hit object syntax: 
+ * @brief Common data shared by all hit objects in osu.
+ * @details Hit object syntax:
  *      x,y,time,type,hitSound,objectParams,hitSample
- *      168,326,620,5,0,1:0:0:0:
 */
 struct HitObject
 {
-    enum class HitSound
+    enum class HitSound : unsigned
     {
-        Normal = 1,
+        Normal = 1 << 0,
         Whistle = 1 << 1,
         Finish = 1 << 2,
         Clap = 1 << 3
     };
 
-    /**
-     * @brief Position in osu!pixels (https://osu.ppy.sh/wiki/zh-hk/osupixel) of the object
-     */
-    int x;
+    enum class Type : unsigned
+    {
+        Circle = 1 << 0,
+        Slider = 1 << 1,
+        NewCombo = 1 << 2,
+        Spinner = 1 << 3,
+        ComboSkip1 = 1 << 4,
+        ComboSkip2 = 1 << 5,
+        ComboSkip3 = 1 << 6,
+        Hold = 1 << 7
+    };
 
-    /**
-     * @brief Position in osu!pixels (https://osu.ppy.sh/wiki/zh-hk/osupixel) of the object
-     */
-    int y;
-
-    /**
-     * @brief Time when the object is to be hit, in milliseconds from the beginning of the originalBeatmap's audio.
-     */
-    int time;
-
-    /**
-     * @brief Indicating the hitsound applied to the object
-     */
-    HitSound hitSound;
-
-    /**
-     * @brief Whether this hit object is the start of a combo.
-     */
-    bool isNewCombo = false;
+    using HitSoundFlags = details::Flags<HitSound>;
+    using TypeFlags = details::Flags<Type>;
 
     struct HitSample
     {
-        SampleSet normalSet;
-        SampleSet additionSet;
-        int index;
-        int volume;
+        SampleSet normalSet{};
+        SampleSet additionSet{};
+        int index{};
+        int volume{};
         std::string filename;
 
-        HitSample() : normalSet{ 0 }, additionSet{ 0 }, index{ 0 }, volume{ 0 } {}
+        constexpr HitSample() = default;
 
-        HitSample(int normalSet, int additionSet, int index, int volume, std::string filename="")
-            :normalSet{normalSet},
-            additionSet{additionSet},
-            index{index},
+        HitSample(int normalSet, int additionSet, int index, int volume, std::string filename = "")
+            : normalSet{ normalSet },
+            additionSet{ additionSet },
+            index{ index },
             volume{ volume },
             filename{ std::move(filename) }
         {
@@ -937,15 +1006,13 @@ struct HitObject
 
         HitSample(std::string_view colonSeparatedList) : HitSample()
         {
-            //Older version allow this to be completely absent
             if (!colonSeparatedList.empty())
             {
                 auto const result = details::SplitString<5>(colonSeparatedList, ':');
-
-                normalSet = static_cast<SampleSet>(std::stoi(result[0].data()));
-                additionSet = static_cast<SampleSet>(std::stoi(result[1].data()));
-                index = result[2].empty() ? 0 : std::stoi(result[2].data());
-                volume = result[3].empty() ? 0 : std::stoi(result[3].data());
+                normalSet = static_cast<SampleSet>(details::ParseNumber<int>(result[0]));
+                additionSet = static_cast<SampleSet>(details::ParseNumber<int>(result[1]));
+                index = result[2].empty() ? 0 : details::ParseNumber<int>(result[2]);
+                volume = result[3].empty() ? 0 : details::ParseNumber<int>(result[3]);
                 filename = result[4].empty() ? "" : result[4];
             }
         }
@@ -955,9 +1022,11 @@ struct HitObject
             return normalSet == sampleSet || additionSet == sampleSet;
         }
 
+        constexpr auto operator<=>(HitSample const& rhs) const = default;
+
         friend std::ostream& operator<<(std::ostream& os, HitSample const& hitSample)
         {
-            os <<  hitSample.normalSet << ':'
+            os << hitSample.normalSet << ':'
                 << hitSample.additionSet << ':'
                 << hitSample.index << ':'
                 << hitSample.volume << ':'
@@ -966,229 +1035,104 @@ struct HitObject
         }
     };
 
-    HitSample hitSample;
+    int x{};
+    int y{};
+    int time{};
+    TypeFlags type{};
+    HitSoundFlags hitSound{};
+    HitSample hitSample{};
 
-protected:
-    /*
-    Some special bits representing hit object type
-     [type] is an 8-bit integer:
-         1 Circle
-         2 Slider
-         8 Spinner
-         *bit[2] set -> new combo
-    */
-    constexpr static inline unsigned CircleBit = 0b1;
-    constexpr static inline unsigned SliderBit = 0b1 << 1;
-    constexpr static inline unsigned ComboBit = 0b1 << 2;
-    constexpr static inline unsigned SpinnerBit = 0b1 << 3;
-    constexpr static inline unsigned HoldBit = 0b1 << 7;
+    HitObject() = default;
 
-public:
-    enum class Type
-    {
-        Circle = CircleBit,
-        Slider = SliderBit,
-        Spinner = SpinnerBit,
-        Hold = HoldBit,
-        All
-    };
-
-    HitObject(int x, int y, int time, HitSound hitSound, std::string_view hitSample, Type type)
-        :x{x}, y{y}, time{time}, hitSound{hitSound}, hitSample{hitSample}, type{type}
+    HitObject(int x, int y, int time, HitSoundFlags hitSound, HitSample hitSample, TypeFlags typeFlags)
+        : x{ x }, y{ y }, time{ time }, type{ typeFlags }, hitSound{ hitSound }, hitSample{ std::move(hitSample) }
     {
     }
 
-    HitObject(int x, int y, int time, HitSound hitSound, HitSample hitSample, Type type)
-        :x{ x }, y{ y }, time{ time }, hitSound{ hitSound }, hitSample{ hitSample }, type{ type }
-    {
-    }
-
-    /**
-     * @details Hit object syntax :
-     *      x, y, time, type, hitSound, objectParams, hitSample
-     */
     HitObject(std::array<std::string_view, 7> const& result)
         : HitObject{
-            std::stoi(result[0].data()),
-            std::stoi(result[1].data()),
-            std::stoi(result[2].data()),
-            static_cast<HitSound>(std::stoi(result[4].data())),
-            result[6],
-            GetType(result[3])
+            details::ParseNumber<int>(result[0]),
+            details::ParseNumber<int>(result[1]),
+            details::ParseNumber<int>(result[2]),
+            ParseHitSoundFlags(result[4]),
+            HitSample{ result[6] },
+            ParseTypeFlags(result[3])
         }
     {
-        isNewCombo = std::stoi(result[3].data()) & ComboBit;
     }
 
     HitObject(std::string_view line) : HitObject(details::SplitString<7>(line))
     {
     }
 
-    
-    /**
-     * @brief Calculate the distance to another hit object
-     * @param anotherObject the other hit object
-     */
     [[nodiscard]] auto distanceTo(HitObject const& anotherObject) const
     {
         return sqrt(pow(x - anotherObject.x, 2) + pow(y - anotherObject.y, 2));
     }
 
-    /**
-     * @brief Calculate the time duration to another hit object
-     * @param 
-     */
     [[nodiscard]] auto timeTo(HitObject const& anotherObject) const
     {
         return std::abs(time - anotherObject.time);
     }
 
-    /**
-     * @brief Returns the columnIndex (starts from 0) in mania mode
-     * @param columnCount number of total columns
-     */
     [[nodiscard]] auto getColumnIndex(int columnCount) const
     {
         return std::clamp(x * columnCount / 512, 0, columnCount - 1);
     }
 
-    /**
-     * @brief Calculate the X coordinate in terms of columnIndex and total columns
-     */
     [[nodiscard]] static int ColumnToX(int columnIndex, int columnCount)
     {
-        /*
-         *   columnIndex = x * columnCount / 512
-         *   x = columnIndex * 512 / columnCount;
-        */
         assert(!(columnIndex < 0 || columnIndex >= columnCount));
-        return std::clamp(columnIndex * 512 / (columnCount % 2 == 0? columnCount : columnCount - 1), 0, 512);
+        return std::clamp(columnIndex * 512 / (columnCount % 2 == 0 ? columnCount : columnCount - 1), 0, 512);
     }
 
-    /**
-     * @brief Parse hit objects
-     * @param file The `.osu` file stream
-     * @param partial Whether this is a partial parse, when true, it keeps reading the file until "[HitObjects]" is found
-     * @return `std::vector<std::unique_ptr<HitObject>>`
-     */
-    static auto HandleHitObjects(std::ifstream& file, bool partial = true)
+    [[nodiscard]] constexpr bool isNewCombo() const
     {
-        std::string line;
-        std::vector<std::unique_ptr<HitObject>> objects;
-
-        /*If this is a partial parse, skip until [HitObjects] appears*/
-        if (partial)
-            details::SkipUntil("[HitObjects]", line, file);
-
-        while (details::GetLine(file, line))
-        {
-            auto [_, __, ___, typeStr] = details::SplitString<4>(line);
-            try
-            {
-                switch (HitObject::GetType(typeStr))
-                {
-                    case Type::Circle:
-                        objects.emplace_back(std::make_unique<Circle>(line));
-                        break;
-                    case Type::Slider:
-                        objects.emplace_back(std::make_unique<Slider>(line));
-                        break;
-                    case Type::Spinner:
-                        objects.emplace_back(std::make_unique<Spinner>(line));
-                        break;
-                    case Type::Hold:
-                        objects.emplace_back(std::make_unique<Hold>(line));
-                        break;
-                    default:
-                        throw std::runtime_error{ "Hit object type not implemented" };
-                }
-            }
-            catch (...)
-            {
-                std::cerr << "Parsing Line: " << line << "failed!\n";
-            }
-        }
-
-        /*
-            I found an old map (osu file format v11) that doesn't set the first object's comboBit while it should be a new combo
-            eg. Title:Three Magic
-                TitleUnicode:Three Magic
-                Artist:3L
-                ArtistUnicode:3L
-                Creator:cRyo[iceeicee]
-                Version:Collab
-            That has the first object like this:
-                168,256,33011,2,0,B|120:272|80:240,1,90,4|0,0:0|0:0,0:0:0
-                              ^
-        */
-        if (!objects.empty())
-            objects.front()->isNewCombo = true;
-        
-        return objects;
+        return type.test(Type::NewCombo);
     }
 
-    /**
-     * @brief 
-     */
-    virtual void printObjectParam(std::ostream& os) const = 0;
-
-    virtual std::unique_ptr<HitObject> clone() const = 0;
-    
-    /* 
-        @details Hit object syntax :
-        x, y, time, type, hitSound, objectParams, hitSample
-         168, 326, 620, 5, 0, 1 : 0 : 0 : 0 
-    */
-    friend std::ostream& operator<<(std::ostream& os, HitObject const& hitObject)
+    [[nodiscard]] constexpr int comboColorSkip() const
     {
-        os << hitObject.x << ','
-            << hitObject.y << ','
-            << hitObject.time << ','
-            << (hitObject.isNewCombo ? (static_cast<int>(hitObject.type) | HitObject::ComboBit) : static_cast<int>(hitObject.type)) << ',';
-        
-        os << static_cast<int>(hitObject.hitSound) << ',';
-
-        /*print object params*/
-        hitObject.printObjectParam(os);
-
-        os << hitObject.hitSample;
-        return os;
+        return (type.test(Type::ComboSkip1) ? 1 : 0)
+            | (type.test(Type::ComboSkip2) ? 2 : 0)
+            | (type.test(Type::ComboSkip3) ? 4 : 0);
     }
 
-    virtual ~HitObject() = default;
-
-    Type type;
-protected:
-    static inline constexpr Type GetType(int num)
+    constexpr void setNewCombo(bool enabled = true)
     {
-        if (num & CircleBit)        return Type::Circle;
-        else if (num & SliderBit)   return Type::Slider;
-        else if (num & SpinnerBit)  return Type::Spinner;
-        else if (num & HoldBit)     return Type::Hold;
-        else throw std::logic_error{ std::string{"Invalid hit object type: "} + std::to_string(num) };
+        if (enabled) type.set(Type::NewCombo);
+        else type.clear(Type::NewCombo);
     }
 
-    static inline Type GetType(std::string_view str)
+    [[nodiscard]] HitSoundFlags effectiveHitSounds() const
     {
-        return GetType(std::stoi(str.data()));
+        return hitSound.any() ? hitSound : HitSoundFlags{ HitSound::Normal };
     }
 
-    static inline bool IsNewCombo(int num) { return num & ComboBit; }
+    static auto HandleHitObjects(std::ifstream& file, bool partial = true);
 
-    static inline bool IsNewCombo(std::string_view str) { return IsNewCombo(std::stoi(str.data())); }
+    [[nodiscard]] static constexpr Type GetType(TypeFlags flags)
+    {
+        if (flags.test(Type::Circle)) return Type::Circle;
+        if (flags.test(Type::Slider)) return Type::Slider;
+        if (flags.test(Type::Spinner)) return Type::Spinner;
+        if (flags.test(Type::Hold)) return Type::Hold;
+        throw std::logic_error{ "Invalid hit object type flags" };
+    }
 
-    friend struct OsuFile;
+    [[nodiscard]] static constexpr TypeFlags ParseTypeFlags(std::string_view str)
+    {
+        return TypeFlags::fromRaw(static_cast<std::underlying_type_t<Type>>(details::ParseNumber<int>(str)));
+    }
 
-private:
-    template<Type type> struct ToType;
+    [[nodiscard]] static constexpr HitSoundFlags ParseHitSoundFlags(std::string_view str)
+    {
+        return HitSoundFlags::fromRaw(static_cast<std::underlying_type_t<HitSound>>(details::ParseNumber<int>(str)));
+    }
 
-    template<Type type> using ToType_t = typename ToType<type>::type;
+    [[nodiscard]] static HitObject const& base(HitObjectVariant const& object);
+    [[nodiscard]] static HitObject& base(HitObjectVariant& object);
 };
-template<> struct HitObject::ToType<HitObject::Type::Circle> { using type = Circle; };
-template<> struct HitObject::ToType<HitObject::Type::Slider> { using type = Slider; };
-template<> struct HitObject::ToType<HitObject::Type::Spinner> { using type = Spinner; };
-template<> struct HitObject::ToType<HitObject::Type::Hold> { using type = Hold; };
-template<> struct HitObject::ToType<HitObject::Type::All> { using type = HitObject; };
 
 inline std::ostream& operator<<(std::ostream& os, HitObject::Type type)
 {
@@ -1218,8 +1162,8 @@ struct Circle final: HitObject
     {
     }
 
-    Circle(int x, int y, int time, HitSound hitSound, HitSample hitSample)
-        : HitObject{x, y, time, hitSound, hitSample, Type::Circle}
+    Circle(int x, int y, int time, HitSoundFlags hitSound = {}, HitSample hitSample = HitSample{})
+        : HitObject{ x, y, time, hitSound, std::move(hitSample), TypeFlags{ Type::Circle } }
     {}
 
     Circle(std::array<std::string_view, 6> const& result) 
@@ -1236,39 +1180,23 @@ struct Circle final: HitObject
         }
     {}
 
-    std::unique_ptr<HitObject> clone() const override
+    static auto MakeManiaHitObject(int columnIndex, int totalColumns, int time, HitSoundFlags hitSound = {}, HitSample hitSample = HitSample{})
     {
-        return std::unique_ptr<HitObject>(new Circle(*this));
+        return Circle{ HitObject::ColumnToX(columnIndex, totalColumns), 0, time, hitSound, std::move(hitSample) };
     }
 
-    static auto MakeManiaHitObject(int columnIndex, int totalColumns, int time, HitSound hitSound = HitSound::Normal, HitSample hitSample = HitSample{})
+    friend std::ostream& operator<<(std::ostream& os, Circle const& circle)
     {
-        return std::make_unique<Circle>(HitObject::ColumnToX(columnIndex, totalColumns), 0, time, hitSound, std::move(hitSample));
-    }
-
-    void printObjectParam(std::ostream&) const override
-    {
-        //Circles do not have additional params to HitObjects, so we do nothing
-    }
-};
-
-struct EdgeSet
-{
-    int normalSet;
-    int additionSet;
-    EdgeSet(std::string_view str)
-    {
-        auto [normalSetStr, additionSetStr] = details::SplitKeyVal(str);
-        normalSet = std::stoi(normalSetStr.data());
-        additionSet = std::stoi(additionSetStr.data());
-    }
-
-    friend std::ostream& operator<<(std::ostream& os, EdgeSet edgeSet)
-    {
-        os << edgeSet.normalSet << ':' << edgeSet.additionSet;
+        os << circle.x << ','
+            << circle.y << ','
+            << circle.time << ','
+            << static_cast<int>(circle.type.raw()) << ','
+            << static_cast<int>(circle.hitSound.raw()) << ','
+            << circle.hitSample;
         return os;
     }
 };
+
 
 /**
  * @details Slider syntax:
@@ -1281,17 +1209,46 @@ struct Slider final: HitObject
         Bezier='B',
         CatmullRom='C',
         Linear='L',
-        Circle='C'
+        Circle='P'
     };
 
+    struct EdgeSet
+    {
+        SampleSet normalSet;
+        SampleSet additionSet;
+
+        constexpr EdgeSet(int normalSetValue, int additionSetValue) :
+            normalSet{ static_cast<SampleSet>(normalSetValue) },
+            additionSet{ static_cast<SampleSet>(additionSetValue) }
+        {
+        }
+
+        EdgeSet(std::pair<std::string_view, std::string_view> pair) : EdgeSet{ details::ParseNumber<int>(pair.first), details::ParseNumber<int>(pair.second) }
+        {
+        }
+
+        EdgeSet(std::string_view str) : EdgeSet{ details::SplitKeyVal(str) }
+        {
+        }
+
+        constexpr auto operator<=>(const EdgeSet&) const = default;
+
+        friend std::ostream& operator<<(std::ostream& os, EdgeSet edgeSet)
+        {
+            os << edgeSet.normalSet << ':' << edgeSet.additionSet;
+            return os;
+        }
+    };
 
 
     CurveType curveType;
     std::vector<Coord> curvePoints;
     int slides;
     float length;
-    std::vector<int> edgeSounds;
+    std::vector<HitSoundFlags> edgeSounds;
     std::vector<EdgeSet> edgeSets;
+
+    Slider() = default;
 
     Slider(std::string_view line) : Slider(details::SplitString<11>(line))
     {
@@ -1317,16 +1274,16 @@ struct Slider final: HitObject
         for (auto const& curvePointStr : details::SplitString(curvePointsStr, '|'))
         {
             auto [x_str, y_str] = details::SplitKeyVal(curvePointStr);
-            curvePoints.push_back(Coord{ std::stoi(x_str.data()), std::stoi(y_str.data()) });
+            curvePoints.push_back(Coord{ details::ParseNumber<int>(x_str), details::ParseNumber<int>(y_str) });
         }
 
-        slides = std::stoi(result[6].data());
-        length = std::stof(result[7].data());
+        slides = details::ParseNumber<int>(result[6]);
+        length = details::ParseNumber<float>(result[7]);
 
         if (!result[8].empty())
         {
             for (auto const& edgeSoundStr : details::SplitString(result[8], '|'))
-                edgeSounds.push_back(std::stoi(edgeSoundStr.data()));
+                edgeSounds.push_back(HitSoundFlags::fromRaw(details::ParseNumber<int>(edgeSoundStr)));
         }
 
         if (!result[9].empty())
@@ -1336,21 +1293,33 @@ struct Slider final: HitObject
         }
     }
 
-    void printObjectParam(std::ostream& os) const override
+    friend std::ostream& operator<<(std::ostream& os, Slider const& slider)
     {
         details::PrintHelper helper{ os };
-        helper.print(static_cast<char>(curveType))
+        helper.print(slider.x)
+            .print(',')
+            .print(slider.y)
+            .print(',')
+            .print(slider.time)
+            .print(',')
+            .print(static_cast<int>(slider.type.raw()))
+            .print(',')
+            .print(static_cast<int>(slider.hitSound.raw()))
+            .print(',')
+            .print(static_cast<char>(slider.curveType))
             .print('|')
-            .print(curvePoints, "|")
+            .print(slider.curvePoints, "|")
             .print(',')
-            .print(slides)
+            .print(slider.slides)
             .print(',')
-            .print(length)
+            .print(slider.length)
             .print(',')
-            .print(edgeSounds, "|")
+            .print(slider.edgeSounds, "|")
             .print(',')
-            .print(edgeSets, "|")
+            .print(slider.edgeSets, "|")
             .print(',');
+        os << slider.hitSample;
+        return os;
     }
 
 private:
@@ -1400,16 +1369,14 @@ public:
         return getDuration(difficulty.sliderMultiplier, uninheritedTimingPoint.beatLength * (-inheritedTimingPointBeatLength) / 100.f);
     }
 
-    std::unique_ptr<HitObject> clone() const override
-    {
-        return std::unique_ptr<HitObject>(new Slider(*this));
-    }
 };
 
 
 struct Spinner final : HitObject
 {
     int endTime;
+
+    Spinner() = default;
        
     Spinner(std::string_view line) : Spinner(details::SplitString<7>(line))
     {
@@ -1430,23 +1397,27 @@ struct Spinner final : HitObject
             result[6]           //hitSample
         }}
     {
-        endTime = std::stoi(result[5].data());
+        endTime = details::ParseNumber<int>(result[5]);
     }
 
-    void printObjectParam(std::ostream& os) const override
+    friend std::ostream& operator<<(std::ostream& os, Spinner const& spinner)
     {
-        os << endTime << ',';
-    }
-
-    std::unique_ptr<HitObject> clone() const override
-    {
-        return std::unique_ptr<HitObject>(new Spinner(*this));
+        os << spinner.x << ','
+            << spinner.y << ','
+            << spinner.time << ','
+            << static_cast<int>(spinner.type.raw()) << ','
+            << static_cast<int>(spinner.hitSound.raw()) << ','
+            << spinner.endTime << ','
+            << spinner.hitSample;
+        return os;
     }
 };
 
 struct Hold final : HitObject
 {
     int endTime;
+
+    Hold() = default;
 
     Hold(std::string_view line) : Hold(details::SplitString<6>(line))
     {
@@ -1459,27 +1430,28 @@ struct Hold final : HitObject
      *      x,y,time,type,hitSound,objectParams,hitSample
      */
 
-    Hold(int x, int y, int time, HitSound hitSound, int endTime, std::string_view hitSample)
-        : HitObject{x, y, time, hitSound, hitSample, Type::Hold }, endTime{endTime}
+    Hold(int x, int y, int time, HitSoundFlags hitSound, int endTime, std::string_view hitSample)
+        : HitObject{ x, y, time, hitSound, HitSample{ hitSample }, Type{ Type::Hold } }, endTime{ endTime }
     {}
 
-    Hold(int x, int y, int time, HitSound hitSound, int endTime, HitSample hitSample)
-        : HitObject{x, y, time, hitSound, std::move(hitSample), Type::Hold}, endTime{endTime}
+    Hold(int x, int y, int time, HitSoundFlags hitSound, int endTime, HitSample hitSample)
+        : HitObject{ x, y, time, hitSound, std::move(hitSample), Type{ Type::Hold } }, endTime{ endTime }
     {}
 
 
     Hold(std::array<std::string_view, 6> const& result)
         : Hold{
-            std::stoi(result[0].data()),
-            std::stoi(result[1].data()),
-            std::stoi(result[2].data()),
-            static_cast<HitSound>(std::stoi(result[3].data())),
+            details::ParseNumber<int>(result[0]),
+            details::ParseNumber<int>(result[1]),
+            details::ParseNumber<int>(result[2]),
+            ParseHitSoundFlags(result[4]),
             {},
             ""
         }
     {
+        type = ParseTypeFlags(result[3]);
         auto [endTimeStr, hitSampleStr] = details::SplitKeyVal(result.back());
-        endTime = std::stoi(endTimeStr.data());
+        endTime = details::ParseNumber<int>(endTimeStr);
         hitSample = HitSample{ hitSampleStr };
     }
 
@@ -1488,22 +1460,91 @@ struct Hold final : HitObject
         return endTime - time;
     }
 
-    static auto MakeManiaHitObject(int columnIndex, int totalColumns, int time, int endTime, HitSound hitSound = HitSound::Normal, HitSample hitSample = HitSample{})
+    static auto MakeManiaHitObject(int columnIndex, int totalColumns, int time, int endTime, HitSoundFlags hitSound = {}, HitSample hitSample = HitSample{})
     {
-        return std::make_unique<Hold>(HitObject::ColumnToX(columnIndex, totalColumns), 0, time, hitSound, endTime, std::move(hitSample));
+        return Hold{ HitObject::ColumnToX(columnIndex, totalColumns), 0, time, hitSound, endTime, std::move(hitSample) };
     }
 
-
-    void printObjectParam(std::ostream& os) const override
+    friend std::ostream& operator<<(std::ostream& os, Hold const& hold)
     {
-        os << endTime << ':';
-    }
-
-    std::unique_ptr<HitObject> clone() const override
-    {
-        return std::unique_ptr<HitObject>(new Hold(*this));
+        os << hold.x << ','
+            << hold.y << ','
+            << hold.time << ','
+            << static_cast<int>(hold.type.raw()) << ','
+            << static_cast<int>(hold.hitSound.raw()) << ','
+            << hold.endTime << ':'
+            << hold.hitSample;
+        return os;
     }
 };
+
+inline auto HitObject::HandleHitObjects(std::ifstream& file, bool partial)
+{
+    std::string line;
+    std::vector<HitObjectVariant> objects;
+
+    if (partial)
+        details::SkipUntil("[HitObjects]", line, file);
+
+    while (details::GetLine(file, line))
+    {
+        auto [_, __, ___, typeStr] = details::SplitString<4>(line);
+        try
+        {
+            switch (HitObject::GetType(ParseTypeFlags(typeStr)))
+            {
+                case Type::Circle:
+                    objects.emplace_back(Circle{ line });
+                    break;
+                case Type::Slider:
+                    objects.emplace_back(Slider{ line });
+                    break;
+                case Type::Spinner:
+                    objects.emplace_back(Spinner{ line });
+                    break;
+                case Type::Hold:
+                    objects.emplace_back(Hold{ line });
+                    break;
+                default:
+                    throw std::runtime_error{ "Hit object type not implemented" };
+            }
+        }
+        catch (...)
+        {
+            std::cerr << "Parsing Line: " << line << "failed!\n";
+        }
+    }
+
+    if (!objects.empty())
+        HitObject::base(objects.front()).setNewCombo();
+
+    return objects;
+}
+
+inline HitObject const& HitObject::base(HitObjectVariant const& object)
+{
+    return std::visit([](auto const& concreteObject) -> HitObject const&
+    {
+        return concreteObject;
+    }, object);
+}
+
+inline HitObject& HitObject::base(HitObjectVariant& object)
+{
+    return std::visit([](auto& concreteObject) -> HitObject&
+    {
+        return concreteObject;
+    }, object);
+}
+
+inline std::ostream& operator<<(std::ostream& os, HitObjectVariant const& hitObject)
+{
+    std::visit([&os](auto const& concreteObject)
+    {
+        os << concreteObject;
+    }, hitObject);
+    return os;
+}
 
 struct Colors
 {
@@ -1515,9 +1556,9 @@ struct Colors
         {
             auto const result = details::SplitString<3>(colorString);
 
-            r = static_cast<unsigned char>(std::stoi(result[0].data()));
-            g = static_cast<unsigned char>(std::stoi(result[1].data()));
-            b = static_cast<unsigned char>(std::stoi(result[2].data()));
+            r = static_cast<unsigned char>(details::ParseNumber<int>(result[0]));
+            g = static_cast<unsigned char>(details::ParseNumber<int>(result[1]));
+            b = static_cast<unsigned char>(details::ParseNumber<int>(result[2]));
         }
 
         Color(unsigned char r, unsigned char g, unsigned char b) : r{ r }, g{ g }, b{ b }{}
@@ -1649,16 +1690,16 @@ struct Metadata
      * @brief Parse Metadata from osu file
      * @param partial If this is a partial parse, it skips until "[Metadata]" line is encountered, default = `true`
      */
-    Metadata(std::ifstream& osuFile, bool partial = true)
+    Metadata(std::ifstream& rankedMap, bool partial = true)
     {
         /*if (!osuFile.is_open()) 
             throw std::exception{};*/
         std::string line;
 
         if (partial)
-            details::SkipUntil("[Metadata]", line, osuFile);
+            details::SkipUntil("[Metadata]", line, rankedMap);
 
-        while (details::GetLine(osuFile, line))
+        while (details::GetLine(rankedMap, line))
         {
             auto [key, value] = details::SplitKeyVal(line);
 
@@ -1670,14 +1711,9 @@ struct Metadata
             else if (key == "Version")          version = value;
             else if (key == "Source")           source = value;
             else if (key == "Tags")             tags = details::SplitWords(value);
-            else if (key == "BeatmapID")        beatmapId = std::stoi(value.data());
-            else if (key == "BeatmapSetID")     beatmapSetId = std::stoi(value.data());
+            else if (key == "BeatmapID")        beatmapId = details::ParseNumber<int>(value);
+            else if (key == "BeatmapSetID")     beatmapSetId = details::ParseNumber<int>(value);
         }
-    }
-
-    Metadata(std::istream&& s, bool partial = true)
-        : Metadata(s, partial)
-    {
     }
 
     /**
@@ -1709,15 +1745,10 @@ struct Metadata
 struct Background;
 struct Video;
 struct Break;
+struct StoryboardEvent;
 
 struct EventBase
 {
-    /**
-     * @brief Type of the event.
-     * @details Some events may be referred to by either a name or a number.
-     */
-    int eventType;
-
     /**
      * @brief Start time of the event, in milliseconds from the beginning of the originalBeatmap's audio.
      */
@@ -1737,9 +1768,7 @@ struct EventBase
 
     //EventBase(std::string_view eventTypeStr) : EventBase(eventTypeStr, 0) {}
 
-    EventBase(int eventType, int startTime) : eventType{ eventType }, startTime{ startTime }{}
-
-    virtual ~EventBase() = default;
+    EventBase(int startTime) : startTime{ startTime }{}
 
     bool operator<(EventBase const& other) const
     {
@@ -1770,11 +1799,11 @@ struct Background final : EventBase
     int yOffset;
 
     Background(std::string_view fileName, int xOffset, int yOffset)
-        : EventBase{ 0, 0 }, xOffset{ xOffset }, yOffset{ yOffset }, fileName{ details::TrimStr(fileName, "\"")}
+        : EventBase{ 0 }, xOffset{ xOffset }, yOffset{ yOffset }, fileName{ details::TrimStr(fileName, "\"")}
     {}
 private:
     Background(std::array<std::string_view, 5> const& data)
-        : Background(data[2], data[3].empty()? 0:  std::stoi(data[3].data()), data[4].empty()?  0: std::stoi(data[4].data()))
+        : Background(data[2], data[3].empty()? 0:  details::ParseNumber<int>(data[3]), data[4].empty()?  0: details::ParseNumber<int>(data[4]))
     {}
 public:
     Background(std::string_view line)
@@ -1812,11 +1841,11 @@ struct Video final : EventBase
     int yOffset;
 
     Video(std::string_view, std::string_view startTime, std::string_view fileName, int xOffset, int yOffset)
-        : EventBase{ 1, std::stoi(startTime.data()) }, fileName{fileName}, xOffset{xOffset}, yOffset{yOffset}
+        : EventBase{ details::ParseNumber<int>(startTime) }, fileName{details::TrimStr(fileName, "\"")}, xOffset{xOffset}, yOffset{yOffset}
     {}
 private:
     Video(std::array<std::string_view, 5> const& data)
-        : Video(data[0], data[1], data[2], std::atoi(data[3].data()), std::atoi(data[4].data()))
+        : Video(data[0], data[1], data[2], data[3].empty() ? 0 : details::ParseNumber<int>(data[3]), data[4].empty() ? 0 : details::ParseNumber<int>(data[4]))
     {}
 public:
     Video(std::string_view line)
@@ -1839,11 +1868,11 @@ struct Break final : EventBase
     int endTime;
 
     Break(int startTime, int endTime)
-        : EventBase{ 2, startTime }, endTime{ endTime }
+        : EventBase{ startTime }, endTime{ endTime }
     {}
 private:
     Break(std::array<std::string_view, 3> const& data)
-        : Break(std::stoi(data[1].data()), std::stoi(data[2].data()))
+        : Break(details::ParseNumber<int>(data[1]), details::ParseNumber<int>(data[2]))
     {}
 public:
     Break(std::string_view line)
@@ -1862,19 +1891,32 @@ public:
     }
 };
 
-struct Events
+struct StoryboardEvent
 {
+    std::string line;
 
+    StoryboardEvent() = default;
+    StoryboardEvent(std::string_view line) : line{ line } {}
+
+    friend std::ostream& operator<<(std::ostream& os, StoryboardEvent const& data)
+    {
+        os << data.line;
+        return os;
+    }
+};
+
+struct Events : std::vector<std::variant<Background, Video, Break, StoryboardEvent>>
+{
     enum class Type
     {
         Background = 0,
         Video = 1,
         Break = 2,
+        Storyboard = 3,
     };
 
-    std::vector<Background> backgrounds;
-    std::vector<Video> videos;
-    std::vector<Break> breaks;
+    using Event = std::variant<Background, Video, Break, StoryboardEvent>;
+    using Base = std::vector<Event>;
 
     Events(std::ifstream& file, bool partial = true)
     {
@@ -1885,54 +1927,94 @@ struct Events
 
         while (details::GetLine(file, line))
         {
-            auto [eventType, _, __] = details::SplitString<3>(line);
-            if (eventType == "0")
+            auto [eventType, startTime, __] = details::SplitString<3>(line);
+            if (eventType == "0" && (startTime == "0" || startTime.empty()))
             {
-                backgrounds.emplace_back(line);
+                emplace_back(Background{ line });
             }
             else if (eventType == "Video" || eventType == "1")
             {
-                videos.emplace_back(line);
+                emplace_back(Video{ line });
             }
             else if (eventType == "Break" || eventType == "2")
             {
-                breaks.emplace_back(line);
+                emplace_back(Break{ line });
             }
-
+            else
+            {
+                emplace_back(StoryboardEvent{ line });
+            }
         }
     }
 
     Events() = default;
 
-    Events& operator+=(Background backgroundEvent) { backgrounds.emplace_back(std::move(backgroundEvent)); return *this; }
-    Events& operator+=(Video videoEvent) { videos.emplace_back(std::move(videoEvent)); return *this; }
-    Events& operator+=(Break breakEvent) { breaks.emplace_back(std::move(breakEvent)); return *this; }
-    
+    Events& operator+=(Background backgroundEvent) { emplace_back(std::move(backgroundEvent)); return *this; }
+    Events& operator+=(Video videoEvent) { emplace_back(std::move(videoEvent)); return *this; }
+    Events& operator+=(Break breakEvent) { emplace_back(std::move(breakEvent)); return *this; }
+    Events& operator+=(StoryboardEvent storyboardEvent) { emplace_back(std::move(storyboardEvent)); return *this; }
+
+    template<typename EventType>
+    [[nodiscard]] size_t count() const
+    {
+        return std::count_if(cbegin(), cend(), [](Event const& event)
+        {
+            return std::holds_alternative<EventType>(event);
+        });
+    }
+
+    template<typename EventType>
+    [[nodiscard]] EventType const* first() const
+    {
+        for (auto const& event : *this)
+        {
+            if (auto const* ptr = std::get_if<EventType>(&event))
+                return ptr;
+        }
+        return nullptr;
+    }
+
+    template<typename EventType, typename Predicate>
+    [[nodiscard]] EventType const* findIf(Predicate&& predicate) const
+    {
+        for (auto const& event : *this)
+        {
+            if (auto const* ptr = std::get_if<EventType>(&event); ptr && predicate(*ptr))
+                return ptr;
+        }
+        return nullptr;
+    }
+
     /**
      * @brief Get an event at a specified time
      * @param time Time in milliseconds
      * @tparam eventType Must be an enum from `Events::Type`
-     * @return An iterator pointing to the specified type of event that happens before the specified time
+     * @return Pointer to the specified type of event that happens before the specified time
      */
-    template<Type eventType>// typename = std::enable_if_t<std::is_base_of_v<Evc>
-    auto getEventAt(int time)
+    template<Type eventType>
+    [[nodiscard]] auto getEventAt(int time) const
     {
-        if constexpr(eventType == Type::Background)
-            return std::find_if(begin(backgrounds), end(backgrounds), [time](auto const& event) { return event.startTime <= time; });
-        else if constexpr(eventType == Type::Video)
-            return std::find_if(begin(videos), end(videos), [time](auto const& event) { return event.startTime <= time; });
-        else if constexpr(eventType == Type::Break)
-            return std::find_if(begin(breaks), end(breaks), [time](auto const& event) { return event.startTime <= time; });
+        if constexpr (eventType == Type::Background)
+            return findIf<Background>([time](Background const& event) { return event.startTime <= time; });
+        else if constexpr (eventType == Type::Video)
+            return findIf<Video>([time](Video const& event) { return event.startTime <= time; });
+        else if constexpr (eventType == Type::Break)
+            return findIf<Break>([time](Break const& event) { return event.startTime <= time; });
+        else
+            return findIf<StoryboardEvent>([](StoryboardEvent const&) { return true; });
     }
 
     friend std::ostream& operator<<(std::ostream& os, Events const& events)
     {
         os << "[Events]\n";
-        auto PrintEventVec = [&os](auto const& vec) { std::copy(vec.cbegin(), vec.cend(), std::ostream_iterator<decltype(vec.front())> {os, "\n"}); };
-        
-        PrintEventVec(events.backgrounds);
-        PrintEventVec(events.breaks);
-        PrintEventVec(events.videos);
+        for (auto const& event : events)
+        {
+            std::visit([&os](auto const& concreteEvent)
+            {
+                os << concreteEvent;
+            }, event);
+            os << '\n';
+        }
         return os;
     }
 };
@@ -1947,7 +2029,7 @@ struct OsuFile
     Events events;
     std::vector<TimingPoint> timingPoints;
     Colors colors;
-    std::vector<std::unique_ptr<HitObject>> hitObjects;
+    std::vector<HitObjectVariant> hitObjects;
 
     OsuFile(std::ifstream&& file)
     {
@@ -1971,7 +2053,7 @@ struct OsuFile
     {
     }
 
-    OsuFile(General const& general, Editor const& editor, Metadata const& metaData, Difficulty const& difficulty, Events const& events, std::vector<TimingPoint> const& timingPoints, Colors const& colors, std::vector<std::unique_ptr<HitObject>> hitObjects)
+    OsuFile(General const& general, Editor const& editor, Metadata const& metaData, Difficulty const& difficulty, Events const& events, std::vector<TimingPoint> const& timingPoints, Colors const& colors, std::vector<HitObjectVariant> hitObjects)
         : general{ general }, editor{ editor }, metaData{ metaData }, difficulty{ difficulty }, events{ events }, timingPoints{ timingPoints }, colors{ colors }, hitObjects{ std::move(hitObjects) }
     {
     }
@@ -2014,7 +2096,10 @@ struct OsuFile
         if constexpr (type == HitObject::Type::All)
             return getCount();
         else
-            return std::count_if(hitObjects.cbegin(), hitObjects.cend(), [](auto const& object) {return object->type == type; });
+            return std::count_if(hitObjects.cbegin(), hitObjects.cend(), [](auto const& object)
+            {
+                return HitObject::base(object).GetType() == type;
+            });
     }
 
     /**
@@ -2092,12 +2177,14 @@ struct OsuFile
     [[nodiscard]] int getTotalBreakTime() const
     {
         return std::accumulate(
-            events.breaks.cbegin(), 
-            events.breaks.cend(), 
-            0, 
-            [](auto value, auto const& breakEvent)
+            events.cbegin(),
+            events.cend(),
+            0,
+            [](int value, Events::Event const& event)
             {
-                return value + (breakEvent.endTime - breakEvent.startTime);
+                if (auto const* breakEvent = std::get_if<Break>(&event))
+                    return value + (breakEvent->endTime - breakEvent->startTime);
+                return value;
             }
         );
     }
@@ -2120,11 +2207,14 @@ struct OsuFile
     {
         auto const iter = std::find_if(hitObjects.cbegin(), hitObjects.cend(), [startTime](auto const& obj)
         {
-            return obj->time >= startTime;
+            return HitObject::base(obj).time >= startTime;
         });
         if(iter != hitObjects.cend())
         {
-            auto const iter2 = std::find_if(iter, hitObjects.cend(), [endTime](auto const& obj) { return obj->time >= endTime; });
+            auto const iter2 = std::find_if(iter, hitObjects.cend(), [endTime](auto const& obj)
+            {
+                return HitObject::base(obj).time >= endTime;
+            });
             return static_cast<int>(std::distance(iter, iter2));
         }
 
@@ -2144,7 +2234,7 @@ struct OsuFile
             hitObjects.cend(),
             [columnIndex, totalColumn = static_cast<int>(difficulty.circleSize)](auto const& obj)
             {
-                return obj->getColumnIndex(totalColumn) == columnIndex;
+                return HitObject::base(obj).getColumnIndex(totalColumn) == columnIndex;
             }
         ) / static_cast<float>(hitObjects.size());
     }
@@ -2309,89 +2399,6 @@ public:
         save(getSaveFileName(false).data());
     }
 
-private:
-
-    /**
-     * @brief Hit object iterator
-     * @tparam ObjectContainer The type of hit object container
-     * @tparam type Should be one of the enum values in `HitObject::Type`
-     */
-    template<typename ObjectContainer, HitObject::Type type, typename HitObjectType>
-    class ObjectIterator
-    {
-    public:
-        /*std::iterator<> is deprecated (in C++17) so we define these boilerplate ourselves*/
-        using iterator_category = std::bidirectional_iterator_tag;
-        using value_type = typename ObjectContainer::iterator::value_type;
-        using difference_type = typename ObjectContainer::iterator::difference_type;
-        using pointer = value_type*;
-        using reference = value_type&;
-
-        ObjectIterator(typename ObjectContainer::iterator iter, typename ObjectContainer::iterator begin, typename ObjectContainer::iterator end) 
-            : iter{ iter }, first { std::move(begin) }, last{ std::move(end) }
-        {
-            if (iter != last)
-                advanceIter();
-            else
-                --(*this);
-        }
-        auto& operator*() const { return *dynamic_cast<HitObjectType*>(iter->get()); }
-        auto* operator->() const { return dynamic_cast<HitObjectType*>(iter->get()); }
-        ObjectIterator& operator++()
-        {
-            advanceIter();
-            return *this;
-        }
-        ObjectIterator& operator--()
-        {
-            auto const iter_copy = iter;
-            while (iter != first && (*iter)->type != type)
-                --iter;
-            //If iter is already the the first position but the type is not matched, we need to restore it to previous value pointing to the "correct" type of hit object
-            if (iter == first && (*iter)->type != type)
-                iter = iter_copy;
-            return *this;
-        }
-        bool operator==(ObjectIterator const& rhs) const { return iter == rhs.iter; }
-        bool operator!=(ObjectIterator const& rhs) const { return iter != rhs.iter; }
-    private:
-        typename ObjectContainer::iterator iter;
-        typename ObjectContainer::iterator const first;
-        typename ObjectContainer::iterator const last;
-        
-        void advanceIter()
-        {
-            auto const iter_copy = iter;
-            while (iter != last && (*iter)->type != type)
-                ++iter;
-            //If iter is already at the end position but the type is not matched, we need to restore it to previous value pointing to the "correct" type of hit object
-            if (iter == last && (*iter)->type != type)
-                iter = iter_copy;
-        }
-    };
-
-public:
-
-    /**
-     * @brief Get the iterator pointing to the first specified type of hit object
-     * @tparam type Should be one of the enum values in `HitObject::Type`
-     */
-    template<HitObject::Type type = HitObject::Type::All>
-    auto begin()
-    {
-        return ObjectIterator<decltype(hitObjects), type, typename HitObject::ToType_t<type>>{hitObjects.begin(), hitObjects.begin(), hitObjects.end()};
-    }
-
-    /**
-     * @brief Get the iterator pointing to the last specified type of hit object
-     * @tparam type Should be one of the enum values in `HitObject::Type`
-     */
-    template<HitObject::Type type = HitObject::Type::All>
-    auto end()
-    {
-        return ObjectIterator<decltype(hitObjects), type, typename HitObject::ToType_t<type>>{hitObjects.end(), hitObjects.begin(), hitObjects.end()};
-    }
-
     /**
      * @brief Get drain time in milliseconds
      */
@@ -2400,50 +2407,11 @@ public:
         if (auto const count = hitObjects.size(); count == 0 || count == 1)
             return 0;
 
-        if (auto const drainTime = hitObjects.back()->time - hitObjects.front()->time; drainTime > 0)
+        if (auto const drainTime = HitObject::base(hitObjects.back()).time - HitObject::base(hitObjects.front()).time; drainTime > 0)
             return drainTime;
 
         throw std::logic_error{ "Drain time <= 0" };
     }
-};
-
-/**
- * @brief Specialized for generic `ObjectIterator`, that iterate to every hit objects
- */
-template<typename ObjectContainer, typename HitObjectType>
-class OsuFile::ObjectIterator<ObjectContainer, HitObject::Type::All, HitObjectType>
-{
-public:
-    /*std::iterator<> is deprecated (in C++17) so we define these boilerplate ourselves*/
-    using iterator_category = std::bidirectional_iterator_tag;
-    using value_type = typename ObjectContainer::iterator::value_type;
-    using difference_type = typename ObjectContainer::iterator::difference_type;
-    using pointer = value_type*;
-    using reference = value_type&;
-
-    ObjectIterator(typename ObjectContainer::iterator iter, typename ObjectContainer::iterator begin, typename ObjectContainer::iterator end) : iter{ iter }, first{ std::move(begin) }, last{ std::move(end) } {}
-    HitObject& operator*() const { return *iter->get(); }
-    HitObject* operator->() const { return iter->get(); }
-    ObjectIterator& operator++()
-    {
-        //if (iter + 1 != last)
-        //    ++iter;
-        ++iter;
-        return *this;
-    }
-    ObjectIterator& operator--()
-    {
-        //if (iter != first)
-        //    --iter;
-        --iter;
-        return *this;
-    }
-    bool operator==(ObjectIterator const& rhs) const { return iter == rhs.iter; }
-    bool operator!=(ObjectIterator const& rhs) const { return iter != rhs.iter; }
-private:
-    typename ObjectContainer::iterator iter;
-    typename ObjectContainer::iterator const first;
-    typename ObjectContainer::iterator const last;
 };
 
 namespace Utils

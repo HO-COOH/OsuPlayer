@@ -101,8 +101,8 @@ namespace Model
 			return originalFile->metaData;
 
 
-		Utils::StreambufAdaptor buf{ getFileOf(m_beatmaps[index]).get()};
-		m_beatmaps[index].originalFile.emplace(std::istream{ &buf });
+		auto const filePath = getFileOf(m_beatmaps[index]).get().Path();
+		m_beatmaps[index].originalFile.emplace(std::ifstream{ winrt::to_string(filePath) });
 		return m_beatmaps[index].originalFile->metaData;
 	}
 
@@ -160,10 +160,10 @@ namespace Model
 		{
 			co_await concurrency::create_task([this, i]() {getMetadata(i); });
 			auto const& beatmap = m_beatmaps[i];
-			auto const& backgroundEvents = beatmap.originalFile->events.backgrounds;
-			if (!backgroundEvents.empty() && !backgroundEvents.front().fileName.empty())
+			if (auto const* backgroundEvent = beatmap.originalFile->events.first<Background>();
+				backgroundEvent != nullptr && !backgroundEvent->fileName.empty())
 			{
-				auto const& fileName = backgroundEvents.front().fileName;
+				auto const& fileName = backgroundEvent->fileName;
 				auto file = co_await m_folder.GetFileAsync(winrt::to_hstring(fileName));
 				if (file)
 					co_return file;
