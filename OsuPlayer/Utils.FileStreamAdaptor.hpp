@@ -12,6 +12,12 @@ namespace Utils
 		public std::basic_streambuf<Char>,
 		private winrt::Windows::Storage::Streams::IBuffer
 	{
+		StreambufAdaptor(winrt::Windows::Storage::Streams::IBuffer&& buffer) : winrt::Windows::Storage::Streams::IBuffer{ buffer }
+		{
+			auto const beginPtr = reinterpret_cast<Char*>(data());
+			std::basic_streambuf<Char>::setg(beginPtr, beginPtr, beginPtr + Length() / sizeof(Char));
+		}
+
 		StreambufAdaptor(winrt::Windows::Storage::StorageFile file) :
 			winrt::Windows::Storage::Streams::IBuffer{ winrt::Windows::Storage::FileIO::ReadBufferAsync(file).get() }
 		{

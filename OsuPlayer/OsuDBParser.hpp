@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <numeric>
+#include <cstring>
 
 namespace Db
 {
@@ -64,13 +65,13 @@ namespace Db
 
         TrivialParsable() = default;
 
-        TrivialParsable(unsigned char const*& ptr) :
-            value(*reinterpret_cast<Underlying const*>(ptr))
+        TrivialParsable(unsigned char const*& ptr)
         {
+            std::memcpy(&value, ptr, bytes());
             ptr += bytes();
         }
 
-        TrivialParsable(Underlying value) : value{ value }
+        constexpr TrivialParsable(Underlying value) : value{ value }
         {
         }
 
@@ -108,14 +109,14 @@ namespace Db
         return result;
     }
 
-    template<typename T>
-    std::vector<T> GetArray(unsigned char const*& ptr, int count)
+    template<typename T, typename... Args>
+    std::vector<T> GetArray(unsigned char const*& ptr, int count, Args&&... args)
     {
         std::vector<T> result;
         result.reserve(count);
         for (int i = 0; i < count; ++i)
         {
-            result.emplace_back(ptr);
+            result.emplace_back(ptr, args...);
         }
         return result;
     }
@@ -136,13 +137,13 @@ namespace Db
     }
 
     template<typename T>
-    auto GetArrayBytesWithoutCount(std::vector<T> const& data)
+    constexpr auto GetArrayBytesWithoutCount(std::vector<T> const& data)
     {
         return data.front().bytes() * data.size();
     }
 
     template<typename T>
-    auto GetArrayBytesWithCount(std::vector<T> const& data)
+    constexpr auto GetArrayBytesWithCount(std::vector<T> const& data)
     {
         return Int::bytes() + GetArrayBytesWithoutCount(data);
     }
@@ -177,7 +178,7 @@ namespace Db
     public:
         ULEB128() = default;
 
-        ULEB128(uint64_t value) : m_value{ value }
+        constexpr ULEB128(uint64_t value) : m_value{ value }
         {
         }
 
@@ -200,7 +201,7 @@ namespace Db
             m_value = result;
         }
 
-        operator uint64_t() const
+        constexpr operator uint64_t() const
         {
             return m_value;
         }
@@ -220,11 +221,11 @@ namespace Db
             } while (valueCopy != 0);
         }
 
-        auto bytes() const
+        constexpr auto bytes() const
         {
             size_t byte{};
             auto valueCopy = m_value;
-            do 
+            do
             {
                 valueCopy >>= 7;
                 ++byte;
@@ -265,14 +266,14 @@ namespace Db
             ptr += bytes;
         }
 
-        auto bytes() const
+        constexpr auto bytes() const
         {
             auto const size = static_cast<std::string const&>(*this).size();
             return size == 0 ? 1 : 1 + ULEB128{ size }.bytes() + size;
         }
     };
 
-    inline auto GetArrayBytesWithoutCount(std::vector<String> const& data)
+    inline constexpr auto GetArrayBytesWithoutCount(std::vector<String> const& data)
     {
         return std::accumulate(
             data.cbegin(),
@@ -281,12 +282,45 @@ namespace Db
             [](size_t val, String const& curr) { return val + curr.bytes(); }
         );
     }
-    inline auto GetArrayBytesWithCount(std::vector<String> const& data)
+    inline constexpr auto GetArrayBytesWithCount(std::vector<String> const& data)
     {
         return Int::bytes() + GetArrayBytesWithoutCount(data);
     }
 
+    class IntFloatPair : public std::pair<int, Single>
+    {
+    public:
+        IntFloatPair() = default;
+        IntFloatPair(unsigned char const*& ptr)
+        {
+            if (ptr[0] != 0x08)
+                assert(false);
 
+            ++ptr;
+            first = Int{ ptr };
+
+            if (ptr[0] != 0x0c)
+                assert(false); //The byte is 0x0d
+            
+            ++ptr;
+            second = Single{ ptr };
+        }
+
+        void write(unsigned char*& ptr) const
+        {
+            *ptr = 0x08;
+            ++ptr;
+            Int{ first }.write(ptr);
+            *ptr = 0x0c;
+            ++ptr;
+            second.write(ptr);
+        }
+
+        static constexpr auto bytes()
+        {
+            return 1 + Int::bytes() + 1 + Single::bytes();
+        }
+    };
 
     class IntDoublePair : public std::pair<Int, Double>
     {
@@ -297,26 +331,22 @@ namespace Db
             if (ptr[0] != 0x08)
                 assert(false); //First byte is 0x08
             ++ptr;
-            first = *reinterpret_cast<Int const*>(ptr);
-            ptr += 4;
+            first = Int{ ptr };
 
             if (ptr[0] != 0x0d)
                 assert(false); //The byte is 0x0d
             ++ptr;
-            second = *reinterpret_cast<Double const*>(ptr);
-            ptr += 8;
+            second = Double{ ptr };
         }
 
         void write(unsigned char*& ptr) const
         {
             *ptr = 0x08;    //first byte is 0x08
             ++ptr;
-            *reinterpret_cast<Int*>(ptr) = first; //followed by an Int
-            ptr += sizeof(Int);
+            first.write(ptr); //followed by an Int
             *ptr = 0x0d;    //this byte is 0x0d
             ++ptr;
-            *reinterpret_cast<Double*>(ptr) = second;   //
-            ptr += sizeof(Double);
+            second.write(ptr);
         }
 
         static constexpr auto bytes()
@@ -358,8 +388,8 @@ namespace Db
     public:
         DateTime() = default;
         DateTime(unsigned char const*& ptr)
-            : ticks{ *reinterpret_cast<int64_t const*>(ptr) }
         {
+            std::memcpy(&ticks, ptr, sizeof(ticks));
             ptr += sizeof(int64_t);
         }
 
@@ -375,8 +405,32 @@ namespace Db
         }
     };
 
-    struct Beatmap
+    class Beatmap
     {
+        static auto adaptStarRating(unsigned char const*& ptr, int version)
+        {
+            if (version >= 20250107)
+            {
+                auto intFloatPairs = GetArray<IntFloatPair>(ptr);
+                std::vector<IntDoublePair> values;
+                values.reserve(intFloatPairs.size());
+                std::ranges::transform(
+                    intFloatPairs,
+                    std::back_inserter(values),
+                    [](IntFloatPair p)
+                    {
+                        IntDoublePair value;
+                        value.first = p.first;
+                        value.second = static_cast<double>(static_cast<float>(p.second));
+                        return value;
+                    }
+                );
+
+                return values;
+            }
+            return GetArray<IntDoublePair>(ptr);
+        }
+    public:
         enum class RankStatusEnum : unsigned char
         {
             Unknown = 0,
@@ -455,7 +509,7 @@ namespace Db
         Int lastModified2;
         Byte maniaScrollSpeed;
 
-        Beatmap(unsigned char const*& ptr) :
+        Beatmap(unsigned char const*& ptr, int version) :
             artistName(ptr),
             artistNameUnicode(ptr),
             songTitle(ptr),
@@ -475,10 +529,10 @@ namespace Db
             hpDrainRate(ptr),
             overallDifficulty(ptr),
             sliderVelocity(ptr),
-            stdModStarRating(GetArray<IntDoublePair>(ptr)),
-            taikoModStarRating(GetArray<IntDoublePair>(ptr)),
-            ctbModStarRating(GetArray<IntDoublePair>(ptr)),
-            maniaModStarRating(GetArray<IntDoublePair>(ptr)),
+            stdModStarRating(adaptStarRating(ptr, version)),
+            taikoModStarRating(adaptStarRating(ptr, version)),
+            ctbModStarRating(adaptStarRating(ptr, version)),
+            maniaModStarRating(adaptStarRating(ptr, version)),
             drainTime(ptr),
             totalTime(ptr),
             previewTime(ptr),
@@ -510,12 +564,11 @@ namespace Db
             lastModified2(ptr),
             maniaScrollSpeed(ptr)
         {
-
         }
 
         Beatmap() = default;
 
-        bool operator==(std::string const& otherMd5) const
+        constexpr bool operator==(std::string const& otherMd5) const
         {
             return md5 == otherMd5;
         }
@@ -577,7 +630,7 @@ namespace Db
             maniaScrollSpeed.write(ptr);
         }
 
-        auto bytes() const
+        constexpr auto bytes() const
         {
             return
                 artistName.bytes() +
@@ -668,17 +721,17 @@ namespace std
     struct equal_to<Db::Beatmap>
     {
         using is_transparent = std::true_type;
-        auto operator()(std::string_view md5, Db::Beatmap const& beatmap) const
+        constexpr auto operator()(std::string_view md5, Db::Beatmap const& beatmap) const
         {
             return md5 == beatmap.md5;
         }
 
-        auto operator()(Db::Beatmap const& beatmap, std::string_view md5) const
+        constexpr auto operator()(Db::Beatmap const& beatmap, std::string_view md5) const
         {
             return md5 == beatmap.md5;
         }
 
-        auto operator()(Db::Beatmap const& lhs, Db::Beatmap const& rhs) const
+        constexpr auto operator()(Db::Beatmap const& lhs, Db::Beatmap const& rhs) const
         {
             return lhs.md5 == rhs.md5;
         }
@@ -728,8 +781,8 @@ namespace Db
             unlockAccountDate(ptr),
             playerName(ptr),
             numBeatmaps(ptr),
-            beatmaps(GetArray<Beatmap>(ptr, numBeatmaps)),
-            userPermission(static_cast<UserPermission>(*reinterpret_cast<unsigned char const*>(ptr++)))
+            beatmaps(GetArray<Beatmap>(ptr, numBeatmaps, version)),
+            userPermission(static_cast<UserPermission>(*ptr++))
         {
             m_bytes = std::distance(m_ptrRecord, ptr);
         }
@@ -758,7 +811,7 @@ namespace Db
             TrivialParsable<unsigned char>{static_cast<unsigned char>(userPermission)}.write(ptr);
         }
 
-        auto bytes() const
+        constexpr auto bytes() const
         {
             return m_bytes.value_or(version.bytes() +
                 folderCount.bytes() +
@@ -771,13 +824,6 @@ namespace Db
             );
         }
 
-        //auto getBuffer() const
-        //{
-        //    auto buffer = std::make_unique<unsigned char[]>(bytes());
-        //    auto rawPtr = buffer.get();
-        //    write(rawPtr);
-        //    return buffer;
-        //}
 
         auto getBeatmapSet() const
         {
@@ -825,7 +871,7 @@ namespace Db
                 WriteArrayWithCount(ptr, md5s);
             }
 
-            auto bytes() const
+            constexpr auto bytes() const
             {
                 return name.bytes() + GetArrayBytesWithCount(md5s);
             }
@@ -862,7 +908,7 @@ namespace Db
             WriteArrayWithCount(ptr, collections);
         }
 
-        auto bytes() const
+        constexpr auto bytes() const
         {
             return version.bytes() + GetArrayBytesWithCount(collections);
         }
@@ -931,7 +977,7 @@ namespace Db
                     }
                 }
 
-                auto bytes() const
+                constexpr auto bytes() const
                 {
                     return 1 +
                         version.bytes() +
@@ -1000,7 +1046,7 @@ namespace Db
                 WriteArrayWithCount(ptr, scores);
             }
 
-            auto bytes() const
+            constexpr auto bytes() const
             {
                 return md5.size() + GetArrayBytesWithCount(scores);
             }
@@ -1027,7 +1073,7 @@ namespace Db
         {
         }
 
-        auto bytes() const
+        constexpr auto bytes() const
         {
             return version.bytes() + GetArrayBytesWithCount(beatmapScores);
         }

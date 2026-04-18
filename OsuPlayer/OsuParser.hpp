@@ -285,7 +285,7 @@ namespace details
      * @return Return false when the file has reached the end, 
      * additionally return false when `indicateEmptyLine` is true and the file has reached an empty line.
      */
-    static inline auto GetLine(std::ifstream& file, std::string& line, bool indicateEmptyLine = true)
+    static inline auto GetLine(std::istream& file, std::string& line, bool indicateEmptyLine = true)
     {
         while (std::getline(file, line))
         {
@@ -317,7 +317,7 @@ namespace details
      * @param line The input string, and when the `target` is found, the line should contain the `target` string
      * @param file The input file stream
      */
-    static void SkipUntil(std::string_view target, std::string& line, std::ifstream& file)
+    static void SkipUntil(std::string_view target, std::string& line, std::istream& file)
     {
         do {
             if(!GetLine(file, line, false))
@@ -577,7 +577,7 @@ struct General
      * @param file The input file stream
      * @param partial Whether this is a partial parse
      */
-    General(std::ifstream& file, bool partial = true)
+    General(std::istream& file, bool partial = true)
     {
         std::string line;
         
@@ -679,7 +679,7 @@ struct Editor
      * @param file The input file stream
      * @param partial Whether this is a partial parse
      */
-    Editor(std::ifstream& file, bool partial = true)
+    Editor(std::istream& file, bool partial = true)
     {
         std::string line;
 
@@ -757,7 +757,7 @@ struct Difficulty
      * @param file The input file stream
      * @param partial Whether this is a partial parse
      */
-    Difficulty(std::ifstream& file, bool partial = true)
+    Difficulty(std::istream& file, bool partial = true)
     {
         std::string line;
 
@@ -910,7 +910,7 @@ struct TimingPoint
      * Otherwise, it tries to parse from the current line.
      * @return A `std::vector<TimingPoint>`
      */
-    static auto HandleTimingPoints(std::ifstream& file, bool partial = true)
+    static auto HandleTimingPoints(std::istream& file, bool partial = true)
     {
         std::vector<TimingPoint> timingPoints;
         std::string line;
@@ -1109,7 +1109,7 @@ struct HitObject
         return hitSound.any() ? hitSound : HitSoundFlags{ HitSound::Normal };
     }
 
-    static auto HandleHitObjects(std::ifstream& file, bool partial = true);
+    static auto HandleHitObjects(std::istream& file, bool partial = true);
 
     [[nodiscard]] static constexpr Type GetType(TypeFlags flags)
     {
@@ -1478,7 +1478,7 @@ struct Hold final : HitObject
     }
 };
 
-inline auto HitObject::HandleHitObjects(std::ifstream& file, bool partial)
+inline auto HitObject::HandleHitObjects(std::istream& file, bool partial)
 {
     std::string line;
     std::vector<HitObjectVariant> objects;
@@ -1592,7 +1592,7 @@ struct Colors
      */
     std::optional<Color> sliderBorder;
 
-    Colors(std::ifstream& file, bool partial = true)
+    Colors(std::istream& file, bool partial = true)
     {
         std::string line;
 
@@ -1690,7 +1690,7 @@ struct Metadata
      * @brief Parse Metadata from osu file
      * @param partial If this is a partial parse, it skips until "[Metadata]" line is encountered, default = `true`
      */
-    Metadata(std::ifstream& rankedMap, bool partial = true)
+    Metadata(std::istream& rankedMap, bool partial = true)
     {
         /*if (!osuFile.is_open()) 
             throw std::exception{};*/
@@ -1918,7 +1918,7 @@ struct Events : std::vector<std::variant<Background, Video, Break, StoryboardEve
     using Event = std::variant<Background, Video, Break, StoryboardEvent>;
     using Base = std::vector<Event>;
 
-    Events(std::ifstream& file, bool partial = true)
+    Events(std::istream& file, bool partial = true)
     {
         std::string line;
 
@@ -2031,7 +2031,7 @@ struct OsuFile
     Colors colors;
     std::vector<HitObjectVariant> hitObjects;
 
-    OsuFile(std::ifstream&& file)
+    OsuFile(std::istream&& file)
     {
         std::string line;
         line.reserve(100);
